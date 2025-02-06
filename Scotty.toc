@@ -6,6 +6,7 @@
 ## Version: @project-version@
 ## SavedVariables: ScottyGlobalSettings
 ## X-Curse-Project-ID: 1166725
+## X-Wago-ID: kGr0EX6y
 
 Libs\LibDBIcon\embeds.xml
 Libs\LibDBIcon\LibDBIcon-1.0\lib.xml
