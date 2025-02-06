@@ -2,7 +2,7 @@
  - [x] Project Icon
  - [x] CI/Packager
  - [x] CF Project
- - [ ] WaGo Project (later)
+ - [x] WaGo Project (later)
  - [x] Screenshots
  - [x] Localization
  - [x] Settings
