@@ -4,14 +4,10 @@ ADDON.Events = CreateFromMixins(EventRegistry)
 ADDON.Events:OnLoad()
 ADDON.Events:SetUndefinedEventsAllowed(true)
 
-if true == C_Item.DoesItemExistByID(1) then
-    ADDON.DoesItemExistInGame = function(itemId)
-        return C_Item.GetItemIconByID(itemId) ~= 134400 -- question icon
-    end
-else
-    ADDON.DoesItemExistInGame = function(itemId)
-        return C_Item.DoesItemExistByID(itemId)
-    end
+-- the actual function C_Item.DoesItemExistByID() is misleading and only checks for non empty parameter.
+-- see: https://github.com/Stanzilla/WoWUIBugs/issues/449#issuecomment-2638266396
+function ADDON.DoesItemExistInGame(itemId)
+    return C_Item.GetItemIconByID(itemId) ~= 134400 -- question icon
 end
 
 local function cacheItems(onDone)
