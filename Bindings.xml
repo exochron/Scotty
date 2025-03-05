@@ -1,0 +1,3 @@
+<Bindings>
+    <Binding name="SCOTTY_TELEPORT">Scotty_OpenTeleportMenuAtCursor()</Binding>
+</Bindings>

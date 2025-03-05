@@ -1,6 +1,6 @@
 local _, ADDON = ...
 
-function Scotty_TakeScreenshots()
+function ADDON:TakeScreenshots()
 
     local gg = LibStub("GalleryGenerator")
     gg:TakeScreenshots(
