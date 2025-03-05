@@ -4,6 +4,7 @@ ADDON.L = {}
 local L = ADDON.L
 
 L.MENU_PORTAL = "Portal"
+L.BINDING_HEARTHSTONE = "Use random hearthstone"
 L.BINDING_TELEPORT = "Open teleport menu"
 L.SETTING_GROUP_SEASON = "Group Season Teleports"
 L.SETTING_MINIMAP = "Show Minimap Icon"
@@ -53,4 +54,6 @@ elseif locale == "zhTW" then
     --@localization(locale="zhTW", namespace="Settings", format="lua_additive_table", handle-unlocalized=comment)@
 end
 
+-- update labels for keyboard bindings (see: Bindings.xml)
 BINDING_NAME_SCOTTY_TELEPORT = L.BINDING_TELEPORT
+_G["BINDING_NAME_CLICK ScottyHearthstoneButton:LeftButton"] = L.BINDING_HEARTHSTONE

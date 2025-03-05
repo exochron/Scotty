@@ -74,7 +74,7 @@ local function buildHearthstoneButton()
     button:Show()
     button:ShuffleHearthstone()
     button:HookScript("PreClick", function()
-        if not InCombatLockdown() and button:GetParent():IsDragging() then
+        if not InCombatLockdown() and button:GetParent() and button:GetParent():IsDragging() then
             button:SetAttribute("type", "")
             button:SetAttribute("typerelease", "")
         end

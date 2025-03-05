@@ -4,8 +4,9 @@ SLASH_SCOTTY1 = '/scotty'
 
 local function printHelp()
     print("Syntax:")
-    print("/scotty options       Open addon options")
-    print("/scotty teleport      Open teleport menu at mouse cursor")
+    print("/scotty options                  Open addon options")
+    print("/scotty teleport                 Open teleport menu at your mouse cursor")
+    print("/click ScottyHearthstoneButton   Use a random hearthstone")
 end
 
 function SlashCmdList.SCOTTY(input)
