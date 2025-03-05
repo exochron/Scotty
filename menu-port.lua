@@ -51,12 +51,12 @@ local function buildMenuActionButton()
     return button
 end
 
-local function OpenMenu(anchorSource, generator)
+local function OpenMenu(anchor, generator)
     local menuDescription = MenuUtil.CreateRootMenuDescription(MenuVariants.GetDefaultContextMenuMixin())
 
+    local anchorSource = anchor:GetRelativeTo()
     Menu.PopulateDescription(generator, anchorSource, menuDescription)
 
-    local anchor = CreateAnchor("TOP", anchorSource, "BOTTOM")
     local menu = Menu.GetManager():OpenMenu(anchorSource, menuDescription, anchor)
     if menu then
         menu:HookScript("OnLeave", function()
@@ -334,8 +334,23 @@ local function generateTeleportMenu(_, root)
 end
 
 function ADDON:OpenTeleportMenu(frame)
-    return OpenMenu(frame, generateTeleportMenu)
+    local anchor = CreateAnchor("TOP", frame, "BOTTOM")
+    return OpenMenu(anchor, generateTeleportMenu)
 end
+function ADDON:OpenTeleportMenuAtCursor()
+    local uiScale, x, y = UIParent:GetEffectiveScale(), GetCursorPosition()
+    x = x/uiScale
+    y = y/uiScale
+
+    local anchor = CreateAnchor("TOPLEFT", UIParent, "BOTTOMLEFT", x, y)
+    local menu =  OpenMenu(anchor, generateTeleportMenu)
+    if menu:GetHeight() > y then
+        anchor:Set("BOTTOMLEFT", UIParent, "BOTTOMLEFT", x, y)
+        anchor:SetPoint(menu, true)
+    end
+end
+
+Scotty_OpenTeleportMenuAtCursor = ADDON.OpenTeleportMenuAtCursor
 
 ADDON.Events:RegisterCallback("OnLogin", function()
     menuActionButton = buildMenuActionButton()

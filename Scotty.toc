@@ -20,6 +20,7 @@ core.lua
 settings.lua
 menu-port.lua
 ldb.lua
+command.lua
 
 #@do-not-package@
 DevZone\Screenshot.lua
