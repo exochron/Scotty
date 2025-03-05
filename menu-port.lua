@@ -145,16 +145,18 @@ local function generateTeleportMenu(_, root)
                     currentlyClicking = true
 
                     if previousEquippedItem and previousEquippedItem ~= itemId then
-                        local successHandle, stopHandle
-                        local function reequipAfterTeleport(_, unit)
-                            if unit == "player" then
+                        local successHandle, stopHandle, errorHandle
+                        local function reequipAfterTeleport(handlerName, unit)
+                            if handlerName == "reequip-on-error" or unit == "player" then
                                 equip(previousEquippedItem)
                                 successHandle:Unregister()
                                 stopHandle:Unregister()
+                                errorHandle:Unregister()
                             end
                         end
                         successHandle = ADDON.Events:RegisterFrameEventAndCallbackWithHandle("UNIT_SPELLCAST_SUCCEEDED", reequipAfterTeleport, 'reequip-after-teleport')
                         stopHandle = ADDON.Events:RegisterFrameEventAndCallbackWithHandle("UNIT_SPELLCAST_STOP", reequipAfterTeleport, 'reequip-after-teleport')
+                        errorHandle = ADDON.Events:RegisterFrameEventAndCallbackWithHandle("UI_ERROR_MESSAGE", reequipAfterTeleport, 'reequip-on-error')
                     end
                 end)
             end)
