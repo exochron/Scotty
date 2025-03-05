@@ -19,6 +19,7 @@ function ADDON:InitDatabase()
     local DRAGON_ISLES = 2444
     local KHAZ_ALGAR = 2601
 
+    -- https://wago.tools/db2/DisplaySeason
     local WW_S1 = 24
     local WW_S2 = 25
     local currentSeason = C_SeasonInfo and C_SeasonInfo.GetCurrentDisplaySeasonID() or 0
@@ -218,13 +219,8 @@ function ADDON:InitDatabase()
         -- Seasonal Dungeon Port
         {spell = 445416, instance = 2669, continent = KHAZ_ALGAR, category = (currentSeason == WW_S1 and ADDON.Category.SeasonInstance)}, -- City of Threads
         {spell = 445417, instance = 2660, continent = KHAZ_ALGAR, category = (currentSeason == WW_S1 and ADDON.Category.SeasonInstance)}, -- Ara Kara: City of Echoes
-        {spell = 354464, instance = 2290, continent = SHADOWLANDS, category = (currentSeason == WW_S1 and ADDON.Category.SeasonInstance)}, -- Mists of Tirna Scithe
-        {spell = 445418, instance = 1822, continent = KUL_TIRAS, category = (currentSeason == WW_S1 and ADDON.Category.SeasonInstance)}, -- Siege of Boralus
-        {spell = 464256, instance = 1822, continent = KUL_TIRAS, category = (currentSeason == WW_S1 and ADDON.Category.SeasonInstance)}, -- Siege of Boralus
         {spell = 445414, instance = 2662, continent = KHAZ_ALGAR, category = (currentSeason == WW_S1 and ADDON.Category.SeasonInstance)}, -- The Dawnbreaker
         {spell = 445269, instance = 2652, continent = KHAZ_ALGAR, category = (currentSeason == WW_S1 and ADDON.Category.SeasonInstance)}, -- Stonevault
-        {spell = 445424, instance = 670, continent = EASTERN_KINGDOMS, category = (currentSeason == WW_S1 and ADDON.Category.SeasonInstance)}, -- Grim Batol
-        {spell = 354462, instance = 2286, continent = SHADOWLANDS, category = (currentSeason == WW_S1 and ADDON.Category.SeasonInstance)}, -- Necrotic Wake
 
         {spell = 354467, instance = 2293, continent = SHADOWLANDS, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- Theater of Pain
         {spell = 373274, instance = 2097, continent = KUL_TIRAS, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- Operation: Mechagon
@@ -255,7 +251,9 @@ function ADDON:InitDatabase()
         {spell = 159900, instance = 1208, continent = DRAENOR}, -- Grimrail Depot
         {spell = 159901, instance = 1279, continent = DRAENOR}, -- The Everbloom
         {spell = 159902, instance = 1358, continent = EASTERN_KINGDOMS}, -- Upper Blackrock Spire
+        {spell = 354462, instance = 2286, continent = SHADOWLANDS}, -- Necrotic Wake
         {spell = 354463, instance = 2289, continent = SHADOWLANDS}, -- Plaguefall
+        {spell = 354464, instance = 2290, continent = SHADOWLANDS}, -- Mists of Tirna Scithe
         {spell = 354465, instance = 2287, continent = SHADOWLANDS}, -- Halls of Atonement
         {spell = 354466, instance = 2285, continent = SHADOWLANDS}, -- Spires of Ascension
         {spell = 354468, instance = 2291, continent = SHADOWLANDS}, -- De Other Side
@@ -288,6 +286,9 @@ function ADDON:InitDatabase()
         {spell = 432254, instance = 2522, continent = DRAGON_ISLES}, -- Vault of the Incarnates
         {spell = 432257, instance = 2569, continent = DRAGON_ISLES}, -- Aberrus
         {spell = 432258, instance = 2549, continent = DRAGON_ISLES}, -- Amirdrassil, the Dream's Hope
+        {spell = 445418, instance = 1822, continent = KUL_TIRAS}, -- Siege of Boralus
+        {spell = 445424, instance = 670, continent = EASTERN_KINGDOMS}, -- Grim Batol
+        {spell = 464256, instance = 1822, continent = KUL_TIRAS}, -- Siege of Boralus
 
         -- Hearthstones
         {spell = 556, category = ADDON.Category.Hearthstone}, -- Astral Recall (shaman)
