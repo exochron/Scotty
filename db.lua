@@ -322,6 +322,7 @@ function ADDON:InitDatabase()
         {toy = 212337, category = ADDON.Category.Hearthstone},
         {toy = 228940, category = ADDON.Category.Hearthstone},
         {toy = 235016, category = ADDON.Category.Hearthstone},
+        {toy = 236687, category = ADDON.Category.Hearthstone},
     }
 
     ADDON.db = tFilter(db, function(row)
