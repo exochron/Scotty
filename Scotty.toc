@@ -8,6 +8,16 @@
 ## X-Curse-Project-ID: 1166725
 ## X-Wago-ID: kGr0EX6y
 
+## Category-enUS: Data Broker
+## Category-deDE: Datenbroker
+## Category-esES: Intermediario de Datos
+## Category-esMX: Intermediario de Datos
+## Category-frFR: Courtier de Données
+## Category-ptBR: Corretor de Dados
+## Category-ruRU: Посредник данных
+## Category-zhCN: 数据管理
+## Category-zhTW: 資料管理
+
 Libs\LibDBIcon\embeds.xml
 Libs\LibDBIcon\LibDBIcon-1.0\lib.xml
 
