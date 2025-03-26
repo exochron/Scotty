@@ -3,6 +3,7 @@ local _, ADDON = ...
 -- for classic: filter db for existing items & spells
 
 -- see: https://warcraft.wiki.gg/wiki/UiMapID & https://warcraft.wiki.gg/wiki/InstanceID
+-- or: /dump WorldMapFrame:GetMapID()
 
 function ADDON:InitDatabase()
 
@@ -214,7 +215,11 @@ function ADDON:InitDatabase()
         {toy = isEngineer and 198156, map = 2025, continent = DRAGON_ISLES}, -- Wormhole Generator: Dragon Isles
         {toy = isEngineer and 198156, map = 2133, continent = DRAGON_ISLES}, -- Wormhole Generator: Dragon Isles
         {toy = isEngineer and 198156, map = 2200, continent = DRAGON_ISLES}, -- Wormhole Generator: Dragon Isles
-        {toy = isEngineer and 221966, map = 2274, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
+        {toy = isEngineer and 221966, map = 2214, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
+        {toy = isEngineer and 221966, map = 2215, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
+        {toy = isEngineer and 221966, map = 2248, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
+        {toy = isEngineer and 221966, map = 2255, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
+        {toy = isEngineer and 221966, quest = 86630, map = 2346, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
 
         -- Seasonal Dungeon Port
         {spell = 445416, instance = 2669, continent = KHAZ_ALGAR, category = (currentSeason == WW_S1 and ADDON.Category.SeasonInstance)}, -- City of Threads

@@ -246,7 +246,10 @@ local function generateTeleportMenu(_, root)
     end
 
     local function IsKnown(row)
-        return (nil == row.quest or C_QuestLog.IsQuestFlaggedCompleted(row.quest))
+        return (
+                nil == row.quest
+                or C_QuestLog.IsQuestFlaggedCompleted(row.quest)
+                or (C_QuestLog.IsQuestFlaggedCompletedOnAccount and C_QuestLog.IsQuestFlaggedCompletedOnAccount(row.quest)))
             and (
                 (row.spell and IsSpellKnown(row.spell))
                 or (row.toy and PlayerHasToy(row.toy)
