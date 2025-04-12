@@ -222,11 +222,6 @@ function ADDON:InitDatabase()
         {toy = isEngineer and 221966, quest = 86630, map = 2346, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
 
         -- Seasonal Dungeon Port
-        {spell = 445416, instance = 2669, continent = KHAZ_ALGAR, category = (currentSeason == WW_S1 and ADDON.Category.SeasonInstance)}, -- City of Threads
-        {spell = 445417, instance = 2660, continent = KHAZ_ALGAR, category = (currentSeason == WW_S1 and ADDON.Category.SeasonInstance)}, -- Ara Kara: City of Echoes
-        {spell = 445414, instance = 2662, continent = KHAZ_ALGAR, category = (currentSeason == WW_S1 and ADDON.Category.SeasonInstance)}, -- The Dawnbreaker
-        {spell = 445269, instance = 2652, continent = KHAZ_ALGAR, category = (currentSeason == WW_S1 and ADDON.Category.SeasonInstance)}, -- Stonevault
-
         {spell = 354467, instance = 2293, continent = SHADOWLANDS, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- Theater of Pain
         {spell = 373274, instance = 2097, continent = KUL_TIRAS, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- Operation: Mechagon
         {spell = 445441, instance = 2651, continent = KHAZ_ALGAR, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- Darkflame Cleft
@@ -235,8 +230,8 @@ function ADDON:InitDatabase()
         {spell = 445440, instance = 2661, continent = KHAZ_ALGAR, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- Cinderbrew Meadery
         {spell = 467546, instance = 2661, continent = KHAZ_ALGAR, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- Cinderbrew Meadery
         {spell = 1216786, instance = 2773, continent = KHAZ_ALGAR, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- Operation: Floodgate
-        {spell = 467553, instance = 1594, continent = ZANDALAR, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- The MOTHERLODE
-        {spell = 467555, instance = 1594, continent = ZANDALAR, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- The MOTHERLODE
+        {spell = isAlliance and 467553, instance = 1594, continent = ZANDALAR, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- The MOTHERLODE (alliance)
+        {spell = false == isAlliance and 467555, instance = 1594, continent = ZANDALAR, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- The MOTHERLODE (horde)
 
         -- Older Dungeon Ports
         {spell = 131204, instance = 960, continent = PANDARIA}, -- Temple of the Jade Serpent
@@ -294,6 +289,10 @@ function ADDON:InitDatabase()
         {spell = 445418, instance = 1822, continent = KUL_TIRAS}, -- Siege of Boralus
         {spell = 445424, instance = 670, continent = EASTERN_KINGDOMS}, -- Grim Batol
         {spell = 464256, instance = 1822, continent = KUL_TIRAS}, -- Siege of Boralus
+        {spell = 445416, instance = 2669, continent = KHAZ_ALGAR, }, -- City of Threads
+        {spell = 445417, instance = 2660, continent = KHAZ_ALGAR, }, -- Ara Kara: City of Echoes
+        {spell = 445414, instance = 2662, continent = KHAZ_ALGAR, }, -- The Dawnbreaker
+        {spell = 445269, instance = 2652, continent = KHAZ_ALGAR, }, -- Stonevault
 
         -- Hearthstones
         {spell = 556, category = ADDON.Category.Hearthstone}, -- Astral Recall (shaman)
