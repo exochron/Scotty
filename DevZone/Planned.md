@@ -10,7 +10,7 @@
  - [x] Addon Compartment
  - [x] Cataclysm Support
  - [ ] Classic Support? (Season of Discovery might have added new Port Items/Spells)
- - [ ] Astral Recall as Fallback Hearthstone
+ - [x] Astral Recall as Fallback Hearthstone
 
 ## LDB
  - [x] LeftClick uses Hearthstone

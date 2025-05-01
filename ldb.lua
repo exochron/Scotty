@@ -1,14 +1,21 @@
 local ADDON_NAME, ADDON = ...
 
+local ASTRAL_RECALL = 556
+
 local hearthstoneButton
+
+local function loadHearthStoneItemIds()
+    local stones = tFilter(ADDON.db, function(row)
+        return row.category == ADDON.Category.Hearthstone and row.toy and PlayerHasToy(row.toy)
+    end, true)
+    stones = TableUtil.Transform(stones, function(row) return row.toy end)
+    return stones
+end
 local function buildHearthstoneButton()
     local button = CreateFrame("Button", ADDON_NAME.."HearthstoneButton", nil, "SecureActionButtonTemplate")
 
     local function GetRandomHearthstoneToy()
-        local stones = tFilter(ADDON.db, function(row)
-            return row.category == ADDON.Category.Hearthstone and row.toy and PlayerHasToy(row.toy)
-        end, true)
-        stones = TableUtil.Transform(stones, function(row) return row.toy end)
+        local stones = loadHearthStoneItemIds()
 
         local preferedToys = Settings.GetValue(ADDON_NAME.."_HEARTHSTONES")
         if #preferedToys > 0 then
@@ -32,24 +39,33 @@ local function buildHearthstoneButton()
     end
     button.ShuffleHearthstone = function(self)
         local toy = GetRandomHearthstoneToy()
+
+        if (not toy or C_Container.GetItemCooldown(toy)>0) and IsSpellKnown(ASTRAL_RECALL) and C_Spell.IsSpellUsable(ASTRAL_RECALL) then
+            local spellOnCoolDown = false
+            if C_Spell.GetSpellCooldown then -- Retail
+                local spellCooldown = C_Spell.GetSpellCooldown(ASTRAL_RECALL)
+                spellOnCoolDown = spellCooldown.startTime > 0
+            elseif GetSpellCooldown then -- Classics
+                spellOnCoolDown = GetSpellCooldown(ASTRAL_RECALL) > 0
+            end
+            if not spellOnCoolDown then
+                self:SetAttribute("type", "spell")
+                self:SetAttribute("typerelease", "spell")
+                self:SetAttribute("spell", ASTRAL_RECALL)
+                self:SetAttribute("item", nil)
+                self:SetAttribute("itemid", nil)
+                self:SetAttribute("toy", nil)
+                return
+            end
+        end
         if toy then
             self:SetAttribute("type", "toy")
             self:SetAttribute("typerelease", "toy")
             self:SetAttribute("toy", toy)
             self:SetAttribute("item", nil)
-            self:SetAttribute("itemID", nil)
+            self:SetAttribute("itemid", nil)
             self:SetAttribute("spell", nil)
             return
-        end
-
-        local AstralRecall = 556
-        if IsSpellKnown(AstralRecall) and C_Spell.IsSpellUsable(AstralRecall) then
-            self:SetAttribute("type", "spell")
-            self:SetAttribute("typerelease", "spell")
-            self:SetAttribute("spell", AstralRecall)
-            self:SetAttribute("item", nil)
-            self:SetAttribute("itemID", nil)
-            self:SetAttribute("toy", nil)
         end
 
         local item = C_Container.PlayerHasHearthstone and C_Container.PlayerHasHearthstone()
@@ -58,7 +74,7 @@ local function buildHearthstoneButton()
             self:SetAttribute("type", "item")
             self:SetAttribute("typerelease", "item")
             self:SetAttribute("item", ADDON:FindItemInBags(item))
-            self:SetAttribute("itemID", item)
+            self:SetAttribute("itemid", item)
             self:SetAttribute("toy", nil)
             self:SetAttribute("spell", nil)
         end
@@ -72,16 +88,42 @@ local function buildHearthstoneButton()
     button:SetSize(1,1)
     button:SetPoint("RIGHT", -10, -10)
     button:Show()
-    button:ShuffleHearthstone()
     button:HookScript("PreClick", function()
         if not InCombatLockdown() and button:GetParent() and button:GetParent():IsDragging() then
             button:SetAttribute("type", "")
             button:SetAttribute("typerelease", "")
         end
+        button:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
     end)
     button:HookScript("PostClick", function(self)
         if not InCombatLockdown() then
             self:ShuffleHearthstone()
+        end
+    end)
+    button:HookScript("OnEvent", function(self, event, unitTarget, _, spellID)
+        if event == "UNIT_SPELLCAST_SUCCEEDED" and unitTarget == "player" then
+            self:UnregisterEvent("UNIT_SPELLCAST_SUCCEEDED")
+
+            local isHearthstoneSpell = spellID == ASTRAL_RECALL
+            if not isHearthstoneSpell then
+                local stones = loadHearthStoneItemIds()
+                for _, itemId in ipairs(stones) do
+                    local _, itemSpell = C_Item.GetItemSpell(itemId)
+                    if itemSpell == spellID then
+                        isHearthstoneSpell = true
+                        break
+                    end
+                end
+            end
+
+            if isHearthstoneSpell then
+                C_Timer.After(0.1, function()
+                    if not InCombatLockdown() then
+                        self:ShuffleHearthstone()
+                    end
+                end)
+            end
+
         end
     end)
 
@@ -97,12 +139,11 @@ ADDON.Events:RegisterCallback("OnLogin", function()
     end, ADDON_NAME.."-ldb")
 
     local menu
-    local hearthstoneItem = hearthstoneButton:GetAttribute("toy") or hearthstoneButton:GetAttribute("itemID")
     local ldbDataObject = ldb:NewDataObject( ADDON_NAME, {
         type = "data source",
         text = GetBindLocation(),
-        label = C_Item.GetItemNameByID(hearthstoneItem),
-        icon = C_Item.GetItemIconByID(hearthstoneItem),
+        label = ADDON_NAME,
+        icon = "Interface\Addons\Scotty\icon.png",
 
         OnEnter = function(frame)
             if not InCombatLockdown() then
@@ -126,11 +167,16 @@ ADDON.Events:RegisterCallback("OnLogin", function()
     } )
 
     hearthstoneButton:HookScript("OnAttributeChanged", function(_, name, value)
-        if value and (name == "toy" or name == "itemID") then
+        if value and (name == "toy" or name == "itemid") then
             ldbDataObject.label = C_Item.GetItemNameByID(value)
             ldbDataObject.icon = C_Item.GetItemIconByID(value)
+        elseif value and name == "spell" then
+            local info = C_Spell.GetSpellInfo(value)
+            ldbDataObject.label = info.name
+            ldbDataObject.icon = info.iconID
         end
     end)
+    hearthstoneButton:ShuffleHearthstone()
 
     ADDON.Events:RegisterFrameEventAndCallback("HEARTHSTONE_BOUND", function()
         ldbDataObject.text = GetBindLocation()
