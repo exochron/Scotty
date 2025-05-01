@@ -21,7 +21,6 @@ function ADDON:InitDatabase()
     local KHAZ_ALGAR = 2601
 
     -- https://wago.tools/db2/DisplaySeason
-    local WW_S1 = 24
     local WW_S2 = 25
     local currentSeason = C_SeasonInfo and C_SeasonInfo.GetCurrentDisplaySeasonID() or 0
 
@@ -295,7 +294,6 @@ function ADDON:InitDatabase()
         {spell = 445269, instance = 2652, continent = KHAZ_ALGAR, }, -- Stonevault
 
         -- Hearthstones
-        {spell = 556, category = ADDON.Category.Hearthstone}, -- Astral Recall (shaman)
         {toy = 54452, category = ADDON.Category.Hearthstone},
         {toy = 64488, category = ADDON.Category.Hearthstone},
         {toy = 93672, category = ADDON.Category.Hearthstone},
