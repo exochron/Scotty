@@ -11,6 +11,7 @@
  - [x] Cataclysm Support
  - [ ] Classic Support? (Season of Discovery might have added new Port Items/Spells)
  - [x] Astral Recall as Fallback Hearthstone
+ - [x] some utilities in DB? Delve-O-Bot 7001, Flight Whistle
 
 ## LDB
  - [x] LeftClick uses Hearthstone
@@ -24,6 +25,7 @@
  - [x] Season Dungeons
  - [x] Group by Continent
  - [x] Menu on Minimap Icon
+ - [ ] Druid: cancel flight form while on ground
 
 ## Adventure Journal
  - [ ] add dungeon ports on overview
