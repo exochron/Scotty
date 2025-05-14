@@ -224,11 +224,20 @@ local function generateTeleportMenu(_, root)
     end
 
     local function GetName(row)
+        if row.name then
+            return row.name
+        end
         if row.instance then
             return GetRealZoneText(row.instance)
         end
         if row.map then
             return C_Map.GetMapInfo(row.map).name
+        end
+        if row.toy or row.item then
+            return C_Item.GetItemNameByID(row.toy or row.item)
+        end
+        if row.spell then
+            return C_Spell.GetSpellName(row.spell)
         end
 
         return ""
