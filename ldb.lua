@@ -82,17 +82,41 @@ local function buildHearthstoneButton()
 
     button:SetAttribute("pressAndHoldAction", 1)
     button:RegisterForClicks("LeftButtonUp")
-    button:SetPropagateMouseClicks(true)
     button:SetPropagateMouseMotion(true)
     button:SetFrameStrata("DIALOG")
     button:SetSize(1,1)
     button:SetPoint("RIGHT", -10, -10)
+    button:RegisterForDrag("LeftButton")
     button:Show()
-    button:HookScript("PreClick", function()
-        if not InCombatLockdown() and button:GetParent() and button:GetParent():IsDragging() then
+
+    -- forward dragging to parent since mouse click propagation doesn't work anymore
+    button:SetScript("OnDragStart", function(self)
+        if not InCombatLockdown() then
+            --disable click handler
             button:SetAttribute("type", "")
             button:SetAttribute("typerelease", "")
+
+            local parent = self:GetParent()
+            local handler = parent:GetScript("OnDragStart")
+            handler(parent)
         end
+    end)
+    button:SetScript("OnDragStop", function(self)
+        if not InCombatLockdown() then
+            local parent = self:GetParent()
+            local handler = parent:GetScript("OnDragStop")
+            handler(parent)
+
+            -- reset attributes
+            self:ShuffleHearthstone()
+        end
+    end)
+    button:HookScript("OnMouseDown", function(_, mouseButton)
+        if mouseButton == "RightButton" then
+            ADDON:OpenSettings()
+        end
+    end)
+    button:HookScript("PreClick", function()
         button:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
     end)
     button:HookScript("PostClick", function(self)
@@ -147,6 +171,7 @@ ADDON.Events:RegisterCallback("OnLogin", function()
 
         OnEnter = function(frame)
             if not InCombatLockdown() then
+                --TODO: button has no initial parent. /reload and click in combat does nothing :(
                 hearthstoneButton:SetParent(frame)
                 hearthstoneButton:SetAllPoints(frame)
 
@@ -156,12 +181,6 @@ ADDON.Events:RegisterCallback("OnLogin", function()
         OnLeave = function()
             if menu and not menu:IsMouseOver() then
                 menu:Close()
-            end
-        end,
-
-        OnClick = function(_, mouseButton)
-            if mouseButton == "RightButton" then
-                ADDON:OpenSettings()
             end
         end,
     } )
