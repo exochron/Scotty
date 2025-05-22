@@ -162,6 +162,13 @@ ADDON.Events:RegisterCallback("OnLogin", function()
         hearthstoneButton:ShuffleHearthstone()
     end, ADDON_NAME.."-ldb")
 
+    local attachHSButtonToFrame = function(frame)
+        if frame then
+            hearthstoneButton:SetParent(frame)
+            hearthstoneButton:SetAllPoints(frame)
+        end
+    end
+
     local menu
     local ldbDataObject = ldb:NewDataObject( ADDON_NAME, {
         type = "data source",
@@ -171,10 +178,7 @@ ADDON.Events:RegisterCallback("OnLogin", function()
 
         OnEnter = function(frame)
             if not InCombatLockdown() then
-                --TODO: button has no initial parent. /reload and click in combat does nothing :(
-                hearthstoneButton:SetParent(frame)
-                hearthstoneButton:SetAllPoints(frame)
-
+                attachHSButtonToFrame(frame)
                 menu = ADDON:OpenTeleportMenu(frame)
             end
         end,
@@ -202,10 +206,20 @@ ADDON.Events:RegisterCallback("OnLogin", function()
     end, 'ldb-plugin')
 
     local icon = LibStub("LibDBIcon-1.0")
-    icon:Register(ADDON_NAME, ldbDataObject, ScottyGlobalSettings.minimap)
+    if Settings.GetValue(ADDON_NAME.."_MINIMAP") then
+        icon:Register(ADDON_NAME, ldbDataObject, ScottyGlobalSettings.minimap)
+    end
     Settings.SetOnValueChangedCallback(ADDON_NAME.."_MINIMAP", function(_, _, value)
         ScottyGlobalSettings.minimap.hide = not value
-        icon:Refresh(ADDON_NAME, ScottyGlobalSettings.minimap)
+        if icon:IsRegistered(ADDON_NAME) then
+            icon:Refresh(ADDON_NAME, ScottyGlobalSettings.minimap)
+        else
+            icon:Register(ADDON_NAME, ldbDataObject, ScottyGlobalSettings.minimap)
+        end
     end, ADDON_NAME.."-ldb")
+
+    -- initially attach to possible best matched frame.
+    -- only the target frame can use the hearthstone button, when directly entering combat.
+    attachHSButtonToFrame(BazookaPlugin_Scotty or LibDBIcon10_Scotty)
 
 end, "ldb-plugin")
