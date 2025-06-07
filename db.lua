@@ -24,7 +24,7 @@ function ADDON:InitDatabase()
     local WW_S2 = 25
     local currentSeason = C_SeasonInfo and C_SeasonInfo.GetCurrentDisplaySeasonID() or 0
 
-    local isClassic = WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE
+    local isCata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC -- TODO: remove after MoP release
 
     local isAlliance = UnitFactionGroup("player") == "Alliance"
     local playerRace = UnitRace("player")
@@ -39,13 +39,13 @@ function ADDON:InitDatabase()
 
     local db = {
         -- Various Items and Toys
-        {item = 21711, map = isClassic and 1450 or 80, continent = KALIMDOR}, -- Lunar Festival Invitation
+        {item = 21711, map = isCata and 1450 or 80, continent = KALIMDOR}, -- Lunar Festival Invitation
         {item = 22589, map = 350, continent = EASTERN_KINGDOMS}, -- Atiesh, Greatstaff of the Guardian
         {item = 22630, map = 350, continent = EASTERN_KINGDOMS}, -- Atiesh, Greatstaff of the Guardian
         {item = 22631, map = 350, continent = EASTERN_KINGDOMS}, -- Atiesh, Greatstaff of the Guardian
         {item = 22632, map = 350, continent = EASTERN_KINGDOMS}, -- Atiesh, Greatstaff of the Guardian
         {item = 32757, map = 339, continent = OUTLAND}, -- Blessed Medallion of Karabor
-        {item = 37863, map = isClassic and 242 or 35, continent = EASTERN_KINGDOMS}, -- Direbrew's Remote
+        {item = 37863, map = isCata and 242 or 35, continent = EASTERN_KINGDOMS}, -- Direbrew's Remote
         {item = 40585, map = 125, continent = NORTHREND}, -- Signet of the Kirin Tor
         {item = 40586, map = 125, continent = NORTHREND}, -- Band of the Kirin Tor
         {item = 44934, map = 125, continent = NORTHREND}, -- Loop of the Kirin Tor
@@ -65,14 +65,14 @@ function ADDON:InitDatabase()
         {item = 51559, map = 125, continent = NORTHREND}, -- Runed Ring of the Kirin Tor
         {item = 51560, map = 125, continent = NORTHREND}, -- Runed Band of the Kirin Tor
         {item = 52251, map = 125, continent = NORTHREND}, -- Jaina's Locket
-        {item = 63206, map = isClassic and 1453 or 84, continent = EASTERN_KINGDOMS}, -- Wrap of Unity
-        {item = 63207, map = isClassic and 1454 or 85, continent = KALIMDOR}, -- Wrap of Unity
-        {item = 63352, map = isClassic and 1453 or 84, continent = EASTERN_KINGDOMS}, -- Shroud of Cooperation
-        {item = 63353, map = isClassic and 1454 or 85, continent = KALIMDOR}, -- Shroud of Cooperation
+        {item = 63206, map = isCata and 1453 or 84, continent = EASTERN_KINGDOMS}, -- Wrap of Unity
+        {item = 63207, map = isCata and 1454 or 85, continent = KALIMDOR}, -- Wrap of Unity
+        {item = 63352, map = isCata and 1453 or 84, continent = EASTERN_KINGDOMS}, -- Shroud of Cooperation
+        {item = 63353, map = isCata and 1454 or 85, continent = KALIMDOR}, -- Shroud of Cooperation
         {item = 63378, map = 245, continent = EASTERN_KINGDOMS}, -- Hellscream's Reach Tabard
         {item = 63379, map = 245, continent = EASTERN_KINGDOMS}, -- Baradin's Wardens Tabard
-        {item = 65274, map = isClassic and 1454 or 85, continent = KALIMDOR}, -- Cloak of Coordination
-        {item = 65360, map = isClassic and 1453 or 84, continent = EASTERN_KINGDOMS}, -- Cloak of Coordination
+        {item = 65274, map = isCata and 1454 or 85, continent = KALIMDOR}, -- Cloak of Coordination
+        {item = 65360, map = isCata and 1453 or 84, continent = EASTERN_KINGDOMS}, -- Cloak of Coordination
         {item = 95050, map = 503, continent = KALIMDOR}, -- The Brassiest Knuckle
         {item = 95051, map = 500, continent = EASTERN_KINGDOMS}, -- The Brassiest Knuckle
         {item = 103678, map = 554, continent = PANDARIA}, -- Time-Lost Artifact
@@ -101,36 +101,36 @@ function ADDON:InitDatabase()
         {toy = 230850, name = DELVE_LABEL, continent = KHAZ_ALGAR, }, -- Delve-O-Bot 7001
 
         {spell = 50977,
-         map = isClassic and 1423 or 648,
+         map = LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_LEGION and 648 or isCata and 1423 or 23,
          continent = LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_LEGION and BROKEN_ISLES or EASTERN_KINGDOMS
         }, -- Archerus (DK)
         {spell = 126892, map = C_QuestLog.IsQuestFlaggedCompleted(40236) and 709 or 379}, -- Zen Pilgrimage  (Monk)
         {spell = 193759, map = 734, continent = BROKEN_ISLES}, -- Hall of the guardian (Mage)
 
         -- Druid Dreamwalk
-        {spell = 18960, map = isClassic and 1450 or 80, continent = KALIMDOR},
+        {spell = 18960, map = isCata and 1450 or 80, continent = KALIMDOR},
         {spell = 193753, map = 26, continent = EASTERN_KINGDOMS},
         {spell = 193753, map = 47, continent = EASTERN_KINGDOMS},
         {spell = 193753, map = 69, continent = KALIMDOR},
-        {spell = 193753, map = isClassic and 1450 or 80, continent = KALIMDOR},
+        {spell = 193753, map = isCata and 1450 or 80, continent = KALIMDOR},
         {spell = 193753, map = 116, continent = NORTHREND},
         {spell = 193753, map = 198, continent = KALIMDOR},
         {spell = 193753, map = 747, continent = BROKEN_ISLES},
 
         -- Mage Teleports with Portals
         -- https://www.wowhead.com/guide/transportation#mage-portals
-        {spell = 3561, portal = 10059, map = isClassic and 1453 or 84, continent = EASTERN_KINGDOMS}, -- Stormwind
-        {spell = 3562, portal = 11416, map = isClassic and 1455 or 87, continent = EASTERN_KINGDOMS}, -- Ironforge
-        {spell = 3563, portal = 11418, map = isClassic and 1458 or 90, continent = EASTERN_KINGDOMS}, -- Undercity
-        {spell = 3565, portal = 11419, map = isClassic and 1457 or 89, continent = KALIMDOR}, -- Darnassus
-        {spell = 3566, portal = 11420, map = isClassic and 1456 or 88, continent = KALIMDOR}, -- Thunder Bluff
-        {spell = 3567, portal = 11417, map = isClassic and 1454 or 85, continent = KALIMDOR}, -- Orgrimmar
-        {spell = 32271, portal = 32266, map = isClassic and 1947 or 103, continent = KALIMDOR}, -- Exodar
-        {spell = 32272, portal = 32267, map = isClassic and 1954 or 110, continent = EASTERN_KINGDOMS}, -- Silvermoon
-        {spell = 35715, portal = 35717, map = isClassic and 1955 or 111, continent = OUTLAND}, -- Shattrath
-        {spell = 33690, portal = 33691, map = isClassic and 1955 or 111, continent = OUTLAND}, -- Shattrath
-        {spell = 49358, portal = 49361, map = isClassic and 1435 or 51, continent = EASTERN_KINGDOMS}, -- Stonard
-        {spell = 49359, portal = 49360, map = isClassic and 1445 or 70, continent = KALIMDOR}, -- Theramore
+        {spell = 3561, portal = 10059, map = isCata and 1453 or 84, continent = EASTERN_KINGDOMS}, -- Stormwind
+        {spell = 3562, portal = 11416, map = isCata and 1455 or 87, continent = EASTERN_KINGDOMS}, -- Ironforge
+        {spell = 3563, portal = 11418, map = isCata and 1458 or 998, continent = EASTERN_KINGDOMS}, -- Undercity
+        {spell = 3565, portal = 11419, map = isCata and 1457 or 89, continent = KALIMDOR}, -- Darnassus
+        {spell = 3566, portal = 11420, map = isCata and 1456 or 88, continent = KALIMDOR}, -- Thunder Bluff
+        {spell = 3567, portal = 11417, map = isCata and 1454 or 85, continent = KALIMDOR}, -- Orgrimmar
+        {spell = 32271, portal = 32266, map = isCata and 1947 or 103, continent = KALIMDOR}, -- Exodar
+        {spell = 32272, portal = 32267, map = isCata and 1954 or 110, continent = EASTERN_KINGDOMS}, -- Silvermoon
+        {spell = 35715, portal = 35717, map = isCata and 1955 or 111, continent = OUTLAND}, -- Shattrath
+        {spell = 33690, portal = 33691, map = isCata and 1955 or 111, continent = OUTLAND}, -- Shattrath
+        {spell = 49358, portal = 49361, map = isCata and 1435 or 51, continent = EASTERN_KINGDOMS}, -- Stonard
+        {spell = 49359, portal = 49360, map = isCata and 1445 or 70, continent = KALIMDOR}, -- Theramore
         {spell = 53140, portal = 53142, map = 125, continent = NORTHREND}, -- Dalaran
         {spell = 88342, portal = 88345, map = 245, continent = EASTERN_KINGDOMS}, -- Tol Barad
         {spell = 88344, portal = 88346, map = 245, continent = EASTERN_KINGDOMS}, -- Tol Barad
@@ -148,8 +148,8 @@ function ADDON:InitDatabase()
 
         -- Mole Machine of Dark Iron Dwarfes
         -- from https://www.wowhead.com/spell=265225/mole-machine#comments:id=2579704 Kudos to P3lim
-        {spell = 265225, map = isClassic and 1455 or 87, continent = EASTERN_KINGDOMS}, -- Ironforge
-        {spell = 265225, map = isClassic and 1453 or 84, continent = EASTERN_KINGDOMS}, -- Stormwind
+        {spell = 265225, map = isCata and 1455 or 87, continent = EASTERN_KINGDOMS}, -- Ironforge
+        {spell = 265225, map = isCata and 1453 or 84, continent = EASTERN_KINGDOMS}, -- Stormwind
         {spell = 265225, map = 243, continent = EASTERN_KINGDOMS}, -- Shadowforge City
         {spell = 265225, quest = 53594, map = 17, continent = EASTERN_KINGDOMS}, -- Blasted Lands
         {spell = 265225, quest = 53585, map = 26, continent = EASTERN_KINGDOMS}, -- The Hinterlands
@@ -181,10 +181,10 @@ function ADDON:InitDatabase()
         {spell = 265225, quest = 80109, map = 2133, continent = DRAGON_ISLES}, -- Zaralek Cavern
 
         -- Engineering Items
-        {toy = isEngineer and 18984, map = isClassic and 1452 or 83, continent = KALIMDOR}, -- Dimensional Ripper - Everlook
-        {toy = isEngineer and 18986, map = isClassic and 1446 or 71, continent = KALIMDOR}, -- Ultrasafe Transporter: Gadgetzan
-        {toy = isEngineer and 30542, map = isClassic and 1953 or 109, continent = OUTLAND}, -- Dimensional Ripper - Area 52
-        {toy = isEngineer and 30544, map = isClassic and 1949 or 105, continent = OUTLAND}, -- Ultrasafe Transporter: Toshley's Station
+        {toy = isEngineer and 18984, map = isCata and 1452 or 83, continent = KALIMDOR}, -- Dimensional Ripper - Everlook
+        {toy = isEngineer and 18986, map = isCata and 1446 or 71, continent = KALIMDOR}, -- Ultrasafe Transporter: Gadgetzan
+        {toy = isEngineer and 30542, map = isCata and 1953 or 109, continent = OUTLAND}, -- Dimensional Ripper - Area 52
+        {toy = isEngineer and 30544, map = isCata and 1949 or 105, continent = OUTLAND}, -- Ultrasafe Transporter: Toshley's Station
         {toy = isEngineer and 48933, map = 114, continent = NORTHREND}, -- Wormhole Generator: Northrend
         {toy = isEngineer and 48933, map = 117, continent = NORTHREND}, -- Wormhole Generator: Northrend
         {toy = isEngineer and 48933, map = 118, continent = NORTHREND}, -- Wormhole Generator: Northrend
