@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\Blizzard_SharedXML\UI.xsd">
 
-    <Frame name="ScottySetting_DropdownWithLabelTemplate" mixin="ScottySetting_DropdownWithLabelMixin" virtual="true">
+    <Frame name="ScottySetting_DropdownWithoutButtonsTemplate" mixin="ScottySetting_DropdownWithLabelMixin" virtual="true">
         <Size x="223" y="38"/>
         <Frames>
             <DropdownButton parentKey="Dropdown" inherits="WowStyle2DropdownTemplate">
@@ -9,6 +9,17 @@
                     <Anchor point="CENTER"/>
                 </Anchors>
             </DropdownButton>
+
+            <!-- Begin prevent ElvUI error -->
+            <Frame parentKey="DecrementButton">
+                <Size x="0" y="0"/>
+                <KeyValues><KeyValue key="IsSkinned" type="boolean" value="true"/></KeyValues>
+            </Frame>
+            <Frame parentKey="IncrementButton">
+                <Size x="0" y="0"/>
+                <KeyValues><KeyValue key="IsSkinned" type="boolean" value="true"/></KeyValues>
+            </Frame>
+            <!-- End prevent ElvUI error -->
         </Frames>
         <Layers>
             <Layer level="ARTWORK">
@@ -23,7 +34,7 @@
 
     <Frame name="ScottySetting_MultiSelectTemplate" inherits="SettingsDropdownControlTemplate" mixin="SettingsDropdownControlMixin,ScottySetting_DropdownControlMixin" virtual="true">
         <KeyValues>
-            <KeyValue key="dropdownType" type="string" value="ScottySetting_DropdownWithLabelTemplate"/>
+            <KeyValue key="dropdownType" type="string" value="ScottySetting_DropdownWithoutButtonsTemplate"/>
         </KeyValues>
     </Frame>
 </Ui>

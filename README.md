@@ -15,7 +15,7 @@ Click on LDB-Plugin or Minimap Icon:
 Click on Menu item:
 - Left Click: Use Spell, Item or Toy
 
-## Commands:
+## Optional Commands:
 `/scotty options` : Opens the addon settings
 `/scotty teleport` : Opens teleport menu at your mouse cursor
 `/click ScottyHearthstoneButton` : Randomly uses one of your favorite hearthstones
