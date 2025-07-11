@@ -235,6 +235,7 @@ function ADDON:InitDatabase()
         {spell = 1216786, instance = 2773, continent = KHAZ_ALGAR, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- Operation: Floodgate
         {spell = isAlliance and 467553, instance = 1594, continent = ZANDALAR, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- The MOTHERLODE (alliance)
         {spell = false == isAlliance and 467555, instance = 1594, continent = ZANDALAR, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- The MOTHERLODE (horde)
+        {spell = 1226482, instance = 2769, continent = KHAZ_ALGAR, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- Liberation of Undermine
 
         -- Older Dungeon Ports
         {spell = 131204, instance = 960, continent = PANDARIA}, -- Temple of the Jade Serpent
