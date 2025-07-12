@@ -1,6 +1,17 @@
 local _, ADDON = ...
 
-local function alert(msg)
+local function alert(msg, row)
+    if row then
+        msg = msg.." ("
+        if row.toy then
+            msg = msg.."toy: "..row.toy
+        elseif row.item then
+            msg = msg.."item: "..row.item
+        elseif row.spell then
+            msg = msg.."spell: "..row.spell
+        end
+        msg = msg..")"
+    end
     print("Scotty: "..msg)
 end
 
@@ -19,6 +30,12 @@ local function CheckPortalExistsAsWell(row)
     end
 end
 
+local function CheckForRequiredFields(row)
+    if not row.category and not row.continent then
+        alert("Required Continent or Category is missing!", row)
+    end
+end
+
 local function TestDB()
     for _, row in ipairs(ADDON.db) do
         if (row.item and ADDON.DoesItemExistInGame(row.item))
@@ -28,6 +45,7 @@ local function TestDB()
             CheckNameAvailable(row)
             CheckPortalExistsAsWell(row)
         end
+        CheckForRequiredFields(row)
     end
 end
 

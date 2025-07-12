@@ -26,6 +26,7 @@ db.lua
 
 templates.xml
 setting-multiselect.lua
+api.lua
 core.lua
 settings.lua
 menu-port.lua
