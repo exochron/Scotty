@@ -1,4 +1,4 @@
-## Interface: 110105, 110107, 50500, 40402
+## Interface: 110107, 50500
 ## Title: Scotty
 ## Notes: Your personal transportation assistant
 ## Author: eXochron
