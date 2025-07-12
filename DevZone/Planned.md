@@ -12,6 +12,7 @@
  - [ ] Classic Support? (Season of Discovery might have added new Port Items/Spells)
  - [x] Astral Recall as Fallback Hearthstone
  - [x] some utilities in DB? Delve-O-Bot 7001, Flight Whistle
+ - [ ] Change Keybindings in Addon settings
 
 ## LDB
  - [x] LeftClick uses Hearthstone
