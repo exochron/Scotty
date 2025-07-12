@@ -11,6 +11,10 @@ local function registerSettings()
             ScottyGlobalSettings, Settings.VarType.Boolean, L.SETTING_MINIMAP, Settings.Default.True)
     Settings.CreateCheckbox(category, minimapSetting)
 
+    local groupFavoritesSetting = Settings.RegisterAddOnSetting(category, ADDON_NAME.."_GROUP_FAVORITES", "groupFavorites",
+            ScottyGlobalSettings, Settings.VarType.Boolean, L.SETTING_GROUP_FAVORITES, Settings.Default.False)
+    Settings.CreateCheckbox(category, groupFavoritesSetting)
+
     local groupSeasonSetting = Settings.RegisterAddOnSetting(category, ADDON_NAME.."_GROUP_SEASON", "groupSeason",
             ScottyGlobalSettings, Settings.VarType.Boolean, L.SETTING_GROUP_SEASON, Settings.Default.False)
     if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then -- no seasons in classic yet
@@ -46,12 +50,33 @@ function ADDON:OpenSettings()
     Settings.OpenToCategory(categoryID)
 end
 
+local function CombineSettings(settings, defaultSettings)
+    for key, value in pairs(defaultSettings) do
+        if (settings[key] == nil) then
+            settings[key] = value;
+        elseif (type(value) == "table") and next(value) ~= nil then
+            if type(settings[key]) ~= "table" then
+                settings[key] = {}
+            end
+            CombineSettings(settings[key], value);
+        end
+    end
+
+    -- Never cleanup or it would clear the registered settings!
+end
+
 ADDON.Events:RegisterCallback("OnInit", function()
     local defaults = {
+        favorites = {
+            toy = {},
+            item = {},
+            spell = {},
+        },
         minimap = {} -- for LibDBIcon
     }
 
     ScottyGlobalSettings = ScottyGlobalSettings or defaults
+    CombineSettings(ScottyGlobalSettings, defaults)
 
     registerSettings()
 end, "settings")

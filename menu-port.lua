@@ -102,6 +102,45 @@ local function generateTeleportMenu(_, root)
                 button.fontString:SetAlpha(0.5)
             end)
         end
+        element:AddInitializer(function(parent, elementDescription, menu)
+            local star = parent:AttachFrame("CheckButton")
+            star:SetNormalAtlas("auctionhouse-icon-favorite")
+            star:SetHighlightAtlas("auctionhouse-icon-favorite-off", "ADD")
+            star:SetPoint("LEFT")
+            star:SetSize(13, 12)
+
+            parent.StarButton = star
+            parent.fontString:SetPoint("LEFT", star, "RIGHT", 3, -1)
+
+            star:SetScript("OnEnter", function(self)
+                local isFavorite = not ADDON.Api.IsFavorite(type, typeId)
+
+                GameTooltip:SetOwner(star, "ANCHOR_CURSOR")
+                GameTooltip:ClearLines()
+                GameTooltip:SetText(isFavorite and BATTLE_PET_FAVORITE or BATTLE_PET_UNFAVORITE)
+                GameTooltip:AddLine(ADDON.L.FAVORITE_TOOLTIP_TEXT)
+                GameTooltip:Show()
+            end)
+            star:SetScript("OnLeave", function()
+                GameTooltip:Hide()
+            end)
+            star:SetScript("OnClick", function(self)
+                local isFavorite = not ADDON.Api.IsFavorite(type, typeId)
+                ADDON.Api.SetFavorite(type, typeId, isFavorite)
+                self:UpdateTexture(isFavorite)
+                menu:SendResponse(elementDescription, MenuResponse.Refresh)
+            end)
+            star.UpdateTexture = function (self, isFavorite)
+                local atlas = isFavorite and "auctionhouse-icon-favorite" or "auctionhouse-icon-favorite-off";
+                self:GetNormalTexture():SetAtlas(atlas);
+                self:GetHighlightTexture():SetAtlas(atlas)
+                self:GetHighlightTexture():SetAlpha(isFavorite and 0.2 or 0.4)
+            end
+
+            local isFavorite = ADDON.Api.IsFavorite(type, typeId)
+            star:SetChecked(isFavorite)
+            star:UpdateTexture(isFavorite)
+        end)
         return element
     end
 
@@ -275,18 +314,44 @@ local function generateTeleportMenu(_, root)
     -- Hearthstone
     do
         local hearthstoneButton = _G[ADDON_NAME.."HearthstoneButton"]
+        local menuEntry
         if hearthstoneButton:GetAttribute("toy") then
-            buildToyEntry(root, hearthstoneButton:GetAttribute("toy"), GetBindLocation()):SetResponder(function()
+            menuEntry = buildToyEntry(root, hearthstoneButton:GetAttribute("toy"), GetBindLocation())
+            menuEntry:SetResponder(function()
                 hearthstoneButton:ShuffleHearthstone()
                 return MenuResponse.CloseAll
             end)
-            root:QueueSpacer()
         elseif hearthstoneButton:GetAttribute("spell") then
-            buildSpellEntry(root, hearthstoneButton:GetAttribute("spell"), GetBindLocation())
-            root:QueueSpacer()
+            menuEntry = buildSpellEntry(root, hearthstoneButton:GetAttribute("spell"), GetBindLocation())
         elseif hearthstoneButton:GetAttribute("itemID") then
-            buildItemEntry(root, hearthstoneButton:GetAttribute("itemID"), GetBindLocation())
+            menuEntry = buildItemEntry(root, hearthstoneButton:GetAttribute("itemID"), GetBindLocation())
+        end
+        if menuEntry then
+            menuEntry:AddInitializer(function(parent)
+                parent.StarButton:Hide()
+                parent.fontString:SetPoint("LEFT", parent)
+            end)
             root:QueueSpacer()
+        end
+    end
+
+    local hasUngroupedFavorites = false
+
+    -- favorites
+    local favorites = ADDON.Api.GetFavoriteDatabase()
+    do
+        if #favorites > 0 then
+            local favoriteRoot = root
+            if Settings.GetValue(ADDON_NAME.."_GROUP_FAVORITES") then
+                favoriteRoot = root:CreateButton(FAVORITES)
+            else
+                favoriteRoot:CreateTitle(FAVORITES)
+                hasUngroupedFavorites = true
+            end
+            favorites = SortRowsByName(favorites)
+            for _, row in ipairs(favorites) do
+                buildRow(row, favoriteRoot)
+            end
         end
     end
 
@@ -297,29 +362,22 @@ local function generateTeleportMenu(_, root)
         end, true)
         if #seasonSpells > 0 then
             local seasonRoot = root
+            local currentSeasonName = EJ_GetTierInfo(EJ_GetNumTiers())
             if Settings.GetValue(ADDON_NAME.."_GROUP_SEASON") then
-                local currentSeasonName = EJ_GetTierInfo(EJ_GetNumTiers())
+                if #favorites > 0 and not Settings.GetValue(ADDON_NAME.."_GROUP_FAVORITES") then
+                    root:QueueSpacer()
+                end
                 seasonRoot = root:CreateButton(currentSeasonName)
+            else
+                if #favorites > 0 then
+                    root:QueueSpacer()
+                end
+                root:CreateTitle(currentSeasonName)
             end
             seasonSpells = SortRowsByName(seasonSpells)
             for _, row in ipairs(seasonSpells) do
                 buildRow(row, seasonRoot)
             end
-            root:QueueSpacer()
-        end
-    end
-
-    -- Uncategorized (like wandering isle)
-    do
-        local list = tFilter(ADDON.db, function(row)
-            return row.continent == nil and row.category == nil and IsKnown(row)
-        end, true)
-        if #list > 0 then
-            list = SortRowsByName(list)
-            for _, row in ipairs(list) do
-                buildRow(row, root)
-            end
-            root:QueueSpacer()
         end
     end
 
@@ -335,12 +393,15 @@ local function generateTeleportMenu(_, root)
             end
         end
         local continents = GetKeysArray(groupedByContinent)
-        table.sort(continents, function(a, b) return a > b end)
-        for _, continent in ipairs(continents) do
-            local list = SortRowsByName(groupedByContinent[continent])
-            local continentRoot = root:CreateButton(GetRealZoneText(continent))
-            for _, row in ipairs(list) do
-                buildRow(row, continentRoot)
+        if #continents > 0 then
+            root:QueueSpacer()
+            table.sort(continents, function(a, b) return a > b end)
+            for _, continent in ipairs(continents) do
+                local list = SortRowsByName(groupedByContinent[continent])
+                local continentRoot = root:CreateButton(GetRealZoneText(continent))
+                for _, row in ipairs(list) do
+                    buildRow(row, continentRoot)
+                end
             end
         end
     end
@@ -356,7 +417,7 @@ function ADDON:OpenTeleportMenuAtCursor()
     y = y/uiScale
 
     local anchor = CreateAnchor("TOPLEFT", UIParent, "BOTTOMLEFT", x, y)
-    local menu =  OpenMenu(anchor, generateTeleportMenu)
+    local menu = OpenMenu(anchor, generateTeleportMenu)
     if menu:GetHeight() > y then
         anchor:Set("BOTTOMLEFT", UIParent, "BOTTOMLEFT", x, y)
         anchor:SetPoint(menu, true)

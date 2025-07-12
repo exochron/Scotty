@@ -20,9 +20,7 @@
  - [x] grey out hearthstone/spells on CD
  - [x] Hearthstones
  - [x] Mage: TP and Portal together
- - [ ] Favorites
-    - star button before name as marker
-    - either submenu or section over season
+ - [x] Favorites
  - [x] season teleports as group
  - [x] Season Dungeons
  - [x] Group by Continent
