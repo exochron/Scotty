@@ -104,7 +104,8 @@ function ADDON:InitDatabase()
          map = LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_LEGION and 648 or isCata and 1423 or 23,
          continent = LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_LEGION and BROKEN_ISLES or EASTERN_KINGDOMS
         }, -- Archerus (DK)
-        {spell = 126892, map = C_QuestLog.IsQuestFlaggedCompleted(40236) and 709 or 379}, -- Zen Pilgrimage  (Monk)
+        {spell = 126892, map = 379, continent = PANDARIA }, -- Zen Pilgrimage (Monk)
+        {spell = 126892, quest = 40236, map = 709, continent = BROKEN_ISLES}, -- Zen Pilgrimage (Monk)
         {spell = 193759, map = 734, continent = BROKEN_ISLES}, -- Hall of the guardian (Mage)
 
         -- Druid Dreamwalk
