@@ -15,7 +15,7 @@ function SlashCmdList.SCOTTY(input)
     if ADDON.TakeScreenshots and loweredInput == "screenshot" then
         ADDON:TakeScreenshots()
     elseif loweredInput == "options" then
-        ADDON:OpenOptions()
+        ADDON:OpenSettings()
     elseif loweredInput == "teleport" then
         ADDON:OpenTeleportMenuAtCursor()
     else
