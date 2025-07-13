@@ -73,8 +73,7 @@ local function generateTeleportMenu(_, root)
     root:SetTag(ADDON_NAME.."-LDB-Teleport")
     root:SetScrollMode(GetScreenHeight() - 100)
 
-    local function buildEntry(menuRoot, type, typeId, icon, location, tooltipSetter, hasCooldown, originalTypeId)
-        originalTypeId = originalTypeId or typeId
+    local function buildEntry(menuRoot, type, typeId, icon, location, tooltipSetter, hasCooldown, dbRow)
         local element = menuRoot:CreateButton("|T" .. icon .. ":0|t "..location, function()
             return MenuResponse.CloseAll
         end)
@@ -103,49 +102,51 @@ local function generateTeleportMenu(_, root)
                 button.fontString:SetAlpha(0.5)
             end)
         end
-        element:AddInitializer(function(parent, elementDescription, menu)
-            local star = parent:AttachFrame("CheckButton")
-            star:SetNormalAtlas("auctionhouse-icon-favorite")
-            star:SetHighlightAtlas("auctionhouse-icon-favorite-off", "ADD")
-            star:SetPoint("LEFT")
-            star:SetSize(13, 12)
+        if dbRow then
+            element:AddInitializer(function(parent, elementDescription, menu)
+                local star = parent:AttachFrame("CheckButton")
+                star:SetNormalAtlas("auctionhouse-icon-favorite")
+                star:SetHighlightAtlas("auctionhouse-icon-favorite-off", "ADD")
+                star:SetPoint("LEFT")
+                star:SetSize(13, 12)
 
-            parent.StarButton = star
-            parent.fontString:SetPoint("LEFT", star, "RIGHT", 3, -1)
+                parent.StarButton = star
+                parent.fontString:SetPoint("LEFT", star, "RIGHT", 3, -1)
 
-            star:SetScript("OnEnter", function()
-                local isFavorite = not ADDON.Api.IsFavorite(type, originalTypeId)
+                star:SetScript("OnEnter", function()
+                    local isFavorite = not ADDON.Api.IsFavorite(dbRow)
 
-                GameTooltip:SetOwner(star, "ANCHOR_CURSOR")
-                GameTooltip:ClearLines()
-                GameTooltip:SetText(isFavorite and BATTLE_PET_FAVORITE or BATTLE_PET_UNFAVORITE)
-                GameTooltip:AddLine(ADDON.L.FAVORITE_TOOLTIP_TEXT)
-                GameTooltip:Show()
+                    GameTooltip:SetOwner(star, "ANCHOR_CURSOR")
+                    GameTooltip:ClearLines()
+                    GameTooltip:SetText(isFavorite and BATTLE_PET_FAVORITE or BATTLE_PET_UNFAVORITE)
+                    GameTooltip:AddLine(ADDON.L.FAVORITE_TOOLTIP_TEXT)
+                    GameTooltip:Show()
+                end)
+                star:SetScript("OnLeave", function()
+                    GameTooltip:Hide()
+                end)
+                star:SetScript("OnClick", function(self)
+                    local isFavorite = not ADDON.Api.IsFavorite(dbRow)
+                    ADDON.Api.SetFavorite(dbRow, isFavorite)
+                    self:UpdateTexture(isFavorite)
+                    menu:SendResponse(elementDescription, MenuResponse.Refresh)
+                end)
+                star.UpdateTexture = function (self, isFavorite)
+                    local atlas = isFavorite and "auctionhouse-icon-favorite" or "auctionhouse-icon-favorite-off";
+                    self:GetNormalTexture():SetAtlas(atlas);
+                    self:GetHighlightTexture():SetAtlas(atlas)
+                    self:GetHighlightTexture():SetAlpha(isFavorite and 0.2 or 0.4)
+                end
+
+                local isFavorite = ADDON.Api.IsFavorite(dbRow)
+                star:SetChecked(isFavorite)
+                star:UpdateTexture(isFavorite)
             end)
-            star:SetScript("OnLeave", function()
-                GameTooltip:Hide()
-            end)
-            star:SetScript("OnClick", function(self)
-                local isFavorite = not ADDON.Api.IsFavorite(type, originalTypeId)
-                ADDON.Api.SetFavorite(type, originalTypeId, isFavorite)
-                self:UpdateTexture(isFavorite)
-                menu:SendResponse(elementDescription, MenuResponse.Refresh)
-            end)
-            star.UpdateTexture = function (self, isFavorite)
-                local atlas = isFavorite and "auctionhouse-icon-favorite" or "auctionhouse-icon-favorite-off";
-                self:GetNormalTexture():SetAtlas(atlas);
-                self:GetHighlightTexture():SetAtlas(atlas)
-                self:GetHighlightTexture():SetAlpha(isFavorite and 0.2 or 0.4)
-            end
-
-            local isFavorite = ADDON.Api.IsFavorite(type, originalTypeId)
-            star:SetChecked(isFavorite)
-            star:UpdateTexture(isFavorite)
-        end)
+        end
         return element
     end
 
-    local function buildToyEntry(menuRoot, itemId, location)
+    local function buildToyEntry(menuRoot, itemId, location, dbRow)
         return buildEntry(
                 menuRoot,
                 "toy",
@@ -155,11 +156,12 @@ local function generateTeleportMenu(_, root)
                 function(tooltip)
                     GameTooltip.SetToyByItemID(tooltip, itemId)
                 end,
-                not C_ToyBox.IsToyUsable(itemId) or C_Container.GetItemCooldown(itemId) > 0
+                not C_ToyBox.IsToyUsable(itemId) or C_Container.GetItemCooldown(itemId) > 0,
+                dbRow
         )
     end
 
-    local function buildItemEntry(menuRoot, itemId, location)
+    local function buildItemEntry(menuRoot, itemId, location, dbRow)
         local itemLocation = C_Item.IsEquippableItem(itemId) and ADDON:GetItemSlot(itemId) or ADDON:FindItemInBags(itemId)
 
         local element = buildEntry(
@@ -172,7 +174,7 @@ local function generateTeleportMenu(_, root)
                     GameTooltip.SetItemByID(tooltip, itemId)
                 end,
                 C_Container.GetItemCooldown(itemId) > 0,
-                itemId
+                dbRow
         )
         if C_Item.IsEquippableItem(itemId) then
 
@@ -210,7 +212,7 @@ local function generateTeleportMenu(_, root)
         return element
     end
 
-    local function buildSpellEntry(menuRoot, spellId, location, portalId)
+    local function buildSpellEntry(menuRoot, spellId, location, portalId, dbRow)
         local element = buildEntry(
                 menuRoot,
                 "spell",
@@ -220,7 +222,8 @@ local function generateTeleportMenu(_, root)
                 function(tooltip)
                     GameTooltip.SetSpellByID(tooltip, spellId)
                 end,
-                not C_Spell.IsSpellUsable(spellId)
+                not C_Spell.IsSpellUsable(spellId),
+                dbRow
         )
 
         if portalId and IsSpellKnown(portalId) then
@@ -286,11 +289,11 @@ local function generateTeleportMenu(_, root)
 
     local function buildRow(row, menuRoot)
         if row.spell then
-            buildSpellEntry(menuRoot, row.spell, GetName(row), row.portal)
+            buildSpellEntry(menuRoot, row.spell, GetName(row), row.portal, row)
         elseif row.toy then
-            buildToyEntry(menuRoot, row.toy, GetName(row))
+            buildToyEntry(menuRoot, row.toy, GetName(row), row)
         elseif row.item then
-            buildItemEntry(menuRoot, row.item, GetName(row))
+            buildItemEntry(menuRoot, row.item, GetName(row), row)
         end
     end
 
@@ -316,23 +319,17 @@ local function generateTeleportMenu(_, root)
     -- Hearthstone
     do
         local hearthstoneButton = _G[ADDON_NAME.."HearthstoneButton"]
-        local menuEntry
         if hearthstoneButton:GetAttribute("toy") then
-            menuEntry = buildToyEntry(root, hearthstoneButton:GetAttribute("toy"), GetBindLocation())
-            menuEntry:SetResponder(function()
+            buildToyEntry(root, hearthstoneButton:GetAttribute("toy"), GetBindLocation()):SetResponder(function()
                 hearthstoneButton:ShuffleHearthstone()
                 return MenuResponse.CloseAll
             end)
+            root:QueueSpacer()
         elseif hearthstoneButton:GetAttribute("spell") then
-            menuEntry = buildSpellEntry(root, hearthstoneButton:GetAttribute("spell"), GetBindLocation())
+            buildSpellEntry(root, hearthstoneButton:GetAttribute("spell"), GetBindLocation())
+            root:QueueSpacer()
         elseif hearthstoneButton:GetAttribute("itemID") then
-            menuEntry = buildItemEntry(root, hearthstoneButton:GetAttribute("itemID"), GetBindLocation())
-        end
-        if menuEntry then
-            menuEntry:AddInitializer(function(parent)
-                parent.StarButton:Hide()
-                parent.fontString:SetPoint("LEFT", parent)
-            end)
+            buildItemEntry(root, hearthstoneButton:GetAttribute("itemID"), GetBindLocation())
             root:QueueSpacer()
         end
     end
