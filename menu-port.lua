@@ -73,7 +73,8 @@ local function generateTeleportMenu(_, root)
     root:SetTag(ADDON_NAME.."-LDB-Teleport")
     root:SetScrollMode(GetScreenHeight() - 100)
 
-    local function buildEntry(menuRoot, type, typeId, icon, location, tooltipSetter, hasCooldown)
+    local function buildEntry(menuRoot, type, typeId, icon, location, tooltipSetter, hasCooldown, originalTypeId)
+        originalTypeId = originalTypeId or typeId
         local element = menuRoot:CreateButton("|T" .. icon .. ":0|t "..location, function()
             return MenuResponse.CloseAll
         end)
@@ -112,8 +113,8 @@ local function generateTeleportMenu(_, root)
             parent.StarButton = star
             parent.fontString:SetPoint("LEFT", star, "RIGHT", 3, -1)
 
-            star:SetScript("OnEnter", function(self)
-                local isFavorite = not ADDON.Api.IsFavorite(type, typeId)
+            star:SetScript("OnEnter", function()
+                local isFavorite = not ADDON.Api.IsFavorite(type, originalTypeId)
 
                 GameTooltip:SetOwner(star, "ANCHOR_CURSOR")
                 GameTooltip:ClearLines()
@@ -125,8 +126,8 @@ local function generateTeleportMenu(_, root)
                 GameTooltip:Hide()
             end)
             star:SetScript("OnClick", function(self)
-                local isFavorite = not ADDON.Api.IsFavorite(type, typeId)
-                ADDON.Api.SetFavorite(type, typeId, isFavorite)
+                local isFavorite = not ADDON.Api.IsFavorite(type, originalTypeId)
+                ADDON.Api.SetFavorite(type, originalTypeId, isFavorite)
                 self:UpdateTexture(isFavorite)
                 menu:SendResponse(elementDescription, MenuResponse.Refresh)
             end)
@@ -137,7 +138,7 @@ local function generateTeleportMenu(_, root)
                 self:GetHighlightTexture():SetAlpha(isFavorite and 0.2 or 0.4)
             end
 
-            local isFavorite = ADDON.Api.IsFavorite(type, typeId)
+            local isFavorite = ADDON.Api.IsFavorite(type, originalTypeId)
             star:SetChecked(isFavorite)
             star:UpdateTexture(isFavorite)
         end)
@@ -170,7 +171,8 @@ local function generateTeleportMenu(_, root)
                 function(tooltip)
                     GameTooltip.SetItemByID(tooltip, itemId)
                 end,
-                C_Container.GetItemCooldown(itemId) > 0
+                C_Container.GetItemCooldown(itemId) > 0,
+                itemId
         )
         if C_Item.IsEquippableItem(itemId) then
 
