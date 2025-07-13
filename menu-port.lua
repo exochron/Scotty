@@ -338,6 +338,9 @@ local function generateTeleportMenu(_, root)
 
     -- favorites
     local favorites = ADDON.Api.GetFavoriteDatabase()
+    favorites = tFilter(favorites, function(row)
+        return IsKnown(row)
+    end, true)
     do
         if #favorites > 0 then
             local favoriteRoot = root
