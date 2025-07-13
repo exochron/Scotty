@@ -22,6 +22,7 @@ function ADDON:InitDatabase()
 
     -- https://wago.tools/db2/DisplaySeason
     local WW_S2 = 25
+    local WW_S3 = 30
     local currentSeason = C_SeasonInfo and C_SeasonInfo.GetCurrentDisplaySeasonID() or 0
 
     local isAlliance = UnitFactionGroup("player") == "Alliance"
@@ -228,13 +229,20 @@ function ADDON:InitDatabase()
         {spell = 373274, instance = 2097, continent = KUL_TIRAS, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- Operation: Mechagon
         {spell = 445441, instance = 2651, continent = KHAZ_ALGAR, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- Darkflame Cleft
         {spell = 445443, instance = 2648, continent = KHAZ_ALGAR, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- The Rookery
-        {spell = 445444, instance = 2649, continent = KHAZ_ALGAR, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- Priory of the Sacred Flame
         {spell = 445440, instance = 2661, continent = KHAZ_ALGAR, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- Cinderbrew Meadery
         {spell = 467546, instance = 2661, continent = KHAZ_ALGAR, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- Cinderbrew Meadery
-        {spell = 1216786, instance = 2773, continent = KHAZ_ALGAR, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- Operation: Floodgate
         {spell = isAlliance and 467553, instance = 1594, continent = ZANDALAR, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- The MOTHERLODE (alliance)
         {spell = false == isAlliance and 467555, instance = 1594, continent = ZANDALAR, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- The MOTHERLODE (horde)
         {spell = 1226482, instance = 2769, continent = KHAZ_ALGAR, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- Liberation of Undermine
+
+        {spell = 354465, instance = 2287, continent = SHADOWLANDS, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Halls of Atonement
+        {spell = 367416, instance = 2441, continent = SHADOWLANDS, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Tazavesh the Veiled Market
+        {spell = 445414, instance = 2662, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- The Dawnbreaker
+        {spell = 445417, instance = 2660, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Ara Kara: City of Echoes
+        {spell = 445444, instance = 2649, continent = KHAZ_ALGAR, category = ((currentSeason == WW_S2 or currentSeason == WW_S3) and ADDON.Category.SeasonInstance)}, -- Priory of the Sacred Flame
+        {spell = 1216786, instance = 2773, continent = KHAZ_ALGAR, category = ((currentSeason == WW_S2 or currentSeason == WW_S3) and ADDON.Category.SeasonInstance)}, -- Operation: Floodgate
+        {spell = 1237124, instance = 2830, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Eco-Dome, Al'dani (maybe?)
+        --{spell = ????, instance = 2810, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Manaforge Omega
 
         -- Older Dungeon Ports
         {spell = 131204, instance = 960, continent = PANDARIA}, -- Temple of the Jade Serpent
@@ -257,11 +265,9 @@ function ADDON:InitDatabase()
         {spell = 354462, instance = 2286, continent = SHADOWLANDS}, -- Necrotic Wake
         {spell = 354463, instance = 2289, continent = SHADOWLANDS}, -- Plaguefall
         {spell = 354464, instance = 2290, continent = SHADOWLANDS}, -- Mists of Tirna Scithe
-        {spell = 354465, instance = 2287, continent = SHADOWLANDS}, -- Halls of Atonement
         {spell = 354466, instance = 2285, continent = SHADOWLANDS}, -- Spires of Ascension
         {spell = 354468, instance = 2291, continent = SHADOWLANDS}, -- De Other Side
         {spell = 354469, instance = 2284, continent = SHADOWLANDS}, -- Sanguine Depths
-        {spell = 367416, instance = 2441, continent = SHADOWLANDS}, -- Tazavesh the Veiled Market
         {spell = 373190, instance = 2296, continent = SHADOWLANDS}, -- Castle Nathria
         {spell = 373191, instance = 2450, continent = SHADOWLANDS}, -- Sanctum of Domination
         {spell = 373192, instance = 2481, continent = SHADOWLANDS}, -- Sepulcher of the First Ones
@@ -290,9 +296,7 @@ function ADDON:InitDatabase()
         {spell = 432257, instance = 2569, continent = DRAGON_ISLES}, -- Aberrus
         {spell = 432258, instance = 2549, continent = DRAGON_ISLES}, -- Amirdrassil, the Dream's Hope
         {spell = 445269, instance = 2652, continent = KHAZ_ALGAR, }, -- Stonevault
-        {spell = 445414, instance = 2662, continent = KHAZ_ALGAR, }, -- The Dawnbreaker
         {spell = 445416, instance = 2669, continent = KHAZ_ALGAR, }, -- City of Threads
-        {spell = 445417, instance = 2660, continent = KHAZ_ALGAR, }, -- Ara Kara: City of Echoes
         {spell = 445418, instance = 1822, continent = KUL_TIRAS}, -- Siege of Boralus
         {spell = 445424, instance = 670, continent = EASTERN_KINGDOMS}, -- Grim Batol
         {spell = 464256, instance = 1822, continent = KUL_TIRAS}, -- Siege of Boralus
@@ -329,6 +333,7 @@ function ADDON:InitDatabase()
         {toy = 228940, category = ADDON.Category.Hearthstone},
         {toy = 235016, category = ADDON.Category.Hearthstone},
         {toy = 236687, category = ADDON.Category.Hearthstone},
+        {toy = 246565, category = ADDON.Category.Hearthstone},
     }
 
     ADDON.db = tFilter(db, function(row)
