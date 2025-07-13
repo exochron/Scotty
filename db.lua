@@ -82,9 +82,9 @@ function ADDON:InitDatabase()
         {item = 138448, map = 627, continent = BROKEN_ISLES}, -- Emblem of Margoss
         {item = 139590, map = 25, continent = EASTERN_KINGDOMS}, -- Scroll of Teleport: Ravenholdt
         {item = 139599, map = 627, continent = BROKEN_ISLES}, -- Empowered Ring of the Kirin Tor
-        {item = 141605, name=MINIMAP_TRACKING_FLIGHTMASTER, continent = BROKEN_ISLES}, -- Flight Master's Whistle
-        {item = 141605, name=MINIMAP_TRACKING_FLIGHTMASTER, continent = ZANDALAR}, -- Flight Master's Whistle
-        {item = 141605, name=MINIMAP_TRACKING_FLIGHTMASTER, continent = KUL_TIRAS}, -- Flight Master's Whistle
+        {item = 141605, isMultiDestination = true, name=MINIMAP_TRACKING_FL9GHTMASTER, continent = BROKEN_ISLES}, -- Flight Master's Whistle
+        {item = 141605, isMultiDestination = true, name=MINIMAP_TRACKING_FLIGHTMASTER, continent = ZANDALAR}, -- Flight Master's Whistle
+        {item = 141605, isMultiDestination = true, name=MINIMAP_TRACKING_FLIGHTMASTER, continent = KUL_TIRAS}, -- Flight Master's Whistle
         {item = 142469, map = 350, continent = EASTERN_KINGDOMS}, -- Violet Seal of the Grand Magus
         {item = 144391, map = 500, continent = EASTERN_KINGDOMS}, -- Pugilist's Powerful Punching Ring
         {item = 144392, map = 503, continent = KALIMDOR}, -- Pugilist's Powerful Punching Ring
@@ -102,19 +102,19 @@ function ADDON:InitDatabase()
          map = LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_LEGION and 648 or 23,
          continent = LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_LEGION and BROKEN_ISLES or EASTERN_KINGDOMS
         }, -- Archerus (DK)
-        {spell = 126892, map = 379, continent = PANDARIA }, -- Zen Pilgrimage (Monk)
-        {spell = LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_LEGION and 126892, quest = 40236, map = 709, continent = BROKEN_ISLES}, -- Zen Pilgrimage (Monk)
+        {spell = 126892, isMultiDestination = true, map = 379, continent = PANDARIA }, -- Zen Pilgrimage (Monk)
+        {spell = LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_LEGION and 126892, isMultiDestination = true, quest = 40236, map = 709, continent = BROKEN_ISLES}, -- Zen Pilgrimage (Monk)
         {spell = 193759, map = 734, continent = BROKEN_ISLES}, -- Hall of the guardian (Mage)
 
         -- Druid Dreamwalk
         {spell = 18960, map = 80, continent = KALIMDOR},
-        {spell = 193753, map = 26, continent = EASTERN_KINGDOMS},
-        {spell = 193753, map = 47, continent = EASTERN_KINGDOMS},
-        {spell = 193753, map = 69, continent = KALIMDOR},
-        {spell = 193753, map = 80, continent = KALIMDOR},
-        {spell = 193753, map = 116, continent = NORTHREND},
-        {spell = 193753, map = 198, continent = KALIMDOR},
-        {spell = 193753, map = 747, continent = BROKEN_ISLES},
+        {spell = 193753, isMultiDestination = true, map = 26, continent = EASTERN_KINGDOMS},
+        {spell = 193753, isMultiDestination = true, map = 47, continent = EASTERN_KINGDOMS},
+        {spell = 193753, isMultiDestination = true, map = 69, continent = KALIMDOR},
+        {spell = 193753, isMultiDestination = true, map = 80, continent = KALIMDOR},
+        {spell = 193753, isMultiDestination = true, map = 116, continent = NORTHREND},
+        {spell = 193753, isMultiDestination = true, map = 198, continent = KALIMDOR},
+        {spell = 193753, isMultiDestination = true, map = 747, continent = BROKEN_ISLES},
 
         -- Mage Teleports with Portals
         -- https://www.wowhead.com/guide/transportation#mage-portals
@@ -147,81 +147,81 @@ function ADDON:InitDatabase()
 
         -- Mole Machine of Dark Iron Dwarfes
         -- from https://www.wowhead.com/spell=265225/mole-machine#comments:id=2579704 Kudos to P3lim
-        {spell = 265225, map = 87, continent = EASTERN_KINGDOMS}, -- Ironforge
-        {spell = 265225, map = 84, continent = EASTERN_KINGDOMS}, -- Stormwind
-        {spell = 265225, map = 243, continent = EASTERN_KINGDOMS}, -- Shadowforge City
-        {spell = 265225, quest = 53594, map = 17, continent = EASTERN_KINGDOMS}, -- Blasted Lands
-        {spell = 265225, quest = 53585, map = 26, continent = EASTERN_KINGDOMS}, -- The Hinterlands
-        {spell = 265225, quest = 53587, map = 35, continent = EASTERN_KINGDOMS}, -- Blackrock Mountain
-        {spell = 265225, quest = 53591, map = 78, continent = KALIMDOR}, -- Un'Goro Crater
-        {spell = 265225, quest = 53601, map = 198, continent = KALIMDOR}, -- Mount Hyjal
-        {spell = 265225, quest = 53600, map = 199, continent = KALIMDOR}, -- Southern Barrens
-        {spell = 265225, quest = 53592, map = 100, continent = OUTLAND}, -- Hellfire Peninsula
-        {spell = 265225, quest = 53599, map = 104, continent = OUTLAND}, -- Shadowmoon Valley
-        {spell = 265225, quest = 53597, map = 105, continent = OUTLAND}, -- Blade's Edge Mountains
-        {spell = 265225, quest = 53586, map = 118, continent = NORTHREND}, -- Icecrown
-        {spell = 265225, quest = 53596, map = 115, continent = NORTHREND}, -- Dragonblight
-        {spell = 265225, quest = 53595, map = 379, continent = PANDARIA}, -- Kun-Lai Summit
-        {spell = 265225, quest = 53598, map = 376, continent = PANDARIA}, -- Valley of the Four Winds
-        {spell = 265225, quest = 53588, map = 543, continent = DRAENOR}, -- Gorgond
-        {spell = 265225, quest = 53590, map = 550, continent = DRAENOR}, -- Nagrand
-        {spell = 265225, quest = 53593, map = 650, continent = BROKEN_ISLES}, -- Highmountain
-        {spell = 265225, quest = 53589, map = 646, continent = BROKEN_ISLES}, -- Broken Shore
-        {spell = 265225, quest = 80099, map = 863, continent = ZANDALAR}, -- Nazmir
-        {spell = 265225, quest = 80100, map = 862, continent = ZANDALAR}, -- Zuldazar
-        {spell = 265225, quest = 80101, map = 895, continent = KUL_TIRAS}, -- Tiragarde Sound
-        {spell = 265225, quest = 80102, map = 942, continent = KUL_TIRAS}, -- Stormsong Valley
-        {spell = 265225, quest = 80103, map = 1536, continent = SHADOWLANDS}, -- Maldraxxus
-        {spell = 265225, quest = 80104, map = 1525, continent = SHADOWLANDS}, -- Revendreth
-        {spell = 265225, quest = 80105, map = 1533, continent = SHADOWLANDS}, -- Bastion
-        {spell = 265225, quest = 80106, map = 1565, continent = SHADOWLANDS}, -- Ardenweald
-        {spell = 265225, quest = 80107, map = 2022, continent = DRAGON_ISLES}, -- Waking Shores
-        {spell = 265225, quest = 80108, map = 2024, continent = DRAGON_ISLES}, -- Azure Span
-        {spell = 265225, quest = 80109, map = 2133, continent = DRAGON_ISLES}, -- Zaralek Cavern
+        {spell = 265225, isMultiDestination = true, map = 87, continent = EASTERN_KINGDOMS}, -- Ironforge
+        {spell = 265225, isMultiDestination = true, map = 84, continent = EASTERN_KINGDOMS}, -- Stormwind
+        {spell = 265225, isMultiDestination = true, map = 243, continent = EASTERN_KINGDOMS}, -- Shadowforge City
+        {spell = 265225, isMultiDestination = true, quest = 53594, map = 17, continent = EASTERN_KINGDOMS}, -- Blasted Lands
+        {spell = 265225, isMultiDestination = true, quest = 53585, map = 26, continent = EASTERN_KINGDOMS}, -- The Hinterlands
+        {spell = 265225, isMultiDestination = true, quest = 53587, map = 35, continent = EASTERN_KINGDOMS}, -- Blackrock Mountain
+        {spell = 265225, isMultiDestination = true, quest = 53591, map = 78, continent = KALIMDOR}, -- Un'Goro Crater
+        {spell = 265225, isMultiDestination = true, quest = 53601, map = 198, continent = KALIMDOR}, -- Mount Hyjal
+        {spell = 265225, isMultiDestination = true, quest = 53600, map = 199, continent = KALIMDOR}, -- Southern Barrens
+        {spell = 265225, isMultiDestination = true, quest = 53592, map = 100, continent = OUTLAND}, -- Hellfire Peninsula
+        {spell = 265225, isMultiDestination = true, quest = 53599, map = 104, continent = OUTLAND}, -- Shadowmoon Valley
+        {spell = 265225, isMultiDestination = true, quest = 53597, map = 105, continent = OUTLAND}, -- Blade's Edge Mountains
+        {spell = 265225, isMultiDestination = true, quest = 53586, map = 118, continent = NORTHREND}, -- Icecrown
+        {spell = 265225, isMultiDestination = true, quest = 53596, map = 115, continent = NORTHREND}, -- Dragonblight
+        {spell = 265225, isMultiDestination = true, quest = 53595, map = 379, continent = PANDARIA}, -- Kun-Lai Summit
+        {spell = 265225, isMultiDestination = true, quest = 53598, map = 376, continent = PANDARIA}, -- Valley of the Four Winds
+        {spell = 265225, isMultiDestination = true, quest = 53588, map = 543, continent = DRAENOR}, -- Gorgond
+        {spell = 265225, isMultiDestination = true, quest = 53590, map = 550, continent = DRAENOR}, -- Nagrand
+        {spell = 265225, isMultiDestination = true, quest = 53593, map = 650, continent = BROKEN_ISLES}, -- Highmountain
+        {spell = 265225, isMultiDestination = true, quest = 53589, map = 646, continent = BROKEN_ISLES}, -- Broken Shore
+        {spell = 265225, isMultiDestination = true, quest = 80099, map = 863, continent = ZANDALAR}, -- Nazmir
+        {spell = 265225, isMultiDestination = true, quest = 80100, map = 862, continent = ZANDALAR}, -- Zuldazar
+        {spell = 265225, isMultiDestination = true, quest = 80101, map = 895, continent = KUL_TIRAS}, -- Tiragarde Sound
+        {spell = 265225, isMultiDestination = true, quest = 80102, map = 942, continent = KUL_TIRAS}, -- Stormsong Valley
+        {spell = 265225, isMultiDestination = true, quest = 80103, map = 1536, continent = SHADOWLANDS}, -- Maldraxxus
+        {spell = 265225, isMultiDestination = true, quest = 80104, map = 1525, continent = SHADOWLANDS}, -- Revendreth
+        {spell = 265225, isMultiDestination = true, quest = 80105, map = 1533, continent = SHADOWLANDS}, -- Bastion
+        {spell = 265225, isMultiDestination = true, quest = 80106, map = 1565, continent = SHADOWLANDS}, -- Ardenweald
+        {spell = 265225, isMultiDestination = true, quest = 80107, map = 2022, continent = DRAGON_ISLES}, -- Waking Shores
+        {spell = 265225, isMultiDestination = true, quest = 80108, map = 2024, continent = DRAGON_ISLES}, -- Azure Span
+        {spell = 265225, isMultiDestination = true, quest = 80109, map = 2133, continent = DRAGON_ISLES}, -- Zaralek Cavern
 
         -- Engineering Items
         {toy = isEngineer and 18984, map = 83, continent = KALIMDOR}, -- Dimensional Ripper - Everlook
         {toy = isEngineer and 18986, map = 71, continent = KALIMDOR}, -- Ultrasafe Transporter: Gadgetzan
         {toy = isEngineer and 30542, map = 109, continent = OUTLAND}, -- Dimensional Ripper - Area 52
         {toy = isEngineer and 30544, map = 105, continent = OUTLAND}, -- Ultrasafe Transporter: Toshley's Station
-        {toy = isEngineer and 48933, map = 114, continent = NORTHREND}, -- Wormhole Generator: Northrend
-        {toy = isEngineer and 48933, map = 117, continent = NORTHREND}, -- Wormhole Generator: Northrend
-        {toy = isEngineer and 48933, map = 118, continent = NORTHREND}, -- Wormhole Generator: Northrend
-        {toy = isEngineer and 48933, map = 119, continent = NORTHREND}, -- Wormhole Generator: Northrend
-        {toy = isEngineer and 48933, map = 120, continent = NORTHREND}, -- Wormhole Generator: Northrend
-        {toy = isEngineer and 87215, map = 371, continent = PANDARIA}, -- Wormhole Generator: Pandaria
-        {toy = isEngineer and 87215, map = 376, continent = PANDARIA}, -- Wormhole Generator: Pandaria
-        {toy = isEngineer and 87215, map = 379, continent = PANDARIA}, -- Wormhole Generator: Pandaria
-        {toy = isEngineer and 87215, map = 388, continent = PANDARIA}, -- Wormhole Generator: Pandaria
-        {toy = isEngineer and 87215, map = 390, continent = PANDARIA}, -- Wormhole Generator: Pandaria
-        {toy = isEngineer and 87215, map = 418, continent = PANDARIA}, -- Wormhole Generator: Pandaria
-        {toy = isEngineer and 87215, map = 422, continent = PANDARIA}, -- Wormhole Generator: Pandaria
-        {toy = isEngineer and 112059, map = 525, continent = DRAENOR}, -- Wormhole Centrifuge
-        {toy = isEngineer and 112059, map = 535, continent = DRAENOR}, -- Wormhole Centrifuge
-        {toy = isEngineer and 112059, map = 539, continent = DRAENOR}, -- Wormhole Centrifuge
-        {toy = isEngineer and 112059, map = 542, continent = DRAENOR}, -- Wormhole Centrifuge
-        {toy = isEngineer and 112059, map = 543, continent = DRAENOR}, -- Wormhole Centrifuge
-        {toy = isEngineer and 112059, map = 550, continent = DRAENOR}, -- Wormhole Centrifuge
+        {toy = isEngineer and 48933, isMultiDestination = true, map = 114, continent = NORTHREND}, -- Wormhole Generator: Northrend
+        {toy = isEngineer and 48933, isMultiDestination = true, map = 117, continent = NORTHREND}, -- Wormhole Generator: Northrend
+        {toy = isEngineer and 48933, isMultiDestination = true, map = 118, continent = NORTHREND}, -- Wormhole Generator: Northrend
+        {toy = isEngineer and 48933, isMultiDestination = true, map = 119, continent = NORTHREND}, -- Wormhole Generator: Northrend
+        {toy = isEngineer and 48933, isMultiDestination = true, map = 120, continent = NORTHREND}, -- Wormhole Generator: Northrend
+        {toy = isEngineer and 87215, isMultiDestination = true, map = 371, continent = PANDARIA}, -- Wormhole Generator: Pandaria
+        {toy = isEngineer and 87215, isMultiDestination = true, map = 376, continent = PANDARIA}, -- Wormhole Generator: Pandaria
+        {toy = isEngineer and 87215, isMultiDestination = true, map = 379, continent = PANDARIA}, -- Wormhole Generator: Pandaria
+        {toy = isEngineer and 87215, isMultiDestination = true, map = 388, continent = PANDARIA}, -- Wormhole Generator: Pandaria
+        {toy = isEngineer and 87215, isMultiDestination = true, map = 390, continent = PANDARIA}, -- Wormhole Generator: Pandaria
+        {toy = isEngineer and 87215, isMultiDestination = true, map = 418, continent = PANDARIA}, -- Wormhole Generator: Pandaria
+        {toy = isEngineer and 87215, isMultiDestination = true, map = 422, continent = PANDARIA}, -- Wormhole Generator: Pandaria
+        {toy = isEngineer and 112059, isMultiDestination = true, map = 525, continent = DRAENOR}, -- Wormhole Centrifuge
+        {toy = isEngineer and 112059, isMultiDestination = true, map = 535, continent = DRAENOR}, -- Wormhole Centrifuge
+        {toy = isEngineer and 112059, isMultiDestination = true, map = 539, continent = DRAENOR}, -- Wormhole Centrifuge
+        {toy = isEngineer and 112059, isMultiDestination = true, map = 542, continent = DRAENOR}, -- Wormhole Centrifuge
+        {toy = isEngineer and 112059, isMultiDestination = true, map = 543, continent = DRAENOR}, -- Wormhole Centrifuge
+        {toy = isEngineer and 112059, isMultiDestination = true, map = 550, continent = DRAENOR}, -- Wormhole Centrifuge
         {toy = isEngineer and 151652, map = 994, continent = BROKEN_ISLES}, -- Wormhole Generator: Argus
         {toy = isEngineer and 168807, map = 992, continent = KUL_TIRAS}, -- Wormhole Generator: Kul Tiras
         {toy = isEngineer and 168808, map = 991, continent = ZANDALAR}, -- Wormhole Generator: Zandalar
-        {toy = isEngineer and 172924, map = 1525, continent = SHADOWLANDS}, -- Wormhole Generator: Shadowlands
-        {toy = isEngineer and 172924, map = 1536, continent = SHADOWLANDS}, -- Wormhole Generator: Shadowlands
-        {toy = isEngineer and 172924, map = 1543, continent = SHADOWLANDS}, -- Wormhole Generator: Shadowlands
-        {toy = isEngineer and 172924, map = 1565, continent = SHADOWLANDS}, -- Wormhole Generator: Shadowlands
-        {toy = isEngineer and 172924, map = 1569, continent = SHADOWLANDS}, -- Wormhole Generator: Shadowlands
-        {toy = isEngineer and 172924, map = 1670, continent = SHADOWLANDS}, -- Wormhole Generator: Shadowlands
-        {toy = isEngineer and 198156, map = 2022, continent = DRAGON_ISLES}, -- Wormhole Generator: Dragon Isles
-        {toy = isEngineer and 198156, map = 2023, continent = DRAGON_ISLES}, -- Wormhole Generator: Dragon Isles
-        {toy = isEngineer and 198156, map = 2024, continent = DRAGON_ISLES}, -- Wormhole Generator: Dragon Isles
-        {toy = isEngineer and 198156, map = 2025, continent = DRAGON_ISLES}, -- Wormhole Generator: Dragon Isles
-        {toy = isEngineer and 198156, map = 2133, continent = DRAGON_ISLES}, -- Wormhole Generator: Dragon Isles
-        {toy = isEngineer and 198156, map = 2200, continent = DRAGON_ISLES}, -- Wormhole Generator: Dragon Isles
-        {toy = isEngineer and 221966, map = 2214, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
-        {toy = isEngineer and 221966, map = 2215, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
-        {toy = isEngineer and 221966, map = 2248, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
-        {toy = isEngineer and 221966, map = 2255, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
-        {toy = isEngineer and 221966, quest = 86630, map = 2346, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
+        {toy = isEngineer and 172924, isMultiDestination = true, map = 1525, continent = SHADOWLANDS}, -- Wormhole Generator: Shadowlands
+        {toy = isEngineer and 172924, isMultiDestination = true, map = 1536, continent = SHADOWLANDS}, -- Wormhole Generator: Shadowlands
+        {toy = isEngineer and 172924, isMultiDestination = true, map = 1543, continent = SHADOWLANDS}, -- Wormhole Generator: Shadowlands
+        {toy = isEngineer and 172924, isMultiDestination = true, map = 1565, continent = SHADOWLANDS}, -- Wormhole Generator: Shadowlands
+        {toy = isEngineer and 172924, isMultiDestination = true, map = 1569, continent = SHADOWLANDS}, -- Wormhole Generator: Shadowlands
+        {toy = isEngineer and 172924, isMultiDestination = true, map = 1670, continent = SHADOWLANDS}, -- Wormhole Generator: Shadowlands
+        {toy = isEngineer and 198156, isMultiDestination = true, map = 2022, continent = DRAGON_ISLES}, -- Wormhole Generator: Dragon Isles
+        {toy = isEngineer and 198156, isMultiDestination = true, map = 2023, continent = DRAGON_ISLES}, -- Wormhole Generator: Dragon Isles
+        {toy = isEngineer and 198156, isMultiDestination = true, map = 2024, continent = DRAGON_ISLES}, -- Wormhole Generator: Dragon Isles
+        {toy = isEngineer and 198156, isMultiDestination = true, map = 2025, continent = DRAGON_ISLES}, -- Wormhole Generator: Dragon Isles
+        {toy = isEngineer and 198156, isMultiDestination = true, map = 2133, continent = DRAGON_ISLES}, -- Wormhole Generator: Dragon Isles
+        {toy = isEngineer and 198156, isMultiDestination = true, map = 2200, continent = DRAGON_ISLES}, -- Wormhole Generator: Dragon Isles
+        {toy = isEngineer and 221966, isMultiDestination = true, map = 2214, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
+        {toy = isEngineer and 221966, isMultiDestination = true, map = 2215, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
+        {toy = isEngineer and 221966, isMultiDestination = true, map = 2248, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
+        {toy = isEngineer and 221966, isMultiDestination = true, map = 2255, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
+        {toy = isEngineer and 221966, isMultiDestination = true, quest = 86630, map = 2346, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
 
         -- Seasonal Dungeon Port
         {spell = 354467, instance = 2293, continent = SHADOWLANDS, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- Theater of Pain
@@ -289,13 +289,13 @@ function ADDON:InitDatabase()
         {spell = 432254, instance = 2522, continent = DRAGON_ISLES}, -- Vault of the Incarnates
         {spell = 432257, instance = 2569, continent = DRAGON_ISLES}, -- Aberrus
         {spell = 432258, instance = 2549, continent = DRAGON_ISLES}, -- Amirdrassil, the Dream's Hope
+        {spell = 445269, instance = 2652, continent = KHAZ_ALGAR, }, -- Stonevault
+        {spell = 445414, instance = 2662, continent = KHAZ_ALGAR, }, -- The Dawnbreaker
+        {spell = 445416, instance = 2669, continent = KHAZ_ALGAR, }, -- City of Threads
+        {spell = 445417, instance = 2660, continent = KHAZ_ALGAR, }, -- Ara Kara: City of Echoes
         {spell = 445418, instance = 1822, continent = KUL_TIRAS}, -- Siege of Boralus
         {spell = 445424, instance = 670, continent = EASTERN_KINGDOMS}, -- Grim Batol
         {spell = 464256, instance = 1822, continent = KUL_TIRAS}, -- Siege of Boralus
-        {spell = 445416, instance = 2669, continent = KHAZ_ALGAR, }, -- City of Threads
-        {spell = 445417, instance = 2660, continent = KHAZ_ALGAR, }, -- Ara Kara: City of Echoes
-        {spell = 445414, instance = 2662, continent = KHAZ_ALGAR, }, -- The Dawnbreaker
-        {spell = 445269, instance = 2652, continent = KHAZ_ALGAR, }, -- Stonevault
 
         -- Hearthstones
         {toy = 54452, category = ADDON.Category.Hearthstone},
