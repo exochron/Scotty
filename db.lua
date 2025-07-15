@@ -222,7 +222,7 @@ function ADDON:InitDatabase()
         {toy = isEngineer and 221966, isMultiDestination = true, map = 2215, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
         {toy = isEngineer and 221966, isMultiDestination = true, map = 2248, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
         {toy = isEngineer and 221966, isMultiDestination = true, map = 2255, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
-        {toy = isEngineer and 221966, isMultiDestination = true, quest = 86630, map = 2346, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
+        {toy = isEngineer and 221966, isMultiDestination = true, accountQuest = 86630, map = 2346, continent = KHAZ_ALGAR}, -- Wormhole Generator: Khaz Algar
 
         -- Seasonal Dungeon Port
         {spell = 354467, instance = 2293, continent = SHADOWLANDS, category = (currentSeason == WW_S2 and ADDON.Category.SeasonInstance)}, -- Theater of Pain

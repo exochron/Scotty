@@ -13,6 +13,7 @@
  - [x] Astral Recall as Fallback Hearthstone
  - [x] some utilities in DB? Delve-O-Bot 7001, Flight Whistle
  - [ ] Change Keybindings in Addon settings
+ - [ ] Skip Dialogue for Wormhole or Mole Machine
 
 ## LDB
  - [x] LeftClick uses Hearthstone
