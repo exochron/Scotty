@@ -79,6 +79,9 @@ local function generateTeleportMenu(_, root)
         end)
         element:HookOnEnter(function(frame)
             menuActionButton:SetScript("PreClick", function() end)
+            menuActionButton:SetScript("PostClick", function()
+                ADDON.Events:TriggerEvent("TeleportInitialized", type, typeId, dbRow)
+            end)
             menuActionButton:SetAttribute("type", type)
             menuActionButton:SetAttribute("typerelease", type)
             menuActionButton:SetAttribute(type, typeId)
@@ -298,9 +301,17 @@ local function generateTeleportMenu(_, root)
     end
 
     local function IsKnown(row)
+        if row.quest then
+            local quests = type(row.quest) == "table" and row.quest or {row.quest}
+            for _, questId in ipairs(quests) do
+                if not C_QuestLog.IsQuestFlaggedCompleted(questId) then
+                    return false
+                end
+            end
+        end
+
         return
-            ( nil == row.quest or C_QuestLog.IsQuestFlaggedCompleted(row.quest) )
-            and (
+            (
                 nil == row.accountQuest
                 or (C_QuestLog.IsQuestFlaggedCompletedOnAccount and C_QuestLog.IsQuestFlaggedCompletedOnAccount(row.accountQuest))
             ) and (

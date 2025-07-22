@@ -31,6 +31,7 @@ core.lua
 settings.lua
 menu-port.lua
 ldb.lua
+dialogue-skip.lua
 command.lua
 
 #@do-not-package@

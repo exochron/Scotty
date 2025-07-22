@@ -49,6 +49,26 @@ local function TestDB()
     end
 end
 
+-- quest checker for dragonflight wormhole triangulation
+local quests = {}
+local function InitialCheckQuests()
+    for i = 50000, 76017 do
+        if not C_QuestLog.IsQuestFlaggedCompleted(i) then
+           quests[i] = false
+        end
+    end
+end
+
+function Scotty_RecheckQuests()
+    for i = 50000, 76017 do
+        if C_QuestLog.IsQuestFlaggedCompleted(i) and false == quests[i] then
+           print("Found Completed Quest!", i)
+        end
+    end
+    print("finished check")
+end
+
 ADDON.Events:RegisterCallback("OnLogin", function()
     TestDB()
+    --InitialCheckQuests()
 end, "tests")

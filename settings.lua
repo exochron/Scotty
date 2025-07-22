@@ -11,6 +11,10 @@ local function registerSettings()
             ScottyGlobalSettings, Settings.VarType.Boolean, L.SETTING_MINIMAP, Settings.Default.True)
     Settings.CreateCheckbox(category, minimapSetting)
 
+    local skipDialogSetting = Settings.RegisterAddOnSetting(category, ADDON_NAME.."_SKIP_DIALOG", "skipDialog",
+            ScottyGlobalSettings, Settings.VarType.Boolean, L.SETTING_SKIP_DIALOG, Settings.Default.True)
+    Settings.CreateCheckbox(category, skipDialogSetting)
+
     local groupFavoritesSetting = Settings.RegisterAddOnSetting(category, ADDON_NAME.."_GROUP_FAVORITES", "groupFavorites",
             ScottyGlobalSettings, Settings.VarType.Boolean, L.SETTING_GROUP_FAVORITES, Settings.Default.False)
     Settings.CreateCheckbox(category, groupFavoritesSetting)
