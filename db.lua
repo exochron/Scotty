@@ -245,7 +245,7 @@ function ADDON:InitDatabase()
         {spell = 445444, instance = 2649, continent = KHAZ_ALGAR, category = ((currentSeason == WW_S2 or currentSeason == WW_S3) and ADDON.Category.SeasonInstance)}, -- Priory of the Sacred Flame
         {spell = 1216786, instance = 2773, continent = KHAZ_ALGAR, category = ((currentSeason == WW_S2 or currentSeason == WW_S3) and ADDON.Category.SeasonInstance)}, -- Operation: Floodgate
         {spell = 1237124, instance = 2830, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Eco-Dome, Al'dani (maybe?)
-        --{spell = ????, instance = 2810, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Manaforge Omega
+        {spell = 1239155, instance = 2810, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Manaforge Omega
 
         -- Older Dungeon Ports
         {spell = 131204, instance = 960, continent = PANDARIA}, -- Temple of the Jade Serpent
