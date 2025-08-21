@@ -36,6 +36,18 @@ local function CheckForRequiredFields(row)
     end
 end
 
+local function CheckForDoubleHearthstoneEntry()
+    local hearthstones = tFilter(ADDON.db, function(row)
+        return row.toy and row.category == ADDON.Category.Hearthstone
+    end, true)
+    hearthstones = TableUtil.Transform(hearthstones, function(row)
+        return row.toy
+    end)
+    if #hearthstones > CountTable(tInvert(hearthstones)) then
+        alert("Same Hearthstone entry in database detected!");
+    end
+end
+
 local function TestDB()
     for _, row in ipairs(ADDON.db) do
         if (row.item and ADDON.DoesItemExistInGame(row.item))
@@ -47,6 +59,8 @@ local function TestDB()
         end
         CheckForRequiredFields(row)
     end
+
+    CheckForDoubleHearthstoneEntry()
 end
 
 -- quest checker for dragonflight wormhole triangulation

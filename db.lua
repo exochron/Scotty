@@ -334,9 +334,8 @@ function ADDON:InitDatabase()
         {toy = 228940, category = ADDON.Category.Hearthstone},
         {toy = 235016, category = ADDON.Category.Hearthstone},
         {toy = 236687, category = ADDON.Category.Hearthstone},
-        {toy = 246565, category = ADDON.Category.Hearthstone},
-        {toy = 245970, category = ADDON.Category.Hearthstone},
-        {toy = 246565, category = ADDON.Category.Hearthstone},
+        {toy = 246565, category = ADDON.Category.Hearthstone}, -- Cosmic Hearthstone
+        {toy = 245970, category = ADDON.Category.Hearthstone}, -- P.O.S.T. Master's Express Hearthstone
     }
 
     ADDON.db = tFilter(db, function(row)
