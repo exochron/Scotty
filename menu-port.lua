@@ -3,40 +3,45 @@ local ADDON_NAME, ADDON = ...
 local menuActionButton
 local equipQueue = {}
 local equipTicker
+local requestedItemEquip = {}
 
-local function equip(itemId)
+local function equipItem(itemId)
     if itemId then
         local itemSlot = ADDON:GetItemSlot(itemId)
 
         equipQueue[itemSlot] = itemId
-        local eventHandle
-        eventHandle = ADDON.Events:RegisterFrameEventAndCallbackWithHandle("PLAYER_EQUIPMENT_CHANGED", function(_, equipmentSlot, hasCurrent)
+
+        ADDON.Events:RegisterFrameEventAndCallbackWithHandle("PLAYER_EQUIPMENT_CHANGED", function(_, equipmentSlot, hasCurrent)
             if itemSlot == equipmentSlot and false == hasCurrent and C_Item.IsEquippedItem(itemId) then
-                if equipQueue[itemSlot] == itemId then
-                    equipQueue[itemSlot] = nil
+                if requestedItemEquip[itemSlot] == itemId then
+                    requestedItemEquip[itemSlot] = nil
                 end
-                eventHandle:Unregister()
+                ADDON.Events:UnregisterCallback("PLAYER_EQUIPMENT_CHANGED",'equipitem-'..itemId)
             end
         end, 'equipitem-'..itemId)
 
-        if not equipTicker then
-            equipTicker = C_Timer.NewTicker(0.1, function()
+        if not equipTicker or equipTicker:IsCancelled() then
+            equipTicker = C_Timer.NewTicker(0.2, function()
                 local requestedEquip = false
 
                 for queuedSlot, queuedItemId in pairs(equipQueue) do
-                    if queuedItemId and not C_Item.IsEquippedItem(queuedItemId) then
+                    if queuedItemId and (
+                        requestedItemEquip[queuedSlot] ~= nil
+                        or not C_Item.IsEquippedItem(queuedItemId)
+                    ) then
                         C_Item.EquipItemByName(queuedItemId, queuedSlot)
                         requestedEquip = true
+                        requestedItemEquip[queuedSlot] = queuedItemId
                         break
                     end
                 end
 
-                if not requestedEquip and equipTicker then
+                if not requestedEquip then
                     equipTicker:Cancel()
-                    equipTicker = nil
                 end
             end)
         end
+        equipTicker:Invoke()
     end
 end
 
@@ -185,7 +190,7 @@ local function generateTeleportMenu(_, root)
             local currentlyClicking = false
 
             element:HookOnEnter(function()
-                equip(itemId)
+                equipItem(itemId)
                 menuActionButton:SetScript("PreClick", function()
                     currentlyClicking = true
 
@@ -193,7 +198,7 @@ local function generateTeleportMenu(_, root)
                         local successHandle, stopHandle, errorHandle
                         local function reequipAfterTeleport(handlerName, unit)
                             if handlerName == "reequip-on-error" or unit == "player" then
-                                equip(previousEquippedItem)
+                                equipItem(previousEquippedItem)
                                 successHandle:Unregister()
                                 stopHandle:Unregister()
                                 errorHandle:Unregister()
@@ -207,7 +212,7 @@ local function generateTeleportMenu(_, root)
             end)
             element:HookOnLeave(function()
                 if not currentlyClicking then
-                    equip(previousEquippedItem)
+                    equipItem(previousEquippedItem)
                 end
             end)
         end
