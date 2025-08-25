@@ -216,6 +216,8 @@ local function generateTeleportMenu(_, root)
     end
 
     local function buildSpellEntry(menuRoot, spellId, location, portalId, dbRow)
+        local cooldown = C_Spell.GetSpellCooldown(spellId)
+
         local element = buildEntry(
                 menuRoot,
                 "spell",
@@ -225,7 +227,7 @@ local function generateTeleportMenu(_, root)
                 function(tooltip)
                     GameTooltip.SetSpellByID(tooltip, spellId)
                 end,
-                not C_Spell.IsSpellUsable(spellId),
+                cooldown.duration > 0 or not C_Spell.IsSpellUsable(spellId),
                 dbRow
         )
 
@@ -241,7 +243,8 @@ local function generateTeleportMenu(_, root)
                 portalButton:SetPoint("RIGHT")
                 portalButton:SetPoint("BOTTOM", button.fontString)
 
-                if not C_Spell.IsSpellUsable(portalId) then
+                local cooldown = C_Spell.GetSpellCooldown(portalId)
+                if cooldown.duration > 0 or not C_Spell.IsSpellUsable(portalId) then
                     portalButton.fontString:SetAlpha(0.5)
                 end
 
