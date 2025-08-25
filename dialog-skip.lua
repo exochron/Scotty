@@ -22,7 +22,7 @@ ADDON.Events:RegisterCallback("TeleportInitialized", function(_, _, _, dbRow)
             gossipQueue = {}
         end)
     end
-end, "dialogue-skip")
+end, "dialog-skip")
 
 ADDON.Events:RegisterFrameEventAndCallback("GOSSIP_SHOW", function()
     if Settings.GetValue(SETTING_NAME) then
@@ -38,6 +38,6 @@ ADDON.Events:RegisterFrameEventAndCallback("GOSSIP_SHOW", function()
             resetQueueAndTimer()
         end
     end
-end, "dialogue-skip")
+end, "dialog-skip")
 
-ADDON.Events:RegisterFrameEventAndCallback("GOSSIP_CLOSED", resetQueueAndTimer, "dialogue-skip")
+ADDON.Events:RegisterFrameEventAndCallback("GOSSIP_CLOSED", resetQueueAndTimer, "dialog-skip")
