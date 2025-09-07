@@ -95,8 +95,14 @@ local function generateTeleportMenu(_, root)
             menuActionButton:SetFrameStrata("TOOLTIP")
             menuActionButton:Show()
 
+            local left, _, width = frame:GetRect()
+            local remainingSpaceOnRight = GetScreenWidth() - left - width
             GameTooltip:SetOwner(frame, "ANCHOR_NONE")
-            GameTooltip:SetPoint("TOPLEFT", frame, "TOPRIGHT")
+            if remainingSpaceOnRight < 310 then
+                GameTooltip:SetPoint("TOPRIGHT", frame, "TOPLEFT") -- on left side
+            else
+                GameTooltip:SetPoint("TOPLEFT", frame, "TOPRIGHT") -- on right side
+            end
             GameTooltip:ClearLines()
             tooltipSetter(GameTooltip)
             GameTooltip:Show()
