@@ -156,6 +156,18 @@ local function generateTeleportMenu(_, root)
                 star:SetChecked(isFavorite)
                 star:UpdateTexture(isFavorite)
             end)
+            element:AddResetter(function(parent)
+                local star = parent.StarButton
+                star:ClearAllPoints()
+                star:ClearNormalTexture()
+                star:ClearHighlightTexture()
+                star:SetSize(0,0)
+                star:SetScript("OnClick", nil)
+                star:SetScript("OnEnter", nil)
+                star:SetScript("OnLeave", nil)
+                star.UpdateTexture = nil
+                parent.StarButton = nil
+            end)
         end
         return element
     end
@@ -243,9 +255,8 @@ local function generateTeleportMenu(_, root)
         )
 
         if portalId and IsSpellKnown(portalId) then
-            local portalButton
             element:AddInitializer(function(button, elementDescription, menu)
-                portalButton = button:AttachTemplate("WowMenuAutoHideButtonTemplate")
+                local portalButton = button:AttachTemplate("WowMenuAutoHideButtonTemplate")
 
                 portalButton:SetNormalFontObject("GameFontHighlight")
                 portalButton:SetHighlightFontObject("GameFontHighlight")
@@ -253,6 +264,7 @@ local function generateTeleportMenu(_, root)
                 portalButton:SetSize(portalButton:GetTextWidth(), button.fontString:GetHeight())
                 portalButton:SetPoint("RIGHT")
                 portalButton:SetPoint("BOTTOM", button.fontString)
+                button.PortalButton = portalButton
 
                 local cooldown = C_Spell.GetSpellCooldown(portalId)
                 if cooldown.duration > 0 or not C_Spell.IsSpellUsable(portalId) then
@@ -273,11 +285,21 @@ local function generateTeleportMenu(_, root)
                     menuActionButton:SetAttribute("spell", spellId)
                 end)
             end)
-            element:HookOnEnter(function()
-                if portalButton and portalButton:IsMouseOver() then
+            element:HookOnEnter(function(parent)
+                if parent.PortalButton and parent.PortalButton:IsMouseOver() then
                     GameTooltip.SetSpellByID(GameTooltip, portalId)
                     menuActionButton:SetAttribute("spell", portalId)
                 end
+            end)
+            element:AddResetter(function(parent)
+                local portal = parent.PortalButton
+                portal:ClearAllPoints()
+                portal:SetSize(0,0)
+                portal:SetText("")
+                portal:SetScript("OnClick", nil)
+                portal:SetScript("OnEnter", nil)
+                portal:SetScript("OnLeave", nil)
+                parent.PortalButton = nil
             end)
         end
 
