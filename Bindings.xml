@@ -1,4 +1,4 @@
 <Bindings>
-    <Binding name="SCOTTY_TELEPORT">Scotty_OpenTeleportMenuAtCursor()</Binding>
-    <Binding name="CLICK ScottyHearthstoneButton:LeftButton"/>
+    <Binding name="SCOTTY_TELEPORT" category="Scotty">Scotty_OpenTeleportMenuAtCursor()</Binding>
+    <Binding name="CLICK ScottyHearthstoneButton:LeftButton" category="Scotty"/>
 </Bindings>
