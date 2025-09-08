@@ -9,8 +9,9 @@ function ADDON:TakeScreenshots()
                 api:BackScreen()
                 ADDON:OpenTeleportMenu(BazookaPlugin_Scotty)
 
-                local menuChildren = { Menu.GetManager():GetOpenMenu():GetChildren() }
-                api:Point(menuChildren[15]) -- Broken Isles
+                api:WaitAndPointOnMenuElement(1,9, function() -- Khaz Algar
+                    api:WaitAndPointOnMenuElement(2,5)
+                end)
             end,
             function(api)
                 api:BackScreen()
