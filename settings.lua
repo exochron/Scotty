@@ -46,6 +46,19 @@ local function registerSettings()
         end)
     end
 
+    local function onButtonClick()
+        local keybindsCategory = SettingsPanel:GetCategory(Settings.KEYBINDINGS_CATEGORY_ID)
+        local keybindsLayout = SettingsPanel:GetLayout(keybindsCategory)
+        for _, initializer in keybindsLayout:EnumerateInitializers() do
+            if initializer.data.name == ADDON_NAME then
+                initializer.data.expanded = true
+                Settings.OpenToCategory(Settings.KEYBINDINGS_CATEGORY_ID, ADDON_NAME)
+                return
+            end
+        end
+    end
+    layout:AddInitializer(CreateSettingsButtonInitializer("", SETTINGS_KEYBINDINGS_LABEL, onButtonClick, nil, false))
+
     Settings.RegisterAddOnCategory(category)
     categoryID = category.ID
 end
