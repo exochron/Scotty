@@ -268,7 +268,7 @@ local function generateTeleportMenu(_, root)
 
                 local cooldown = C_Spell.GetSpellCooldown(portalId)
                 if cooldown.duration > 0 or not C_Spell.IsSpellUsable(portalId) then
-                    portalButton.fontString:SetAlpha(0.5)
+                    portalButton:SetAlpha(0.5)
                 end
 
                 portalButton:SetScript("OnClick", function()
@@ -380,6 +380,18 @@ local function generateTeleportMenu(_, root)
             hasGeneralSpells = true
         elseif hearthstoneButton:GetAttribute("itemID") then
             buildItemEntry(root, hearthstoneButton:GetAttribute("itemID"), GetBindLocation())
+            hasGeneralSpells = true
+        end
+    end
+
+    -- Vulperas Make Camp
+    do
+        if IsSpellKnown(312372) then
+            local location = ScottyPersonalSettings and ScottyPersonalSettings.VulperaCamp or C_Spell.GetSpellName(312372)
+            buildSpellEntry(root, 312372, location, 312370):AddInitializer(function(button)
+                button.PortalButton:SetText(" "..ADDON.L.MENU_VULPERA_CAMP.." |T" .. C_Spell.GetSpellTexture(312370) .. ":0|t")
+                button.PortalButton:SetSize(button.PortalButton:GetTextWidth(), button.fontString:GetHeight())
+            end)
             hasGeneralSpells = true
         end
     end

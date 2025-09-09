@@ -4,6 +4,7 @@ ADDON.L = {}
 local L = ADDON.L
 
 L.MENU_PORTAL = "Portal"
+L.MENU_VULPERA_CAMP = "Camp"
 L.BINDING_HEARTHSTONE = "Use random hearthstone"
 L.BINDING_TELEPORT = "Open teleport menu"
 L.FAVORITE_TOOLTIP_TEXT = "For the updated favorites list|nplease reopen the menu."
