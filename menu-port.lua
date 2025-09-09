@@ -364,6 +364,8 @@ local function generateTeleportMenu(_, root)
         return list
     end
 
+    local hasGeneralSpells = false
+
     -- Hearthstone
     do
         local hearthstoneButton = _G[ADDON_NAME.."HearthstoneButton"]
@@ -372,17 +374,19 @@ local function generateTeleportMenu(_, root)
                 hearthstoneButton:ShuffleHearthstone()
                 return MenuResponse.CloseAll
             end)
-            root:QueueSpacer()
+            hasGeneralSpells = true
         elseif hearthstoneButton:GetAttribute("spell") then
             buildSpellEntry(root, hearthstoneButton:GetAttribute("spell"), GetBindLocation())
-            root:QueueSpacer()
+            hasGeneralSpells = true
         elseif hearthstoneButton:GetAttribute("itemID") then
             buildItemEntry(root, hearthstoneButton:GetAttribute("itemID"), GetBindLocation())
-            root:QueueSpacer()
+            hasGeneralSpells = true
         end
     end
 
-    local hasUngroupedFavorites = false
+    if hasGeneralSpells then
+        root:QueueSpacer()
+    end
 
     -- favorites
     local favorites = ADDON.Api.GetFavoriteDatabase()
@@ -396,7 +400,6 @@ local function generateTeleportMenu(_, root)
                 favoriteRoot = root:CreateButton(FAVORITES)
             else
                 favoriteRoot:CreateTitle(FAVORITES)
-                hasUngroupedFavorites = true
             end
             favorites = SortRowsByName(favorites)
             for _, row in ipairs(favorites) do
@@ -406,10 +409,10 @@ local function generateTeleportMenu(_, root)
     end
 
     -- season dungeons
+    local seasonSpells = tFilter(ADDON.db, function(row)
+        return row.category == ADDON.Category.SeasonInstance and IsKnown(row)
+    end, true)
     do
-        local seasonSpells = tFilter(ADDON.db, function(row)
-            return row.category == ADDON.Category.SeasonInstance and IsKnown(row)
-        end, true)
         if #seasonSpells > 0 then
             local seasonRoot = root
             local currentSeasonName = EJ_GetTierInfo(EJ_GetNumTiers())
@@ -444,7 +447,9 @@ local function generateTeleportMenu(_, root)
         end
         local continents = GetKeysArray(groupedByContinent)
         if #continents > 0 then
-            root:QueueSpacer()
+            if #favorites > 0 or #seasonSpells > 0 then
+                root:QueueSpacer()
+            end
             table.sort(continents, function(a, b) return a > b end)
             for _, continent in ipairs(continents) do
                 local list = SortRowsByName(groupedByContinent[continent])
