@@ -104,3 +104,15 @@ end
 function ADDON:PlayerHasItemInBag(itemId)
     return ADDON:FindItemInBags(itemId) ~= nil
 end
+
+-- detect Vulperas Make Camp location
+ADDON.Events:RegisterCallback("OnLogin", function(self)
+    if IsSpellKnown(312372) then
+        ADDON.Events:RegisterFrameEventAndCallback("UNIT_SPELLCAST_SUCCEEDED", function(_, _, _, spellId)
+            if spellId == 312370 then
+                ScottyPersonalSettings = ScottyPersonalSettings or {}
+                ScottyPersonalSettings.VulperaCamp = GetZoneText()
+            end
+        end, self)
+    end
+end, "vulpera-camp")

@@ -5,6 +5,7 @@
 ## IconTexture: Interface\Addons\Scotty\icon.png
 ## Version: @project-version@
 ## SavedVariables: ScottyGlobalSettings
+## SavedVariablesPerCharacter: ScottyPersonalSettings
 ## X-Curse-Project-ID: 1166725
 ## X-Wago-ID: kGr0EX6y
 
