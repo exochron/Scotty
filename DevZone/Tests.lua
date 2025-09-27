@@ -17,10 +17,13 @@ end
 
 local function CheckNameAvailable(row)
     if row.instance ~= nil and nil == GetRealZoneText(row.instance) then
-        alert("no Name detected for Instance: ".. row.instance)
+        alert("no Name detected for Instance: ".. row.instance, row)
     end
     if row.map ~= nil and nil == C_Map.GetMapInfo(row.map) then
-        alert("no Name detected for Map: ".. row.map)
+        alert("no Name detected for Map: ".. row.map, row)
+    end
+    if (row.toy or row.item) and not ADDON.GetItemName(row.toy or row.item) then
+        alert("item name not available! "..(C_Item.IsItemDataCachedByID(row.toy or row.item) and "cached" or "not cached"), row)
     end
 end
 

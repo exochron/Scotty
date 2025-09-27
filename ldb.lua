@@ -191,7 +191,7 @@ ADDON.Events:RegisterCallback("OnLogin", function()
 
     hearthstoneButton:HookScript("OnAttributeChanged", function(_, name, value)
         if value and (name == "toy" or name == "itemid") then
-            ldbDataObject.label = C_Item.GetItemNameByID(value)
+            ldbDataObject.label = ADDON.GetItemName(value)
             ldbDataObject.icon = C_Item.GetItemIconByID(value)
         elseif value and name == "spell" then
             local info = C_Spell.GetSpellInfo(value)

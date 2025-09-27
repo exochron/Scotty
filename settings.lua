@@ -31,7 +31,7 @@ local function registerSettings()
             return row.toy and row.category == ADDON.Category.Hearthstone and PlayerHasToy(row.toy)
         end, true)
         for _, row in pairs(hearthstones) do
-            container:Add(row.toy, "|T" .. (C_Item.GetItemIconByID(row.toy) or "") .. ":0|t "..(C_Item.GetItemNameByID(row.toy) or ""))
+            container:Add(row.toy, "|T" .. (C_Item.GetItemIconByID(row.toy) or "") .. ":0|t "..(ADDON.GetItemName(row.toy) or ""))
         end
         return container:GetData();
     end
