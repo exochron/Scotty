@@ -1,9 +1,15 @@
 local ADDON_NAME, ADDON = ...
 
-local menuActionButton
 local equipQueue = {}
 local equipTicker
 local requestedItemEquip = {}
+
+local menuActionButton = CreateFrame("Button", nil, nil, "InsecureActionButtonTemplate")
+menuActionButton:SetAttribute("pressAndHoldAction", 1)
+menuActionButton:RegisterForClicks("LeftButtonUp")
+menuActionButton:SetPropagateMouseClicks(true)
+menuActionButton:SetPropagateMouseMotion(true)
+menuActionButton:Hide()
 
 local function equipItem(itemId)
     if itemId then
@@ -43,17 +49,6 @@ local function equipItem(itemId)
         end
         equipTicker:Invoke()
     end
-end
-
-local function buildMenuActionButton()
-    local button = CreateFrame("Button", nil, nil, "InsecureActionButtonTemplate")
-    button:SetAttribute("pressAndHoldAction", 1)
-    button:RegisterForClicks("LeftButtonUp")
-    button:SetPropagateMouseClicks(true)
-    button:SetPropagateMouseMotion(true)
-    button:Hide()
-
-    return button
 end
 
 local function OpenMenu(anchor, generator)
@@ -492,7 +487,3 @@ function ADDON:OpenTeleportMenuAtCursor()
 end
 
 Scotty_OpenTeleportMenuAtCursor = ADDON.OpenTeleportMenuAtCursor
-
-ADDON.Events:RegisterCallback("OnLogin", function()
-    menuActionButton = buildMenuActionButton()
-end, "menu-teleport")
