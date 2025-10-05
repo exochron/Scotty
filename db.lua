@@ -38,59 +38,61 @@ function ADDON:InitDatabase()
 
     local db = {
         -- Various Items and Toys
+        -- isEquippableItem is actually also available via api. However it requires cached item data.
+
         {item = 21711, map = 80, continent = KALIMDOR}, -- Lunar Festival Invitation
-        {item = 22589, map = 350, continent = EASTERN_KINGDOMS}, -- Atiesh, Greatstaff of the Guardian
-        {item = 22630, map = 350, continent = EASTERN_KINGDOMS}, -- Atiesh, Greatstaff of the Guardian
-        {item = 22631, map = 350, continent = EASTERN_KINGDOMS}, -- Atiesh, Greatstaff of the Guardian
-        {item = 22632, map = 350, continent = EASTERN_KINGDOMS}, -- Atiesh, Greatstaff of the Guardian
-        {item = 32757, map = 339, continent = OUTLAND}, -- Blessed Medallion of Karabor
+        {item = 22589, map = 350, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Atiesh, Greatstaff of the Guardian
+        {item = 22630, map = 350, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Atiesh, Greatstaff of the Guardian
+        {item = 22631, map = 350, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Atiesh, Greatstaff of the Guardian
+        {item = 22632, map = 350, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Atiesh, Greatstaff of the Guardian
+        {item = 32757, map = 339, continent = OUTLAND, isEquippableItem = true}, -- Blessed Medallion of Karabor
         {item = 37863, map = 35, continent = EASTERN_KINGDOMS}, -- Direbrew's Remote
-        {item = 40585, map = 125, continent = NORTHREND}, -- Signet of the Kirin Tor
-        {item = 40586, map = 125, continent = NORTHREND}, -- Band of the Kirin Tor
-        {item = 44934, map = 125, continent = NORTHREND}, -- Loop of the Kirin Tor
-        {item = 44935, map = 125, continent = NORTHREND}, -- Ring of the Kirin Tor
-        {item = 45688, map = 125, continent = NORTHREND}, -- Inscribed Band of the Kirin Tor
-        {item = 45689, map = 125, continent = NORTHREND}, -- Inscribed Loop of the Kirin Tor
-        {item = 45690, map = 125, continent = NORTHREND}, -- Inscribed Ring of the Kirin Tor
-        {item = 45691, map = 125, continent = NORTHREND}, -- Inscribed Signet of the Kirin Tor
-        {item = 46874, map = 118, continent = NORTHREND}, -- Argent Crusader's Tabard
-        {item = 48954, map = 125, continent = NORTHREND}, -- Etched Band of the Kirin Tor
-        {item = 48955, map = 125, continent = NORTHREND}, -- Etched Loop of the Kirin Tor
-        {item = 48956, map = 125, continent = NORTHREND}, -- Etched Ring of the Kirin Tor
-        {item = 48957, map = 125, continent = NORTHREND}, -- Etched Signet of the Kirin Tor
-        {item = 50287, map = 210, continent = EASTERN_KINGDOMS}, -- Boots of the Bay
-        {item = 51557, map = 125, continent = NORTHREND}, -- Runed Signet of the Kirin Tor
-        {item = 51558, map = 125, continent = NORTHREND}, -- Runed Loop of the Kirin Tor
-        {item = 51559, map = 125, continent = NORTHREND}, -- Runed Ring of the Kirin Tor
-        {item = 51560, map = 125, continent = NORTHREND}, -- Runed Band of the Kirin Tor
+        {item = 40585, map = 125, continent = NORTHREND, isEquippableItem = true}, -- Signet of the Kirin Tor
+        {item = 40586, map = 125, continent = NORTHREND, isEquippableItem = true}, -- Band of the Kirin Tor
+        {item = 44934, map = 125, continent = NORTHREND, isEquippableItem = true}, -- Loop of the Kirin Tor
+        {item = 44935, map = 125, continent = NORTHREND, isEquippableItem = true}, -- Ring of the Kirin Tor
+        {item = 45688, map = 125, continent = NORTHREND, isEquippableItem = true}, -- Inscribed Band of the Kirin Tor
+        {item = 45689, map = 125, continent = NORTHREND, isEquippableItem = true}, -- Inscribed Loop of the Kirin Tor
+        {item = 45690, map = 125, continent = NORTHREND, isEquippableItem = true}, -- Inscribed Ring of the Kirin Tor
+        {item = 45691, map = 125, continent = NORTHREND, isEquippableItem = true}, -- Inscribed Signet of the Kirin Tor
+        {item = 46874, map = 118, continent = NORTHREND, isEquippableItem = true}, -- Argent Crusader's Tabard
+        {item = 48954, map = 125, continent = NORTHREND, isEquippableItem = true}, -- Etched Band of the Kirin Tor
+        {item = 48955, map = 125, continent = NORTHREND, isEquippableItem = true}, -- Etched Loop of the Kirin Tor
+        {item = 48956, map = 125, continent = NORTHREND, isEquippableItem = true}, -- Etched Ring of the Kirin Tor
+        {item = 48957, map = 125, continent = NORTHREND, isEquippableItem = true}, -- Etched Signet of the Kirin Tor
+        {item = 50287, map = 210, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Boots of the Bay
+        {item = 51557, map = 125, continent = NORTHREND, isEquippableItem = true}, -- Runed Signet of the Kirin Tor
+        {item = 51558, map = 125, continent = NORTHREND, isEquippableItem = true}, -- Runed Loop of the Kirin Tor
+        {item = 51559, map = 125, continent = NORTHREND, isEquippableItem = true}, -- Runed Ring of the Kirin Tor
+        {item = 51560, map = 125, continent = NORTHREND, isEquippableItem = true}, -- Runed Band of the Kirin Tor
         {item = 52251, map = 125, continent = NORTHREND}, -- Jaina's Locket
-        {item = 63206, map = 84, continent = EASTERN_KINGDOMS}, -- Wrap of Unity
-        {item = 63207, map = 85, continent = KALIMDOR}, -- Wrap of Unity
-        {item = 63352, map = 84, continent = EASTERN_KINGDOMS}, -- Shroud of Cooperation
-        {item = 63353, map = 85, continent = KALIMDOR}, -- Shroud of Cooperation
-        {item = 63378, map = 245, continent = EASTERN_KINGDOMS}, -- Hellscream's Reach Tabard
-        {item = 63379, map = 245, continent = EASTERN_KINGDOMS}, -- Baradin's Wardens Tabard
-        {item = 65274, map = 85, continent = KALIMDOR}, -- Cloak of Coordination
-        {item = 65360, map = 84, continent = EASTERN_KINGDOMS}, -- Cloak of Coordination
-        {item = 95050, map = 503, continent = KALIMDOR}, -- The Brassiest Knuckle
-        {item = 95051, map = 500, continent = EASTERN_KINGDOMS}, -- The Brassiest Knuckle
-        {item = 103678, map = 554, continent = PANDARIA}, -- Time-Lost Artifact
+        {item = 63206, map = 84, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Wrap of Unity
+        {item = 63207, map = 85, continent = KALIMDOR, isEquippableItem = true}, -- Wrap of Unity
+        {item = 63352, map = 84, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Shroud of Cooperation
+        {item = 63353, map = 85, continent = KALIMDOR, isEquippableItem = true}, -- Shroud of Cooperation
+        {item = 63378, map = 245, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Hellscream's Reach Tabard
+        {item = 63379, map = 245, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Baradin's Wardens Tabard
+        {item = 65274, map = 85, continent = KALIMDOR, isEquippableItem = true}, -- Cloak of Coordination
+        {item = 65360, map = 84, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Cloak of Coordination
+        {item = 95050, map = 503, continent = KALIMDOR, isEquippableItem = true}, -- The Brassiest Knuckle
+        {item = 95051, map = 500, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- The Brassiest Knuckle
+        {item = 103678, map = 554, continent = PANDARIA, isEquippableItem = true}, -- Time-Lost Artifact
         {item = 118662, map = 624, continent = DRAENOR}, -- Bladespire Relic
         {item = 118663, map = 622, continent = DRAENOR}, -- Relic of Karabor
-        {item = 118907, map = 500, continent = EASTERN_KINGDOMS}, -- Pit Fighter's Punching Ring
-        {item = 118908, map = 503, continent = KALIMDOR}, -- Pit Fighter's Punching Ring
+        {item = 118907, map = 500, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Pit Fighter's Punching Ring
+        {item = 118908, map = 503, continent = KALIMDOR, isEquippableItem = true}, -- Pit Fighter's Punching Ring
         {item = 128353, map = (isAlliance and 539 or 525), continent = DRAENOR}, -- Admiral's Compass
         {item = 138448, map = 627, continent = BROKEN_ISLES}, -- Emblem of Margoss
         {item = 139590, map = 25, continent = EASTERN_KINGDOMS}, -- Scroll of Teleport: Ravenholdt
-        {item = 139599, map = 627, continent = BROKEN_ISLES}, -- Empowered Ring of the Kirin Tor
-        {item = 141605, isMultiDestination = true, name=MINIMAP_TRACKING_FL9GHTMASTER, continent = BROKEN_ISLES}, -- Flight Master's Whistle
+        {item = 139599, map = 627, continent = BROKEN_ISLES, isEquippableItem = true}, -- Empowered Ring of the Kirin Tor
+        {item = 141605, isMultiDestination = true, name=MINIMAP_TRACKING_FLIGHTMASTER, continent = BROKEN_ISLES}, -- Flight Master's Whistle
         {item = 141605, isMultiDestination = true, name=MINIMAP_TRACKING_FLIGHTMASTER, continent = ZANDALAR}, -- Flight Master's Whistle
         {item = 141605, isMultiDestination = true, name=MINIMAP_TRACKING_FLIGHTMASTER, continent = KUL_TIRAS}, -- Flight Master's Whistle
-        {item = 142469, map = 350, continent = EASTERN_KINGDOMS}, -- Violet Seal of the Grand Magus
-        {item = 144391, map = 500, continent = EASTERN_KINGDOMS}, -- Pugilist's Powerful Punching Ring
-        {item = 144392, map = 503, continent = KALIMDOR}, -- Pugilist's Powerful Punching Ring
-        {item = 166559, map = 1165, continent = ZANDALAR}, -- Commander's Signet of Battle
-        {item = 166560, map = 1161, continent = KUL_TIRAS}, --Captain's Signet of Command
+        {item = 142469, map = 350, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Violet Seal of the Grand Magus
+        {item = 144391, map = 500, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Pugilist's Powerful Punching Ring
+        {item = 144392, map = 503, continent = KALIMDOR, isEquippableItem = true}, -- Pugilist's Powerful Punching Ring
+        {item = 166559, map = 1165, continent = ZANDALAR, isEquippableItem = true}, -- Commander's Signet of Battle
+        {item = 166560, map = 1161, continent = KUL_TIRAS, isEquippableItem = true}, -- Captain's Signet of Command
         {item = 202046, map = 942, continent = KUL_TIRAS}, -- Lucky Tortollan Charm
         {item = 219222, map = 554, continent = PANDARIA}, -- Time-Lost Artifact
         {toy = isAlliance and 110560, map = 582, quest=34586, name=GARRISON_LOCATION_TOOLTIP, continent = DRAENOR}, -- Garrison Hearthstone (alliance)
@@ -338,7 +340,15 @@ function ADDON:InitDatabase()
         {toy = 245970, category = ADDON.Category.Hearthstone}, -- P.O.S.T. Master's Express Hearthstone
     }
 
+    -- the actual function C_Item.DoesItemExistByID() is misleading and only checks for non empty parameter.
+    -- see: https://github.com/Stanzilla/WoWUIBugs/issues/449#issuecomment-2638266396
+    local function DoesItemExist(itemId)
+        return C_Item.GetItemIconByID(itemId) ~= 134400 -- question icon
+    end
+
     ADDON.db = tFilter(db, function(row)
-        return row.toy or row.spell or row.item
+        return (row.spell and C_Spell.DoesSpellExist(row.spell))
+            or (row.item and DoesItemExist(row.item))
+            or (row.toy and DoesItemExist(row.toy))
     end, true)
 end

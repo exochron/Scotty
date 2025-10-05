@@ -191,12 +191,17 @@ ADDON.Events:RegisterCallback("OnLogin", function()
 
     hearthstoneButton:HookScript("OnAttributeChanged", function(_, name, value)
         if value and (name == "toy" or name == "itemid") then
-            ldbDataObject.label = ADDON.GetItemName(value)
-            ldbDataObject.icon = C_Item.GetItemIconByID(value)
+            local item = Item:CreateFromItemID(value)
+            item:ContinueOnItemLoad(function()
+                ldbDataObject.label = item:GetItemName()
+                ldbDataObject.icon = item:GetItemIcon()
+            end)
         elseif value and name == "spell" then
-            local info = C_Spell.GetSpellInfo(value)
-            ldbDataObject.label = info.name
-            ldbDataObject.icon = info.iconID
+            local spell = Spell:CreateFromSpellID(value)
+            spell:ContinueOnSpellLoad(function()
+                ldbDataObject.label = spell:GetSpellName()
+                ldbDataObject.icon = spell:GetSpellTexture()
+            end)
         end
     end)
     hearthstoneButton:ShuffleHearthstone()

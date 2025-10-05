@@ -22,9 +22,6 @@ local function CheckNameAvailable(row)
     if row.map ~= nil and nil == C_Map.GetMapInfo(row.map) then
         alert("no Name detected for Map: ".. row.map, row)
     end
-    if (row.toy or row.item) and not ADDON.GetItemName(row.toy or row.item) then
-        alert("item name not available! "..(C_Item.IsItemDataCachedByID(row.toy or row.item) and "cached" or "not cached"), row)
-    end
 end
 
 local function CheckPortalExistsAsWell(row)
@@ -53,13 +50,8 @@ end
 
 local function TestDB()
     for _, row in ipairs(ADDON.db) do
-        if (row.item and ADDON.DoesItemExistInGame(row.item))
-            or (row.toy and ADDON.DoesItemExistInGame(row.toy))
-            or (row.spell and C_Spell.DoesSpellExist(row.spell))
-        then
-            CheckNameAvailable(row)
-            CheckPortalExistsAsWell(row)
-        end
+        CheckNameAvailable(row)
+        CheckPortalExistsAsWell(row)
         CheckForRequiredFields(row)
     end
 

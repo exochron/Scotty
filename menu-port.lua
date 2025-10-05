@@ -184,7 +184,7 @@ local function generateTeleportMenu(_, root)
     end
 
     local function buildItemEntry(menuRoot, itemId, location, dbRow)
-        local itemLocation = ADDON.IsEquippableItem(itemId) and ADDON:GetItemSlot(itemId) or ADDON:FindItemInBags(itemId)
+        local itemLocation = dbRow and dbRow.isEquippableItem and ADDON:GetItemSlot(itemId) or ADDON:FindItemInBags(itemId)
 
         local element = buildEntry(
                 menuRoot,
@@ -198,7 +198,7 @@ local function generateTeleportMenu(_, root)
                 C_Container.GetItemCooldown(itemId) > 0,
                 dbRow
         )
-        if ADDON.IsEquippableItem(itemId) then
+        if dbRow and dbRow.isEquippableItem then
 
             local previousEquippedItem = GetInventoryItemID("player", itemLocation)
             local currentlyClicking = false
@@ -311,12 +311,6 @@ local function generateTeleportMenu(_, root)
         end
         if row.map then
             return C_Map.GetMapInfo(row.map).name
-        end
-        if row.toy or row.item then
-            return ADDON.GetItemName(row.toy or row.item)
-        end
-        if row.spell then
-            return C_Spell.GetSpellName(row.spell)
         end
 
         return ""

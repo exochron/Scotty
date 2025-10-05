@@ -2,6 +2,20 @@ local ADDON_NAME, ADDON = ...
 
 local categoryID
 
+local cachedItemNames = {}
+
+local function cacheHearthstonesData()
+    local hearthstones = tFilter(ADDON.db, function(row)
+        return row.toy and row.category == ADDON.Category.Hearthstone
+    end, true)
+    for _, row in pairs(hearthstones) do
+        local item = Item:CreateFromItemID(row.toy)
+        item:ContinueOnItemLoad(function()
+            cachedItemNames[row.toy] = item:GetItemName()
+        end)
+    end
+end
+
 local function registerSettings()
     local L = ADDON.L
 
@@ -31,7 +45,7 @@ local function registerSettings()
             return row.toy and row.category == ADDON.Category.Hearthstone and PlayerHasToy(row.toy)
         end, true)
         for _, row in pairs(hearthstones) do
-            container:Add(row.toy, "|T" .. (C_Item.GetItemIconByID(row.toy) or "") .. ":0|t "..(ADDON.GetItemName(row.toy) or ""))
+            container:Add(row.toy, "|T" .. (C_Item.GetItemIconByID(row.toy) or "") .. ":0|t "..(cachedItemNames[row.toy] or ""))
         end
         return container:GetData();
     end
@@ -95,5 +109,6 @@ ADDON.Events:RegisterCallback("OnInit", function()
     ScottyGlobalSettings = ScottyGlobalSettings or defaults
     CombineSettings(ScottyGlobalSettings, defaults)
 
+    cacheHearthstonesData()
     registerSettings()
 end, "settings")
