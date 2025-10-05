@@ -222,4 +222,9 @@ ADDON.Events:RegisterCallback("OnLogin", function()
     -- only the target frame can use the hearthstone button, when directly entering combat.
     attachHSButtonToFrame(BazookaPlugin_Scotty or LibDBIcon10_Scotty)
 
+    -- force initial update for ElvUI
+    -- since ElvUI is loaded before Scotty and it doesn't update its panels during registration. :(
+    -- https://github.com/tukui-org/ElvUI/issues/1640
+    local _ = ElvUI and ElvUI[1]:GetModule('DataTexts'):LoadDataTexts()
+
 end, "ldb-plugin")
