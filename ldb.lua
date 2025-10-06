@@ -40,7 +40,10 @@ local function buildHearthstoneButton()
     button.ShuffleHearthstone = function(self)
         local toy = GetRandomHearthstoneToy()
 
-        if (not toy or C_Container.GetItemCooldown(toy)>0) and IsSpellKnown(ASTRAL_RECALL) and C_Spell.IsSpellUsable(ASTRAL_RECALL) then
+        if (not toy or C_Container.GetItemCooldown(toy)>0)
+           and C_SpellBook.IsSpellInSpellBook(ASTRAL_RECALL)
+           and C_Spell.IsSpellUsable(ASTRAL_RECALL)
+       then
             local spellOnCoolDown = false
             if C_Spell.GetSpellCooldown then -- Retail
                 local spellCooldown = C_Spell.GetSpellCooldown(ASTRAL_RECALL)

@@ -250,7 +250,7 @@ local function generateTeleportMenu(_, root)
                 dbRow
         )
 
-        if portalId and IsSpellKnown(portalId) then
+        if portalId and C_SpellBook.IsSpellInSpellBook(portalId) then
             element:AddInitializer(function(button, elementDescription, menu)
                 local portalButton = button:AttachTemplate("WowMenuAutoHideButtonTemplate")
 
@@ -341,7 +341,7 @@ local function generateTeleportMenu(_, root)
                 nil == row.accountQuest
                 or (C_QuestLog.IsQuestFlaggedCompletedOnAccount and C_QuestLog.IsQuestFlaggedCompletedOnAccount(row.accountQuest))
             ) and (
-                (row.spell and IsSpellKnown(row.spell))
+                (row.spell and C_SpellBook.IsSpellInSpellBook(row.spell))
                 or (row.toy and PlayerHasToy(row.toy)
                 or (row.item and (C_Item.IsEquippedItem(row.item) or ADDON:PlayerHasItemInBag(row.item))))
             )
@@ -376,7 +376,7 @@ local function generateTeleportMenu(_, root)
 
     -- Vulperas Make Camp
     do
-        if IsSpellKnown(312372) then
+        if C_SpellBook.IsSpellInSpellBook(312372) then
             local location = ScottyPersonalSettings and ScottyPersonalSettings.VulperaCamp or C_Spell.GetSpellName(312372)
             buildSpellEntry(root, 312372, location, 312370):AddInitializer(function(button)
                 button.PortalButton:SetText(" "..ADDON.L.MENU_VULPERA_CAMP.." |T" .. C_Spell.GetSpellTexture(312370) .. ":0|t")
