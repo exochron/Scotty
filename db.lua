@@ -85,9 +85,6 @@ function ADDON:InitDatabase()
         {item = 138448, map = 627, continent = BROKEN_ISLES}, -- Emblem of Margoss
         {item = 139590, map = 25, continent = EASTERN_KINGDOMS}, -- Scroll of Teleport: Ravenholdt
         {item = 139599, map = 627, continent = BROKEN_ISLES, isEquippableItem = true}, -- Empowered Ring of the Kirin Tor
-        {item = 141605, isMultiDestination = true, name=MINIMAP_TRACKING_FLIGHTMASTER, continent = BROKEN_ISLES}, -- Flight Master's Whistle
-        {item = 141605, isMultiDestination = true, name=MINIMAP_TRACKING_FLIGHTMASTER, continent = ZANDALAR}, -- Flight Master's Whistle
-        {item = 141605, isMultiDestination = true, name=MINIMAP_TRACKING_FLIGHTMASTER, continent = KUL_TIRAS}, -- Flight Master's Whistle
         {item = 142469, map = 350, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Violet Seal of the Grand Magus
         {item = 144391, map = 500, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Pugilist's Powerful Punching Ring
         {item = 144392, map = 503, continent = KALIMDOR, isEquippableItem = true}, -- Pugilist's Powerful Punching Ring
@@ -99,6 +96,9 @@ function ADDON:InitDatabase()
         {toy = isAlliance and 110560, map = 582, quest=34586, name=GARRISON_LOCATION_TOOLTIP, continent = DRAENOR}, -- Garrison Hearthstone (alliance)
         {toy = isHorde and 110560, map = 590, quest=34378, name=GARRISON_LOCATION_TOOLTIP, continent = DRAENOR}, -- Garrison Hearthstone (horde)
         {toy = 140192, map = 627, continent = BROKEN_ISLES}, -- Dalaran Hearthstone -- todo: lookup quest
+        {toy = 141605, isMultiDestination = true, name=MINIMAP_TRACKING_FLIGHTMASTER, continent = BROKEN_ISLES}, -- Flight Master's Whistle
+        {toy = 141605, isMultiDestination = true, name=MINIMAP_TRACKING_FLIGHTMASTER, continent = ZANDALAR}, -- Flight Master's Whistle
+        {toy = 141605, isMultiDestination = true, name=MINIMAP_TRACKING_FLIGHTMASTER, continent = KUL_TIRAS}, -- Flight Master's Whistle
         {toy = 151016, map = 104, continent = OUTLAND}, -- Fractured Necrolyte Skull
         {toy = (playerRace == "Worgen" and 211788), map = 179, continent = EASTERN_KINGDOMS}, -- Tess's Peacebloom
         {toy = 230850, name = DELVE_LABEL, continent = KHAZ_ALGAR, }, -- Delve-O-Bot 7001
