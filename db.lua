@@ -95,6 +95,7 @@ function ADDON:InitDatabase()
         {item = 166560, map = 1161, continent = KUL_TIRAS, isEquippableItem = true}, -- Captain's Signet of Command
         {item = 202046, map = 942, continent = KUL_TIRAS}, -- Lucky Tortollan Charm
         {item = 219222, map = 554, continent = PANDARIA}, -- Time-Lost Artifact
+        {item = 238727, map = 627, continent = BROKEN_ISLES}, -- Nostwin's Voucher (consumable to Infinite Bazaar)
         {toy = isAlliance and 110560, map = 582, quest=34586, name=GARRISON_LOCATION_TOOLTIP, continent = DRAENOR}, -- Garrison Hearthstone (alliance)
         {toy = isHorde and 110560, map = 590, quest=34378, name=GARRISON_LOCATION_TOOLTIP, continent = DRAENOR}, -- Garrison Hearthstone (horde)
         {toy = 140192, map = 627, continent = BROKEN_ISLES}, -- Dalaran Hearthstone -- todo: lookup quest
