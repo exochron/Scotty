@@ -25,15 +25,15 @@ Libs\LibDBIcon\LibDBIcon-1.0\lib.xml
 locals.lua
 db.lua
 
-templates.xml
-setting-multiselect.lua
-api.lua
-core.lua
-settings.lua
-menu-port.lua
-ldb.lua
-dialog-skip.lua
-command.lua
+src/templates.xml
+src/setting-multiselect.lua
+src/api.lua
+src/core.lua
+src/settings.lua
+src/menu-port.lua
+src/ldb.lua
+src/dialog-skip.lua
+src/command.lua
 
 #@do-not-package@
 DevZone\Screenshot.lua
