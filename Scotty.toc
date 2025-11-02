@@ -34,6 +34,7 @@ src/menu-port.lua
 src/ldb.lua
 src/dialog-skip.lua
 src/command.lua
+src/waypoint.lua
 
 #@do-not-package@
 DevZone\Screenshot.lua

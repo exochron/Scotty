@@ -114,13 +114,13 @@ function ADDON:InitDatabase()
 
         -- Druid Dreamwalk
         {spell = 18960, map = 80, continent = KALIMDOR},
-        {spell = 193753, isMultiDestination = true, map = 26, continent = EASTERN_KINGDOMS},
-        {spell = 193753, isMultiDestination = true, map = 47, continent = EASTERN_KINGDOMS},
-        {spell = 193753, isMultiDestination = true, map = 69, continent = KALIMDOR},
-        {spell = 193753, isMultiDestination = true, map = 80, continent = KALIMDOR},
-        {spell = 193753, isMultiDestination = true, map = 116, continent = NORTHREND},
-        {spell = 193753, isMultiDestination = true, map = 198, continent = KALIMDOR},
-        {spell = 193753, isMultiDestination = true, map = 747, continent = BROKEN_ISLES},
+        {spell = 193753, isMultiDestination = true, map = 26, continent = EASTERN_KINGDOMS, waypoint={715, 0.506056, 0.657546}}, -- Hinterlands
+        {spell = 193753, isMultiDestination = true, map = 47, continent = EASTERN_KINGDOMS, waypoint={715, 0.398373, 0.693299}}, -- Duskwood
+        {spell = 193753, isMultiDestination = true, map = 69, continent = KALIMDOR, waypoint={715, 0.232351, 0.385249}}, -- Feralas
+        {spell = 193753, isMultiDestination = true, map = 80, continent = KALIMDOR, waypoint={715, 0.259648, 0.795225}}, -- Moonglade
+        {spell = 193753, isMultiDestination = true, map = 116, continent = NORTHREND, waypoint={715, 0.317142, 0.264065}}, -- Grizzly Hills
+        {spell = 193753, isMultiDestination = true, map = 198, continent = KALIMDOR, waypoint={715, 0.533934, 0.526978}}, -- Mount Hyjal
+        {spell = 193753, isMultiDestination = true, map = 747, continent = BROKEN_ISLES, waypoint={715, 0.456, 0.242929}}, -- Dreamgrove
 
         -- Mage Teleports with Portals
         -- https://www.wowhead.com/guide/transportation#mage-portals
