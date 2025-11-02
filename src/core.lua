@@ -57,6 +57,20 @@ function ADDON:PlayerHasItemInBag(itemId)
     return ADDON:FindItemInBags(itemId) ~= nil
 end
 
+function ADDON:GetName(row)
+    if row.name then
+        return row.name
+    end
+    if row.instance then
+        return GetRealZoneText(row.instance)
+    end
+    if row.map then
+        return C_Map.GetMapInfo(row.map).name
+    end
+
+    return ""
+end
+
 -- detect Vulperas Make Camp location
 ADDON.Events:RegisterCallback("OnLogin", function(self)
     if C_SpellBook.IsSpellInSpellBook(312372) then

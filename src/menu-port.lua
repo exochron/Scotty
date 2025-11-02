@@ -73,18 +73,18 @@ local function generateTeleportMenu(_, root)
     root:SetTag(ADDON_NAME.."-LDB-Teleport")
     root:SetScrollMode(GetScreenHeight() - 100)
 
-    local function buildEntry(menuRoot, type, typeId, icon, location, tooltipSetter, hasCooldown, dbRow)
+    local function buildEntry(menuRoot, dbType, typeId, icon, location, tooltipSetter, hasCooldown, dbRow)
         local element = menuRoot:CreateButton("|T" .. icon .. ":0|t "..location, function()
             return MenuResponse.CloseAll
         end)
         element:HookOnEnter(function(frame)
             menuActionButton:SetScript("PreClick", function() end)
             menuActionButton:SetScript("PostClick", function()
-                ADDON.Events:TriggerEvent("TeleportInitialized", type, typeId, dbRow)
+                ADDON.Events:TriggerEvent("TeleportInitialized", dbType, typeId, dbRow)
             end)
-            menuActionButton:SetAttribute("type", type)
-            menuActionButton:SetAttribute("typerelease", type)
-            menuActionButton:SetAttribute(type, typeId)
+            menuActionButton:SetAttribute("type", dbType)
+            menuActionButton:SetAttribute("typerelease", dbType)
+            menuActionButton:SetAttribute(dbType, typeId)
             menuActionButton:SetParent(frame)
             menuActionButton:SetAllPoints(frame)
             menuActionButton:SetFrameStrata("TOOLTIP")
@@ -302,27 +302,13 @@ local function generateTeleportMenu(_, root)
         return element
     end
 
-    local function GetName(row)
-        if row.name then
-            return row.name
-        end
-        if row.instance then
-            return GetRealZoneText(row.instance)
-        end
-        if row.map then
-            return C_Map.GetMapInfo(row.map).name
-        end
-
-        return ""
-    end
-
     local function buildRow(row, menuRoot)
         if row.spell then
-            buildSpellEntry(menuRoot, row.spell, GetName(row), row.portal, row)
+            buildSpellEntry(menuRoot, row.spell, ADDON:GetName(row), row.portal, row)
         elseif row.toy then
-            buildToyEntry(menuRoot, row.toy, GetName(row), row)
+            buildToyEntry(menuRoot, row.toy, ADDON:GetName(row), row)
         elseif row.item then
-            buildItemEntry(menuRoot, row.item, GetName(row), row)
+            buildItemEntry(menuRoot, row.item, ADDON:GetName(row), row)
         end
     end
 
@@ -349,7 +335,7 @@ local function generateTeleportMenu(_, root)
 
     local function SortRowsByName(list)
         table.sort(list, function(a, b)
-            return GetName(a) < GetName(b)
+            return ADDON:GetName(a) < ADDON:GetName(b)
         end)
         return list
     end
