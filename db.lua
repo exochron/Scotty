@@ -22,7 +22,8 @@ function ADDON:InitDatabase()
 
     -- https://wago.tools/db2/DisplaySeason
     local WW_S3 = 30
-    local currentSeason = C_SeasonInfo and C_SeasonInfo.GetCurrentDisplaySeasonID() or 0
+    local isTimerunner = PlayerIsTimerunning and PlayerIsTimerunning()
+    local currentSeason = not isTimerunner and C_SeasonInfo and C_SeasonInfo.GetCurrentDisplaySeasonID() or 0
 
     local isAlliance = UnitFactionGroup("player") == "Alliance"
     local isHorde = UnitFactionGroup("player") == "Horde"
@@ -238,6 +239,13 @@ function ADDON:InitDatabase()
         {spell = 1216786, instance = 2773, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Operation: Floodgate
         {spell = 1237215, instance = 2830, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Eco-Dome, Al'dani
         {spell = 1239155, instance = 2810, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Manaforge Omega
+        -- Legion Remix Dungeon Ports
+        {spell = 424153, instance = 1501, continent = BROKEN_ISLES, category = (isTimerunner and ADDON.Category.SeasonInstance)}, -- Black Rook Hold
+        {spell = 393764, instance = 1477, continent = BROKEN_ISLES, category = (isTimerunner and ADDON.Category.SeasonInstance)}, -- Halls of Valor
+        {spell = 393766, instance = 1571, continent = BROKEN_ISLES, category = (isTimerunner and ADDON.Category.SeasonInstance)}, -- Court of Stars
+        {spell = 410078, instance = 1458, continent = BROKEN_ISLES, category = (isTimerunner and ADDON.Category.SeasonInstance)}, -- Neltharion's Lair
+        {spell = 424163, instance = 1466, continent = BROKEN_ISLES, category = (isTimerunner and ADDON.Category.SeasonInstance)}, -- Darkheart Thicket
+        {spell = 373262, instance = 532, continent = EASTERN_KINGDOMS, category = (isTimerunner and ADDON.Category.SeasonInstance)}, -- Karazhan
 
         -- Older Dungeon Ports
         {spell = 131204, instance = 960, continent = PANDARIA}, -- Temple of the Jade Serpent
@@ -267,7 +275,6 @@ function ADDON:InitDatabase()
         {spell = 373190, instance = 2296, continent = SHADOWLANDS}, -- Castle Nathria
         {spell = 373191, instance = 2450, continent = SHADOWLANDS}, -- Sanctum of Domination
         {spell = 373192, instance = 2481, continent = SHADOWLANDS}, -- Sepulcher of the First Ones
-        {spell = 373262, instance = 532, continent = EASTERN_KINGDOMS}, -- Karazhan
         {spell = 373274, instance = 2097, continent = KUL_TIRAS,}, -- Operation: Mechagon
         {spell = 393222, instance = 2451, continent = EASTERN_KINGDOMS}, -- Uldaman: Legacy of Tyr
         {spell = 393256, instance = 2521, continent = DRAGON_ISLES}, -- Ruby Life Pools
@@ -277,15 +284,10 @@ function ADDON:InitDatabase()
         {spell = 393276, instance = 2519, continent = DRAGON_ISLES}, -- Neltharus
         {spell = 393279, instance = 2515, continent = DRAGON_ISLES}, -- The Azure Vault
         {spell = 393283, instance = 2527, continent = DRAGON_ISLES}, -- Halls of Infusion
-        {spell = 393764, instance = 1477, continent = BROKEN_ISLES}, -- Halls of Valor
-        {spell = 393766, instance = 1571, continent = BROKEN_ISLES}, -- Court of Stars
         {spell = 410071, instance = 1754, continent = KUL_TIRAS}, -- Freehold
         {spell = 410074, instance = 1841, continent = ZANDALAR}, -- The Underrot
-        {spell = 410078, instance = 1458, continent = BROKEN_ISLES}, -- Neltharion's Lair
         {spell = 410080, instance = 657, continent = KALIMDOR}, -- The Vortex Pinnacle
         {spell = 424142, instance = 643, continent = EASTERN_KINGDOMS}, -- Throne of the Tides
-        {spell = 424153, instance = 1501, continent = BROKEN_ISLES}, -- Black Rook Hold
-        {spell = 424163, instance = 1466, continent = BROKEN_ISLES}, -- Darkheart Thicket
         {spell = 424167, instance = 1862, continent = KUL_TIRAS}, -- Waycrest Manor
         {spell = 424187, instance = 1763, continent = ZANDALAR}, -- Atal'Dazar
         {spell = 424197, instance = 2579, continent = DRAGON_ISLES}, -- Dawn of the Infinite
