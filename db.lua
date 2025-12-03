@@ -341,6 +341,8 @@ function ADDON:InitDatabase()
         {toy = 236687, category = ADDON.Category.Hearthstone},
         {toy = 246565, category = ADDON.Category.Hearthstone}, -- Cosmic Hearthstone
         {toy = 245970, category = ADDON.Category.Hearthstone}, -- P.O.S.T. Master's Express Hearthstone
+        {toy = 260221, category = ADDON.Category.Hearthstone}, -- Naaru's Embrace (Classic)
+        {toy = 263489, category = ADDON.Category.Hearthstone}, -- Naaru's Enfold (Retail)
     }
 
     -- the actual function C_Item.DoesItemExistByID() is misleading and only checks for non empty parameter.
