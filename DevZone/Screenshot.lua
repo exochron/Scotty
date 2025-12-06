@@ -9,7 +9,7 @@ function ADDON:TakeScreenshots()
                 api:BackScreen()
                 ADDON:OpenTeleportMenu(BazookaPlugin_Scotty)
 
-                api:WaitAndPointOnMenuElement(1,9, function() -- Khaz Algar
+                api:WaitAndPointOnMenuElement(1,14, function() -- Khaz Algar
                     api:WaitAndPointOnMenuElement(2,5)
                 end)
             end,
