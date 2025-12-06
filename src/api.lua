@@ -11,7 +11,10 @@ ADDON.Api = {}
 local function buildFavoriteKey(dbRow)
     local type, typeId
 
-    if dbRow.toy then
+    if dbRow.neighborhoodGUID and dbRow.houseGUID and dbRow.plotID then
+        type = "house"
+        typeId = dbRow.neighborhoodGUID..'-'..dbRow.houseGUID..'-'..dbRow.plotID
+    elseif dbRow.toy then
         type = "toy"
         typeId = dbRow.toy
     elseif dbRow.item then
@@ -59,12 +62,27 @@ ADDON.Api.GetFavoriteDatabase = function()
     local favoriteToys = tInvert(favorites.toy)
     local favoriteSpells = tInvert(favorites.spell)
     local favoriteItems = tInvert(favorites.item)
+    local favoriteHouses = tInvert(favorites.house)
 
-    return tFilter(ADDON.db, function(dbRow)
+    local dbRows = tFilter(ADDON.db, function(dbRow)
         local type, typeKey = buildFavoriteKey(dbRow)
 
         return (type == "toy" and favoriteToys[typeKey])
                 or (type == "spell" and favoriteSpells[typeKey])
                 or (type == "item" and favoriteItems[typeKey])
     end, true)
+
+    for k, v in pairs(ADDON.FriendsHouseInfos) do
+        if favoriteHouses[k] then
+            table.insert(dbRows, v)
+            favoriteHouses[k] = nil
+        end
+    end
+    for k, v in pairs(ADDON.GuildHouseInfos) do
+        if favoriteHouses[k] then
+            table.insert(dbRows, v)
+        end
+    end
+
+    return dbRows
 end

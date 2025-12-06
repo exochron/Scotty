@@ -102,6 +102,7 @@ ADDON.Events:RegisterCallback("OnInit", function()
             toy = {},
             item = {},
             spell = {},
+            house = {},
         },
         minimap = {} -- for LibDBIcon
     }

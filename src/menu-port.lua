@@ -17,7 +17,7 @@ local function equipItem(itemId)
 
         equipQueue[itemSlot] = itemId
 
-        ADDON.Events:RegisterFrameEventAndCallbackWithHandle("PLAYER_EQUIPMENT_CHANGED", function(_, equipmentSlot, hasCurrent)
+        ADDON.Events:RegisterFrameEventAndCallback("PLAYER_EQUIPMENT_CHANGED", function(_, equipmentSlot, hasCurrent)
             if itemSlot == equipmentSlot and false == hasCurrent and C_Item.IsEquippedItem(itemId) then
                 if requestedItemEquip[itemSlot] == itemId then
                     requestedItemEquip[itemSlot] = nil
@@ -74,7 +74,14 @@ local function generateTeleportMenu(_, root)
     root:SetScrollMode(GetScreenHeight() - 100)
 
     local function buildEntry(menuRoot, dbType, typeId, icon, location, tooltipSetter, hasCooldown, dbRow)
-        local element = menuRoot:CreateButton("|T" .. icon .. ":0|t "..location, function()
+        local prefix = ""
+        if type(icon) == "number" then
+            prefix = "|T" .. icon .. ":0|t "
+        elseif type(icon) == "string" then
+            prefix = "|A:" .. icon .. ":16:16|a "
+        end
+
+        local element = menuRoot:CreateButton(prefix..location, function()
             return MenuResponse.CloseAll
         end)
         element:HookOnEnter(function(frame)
@@ -89,19 +96,22 @@ local function generateTeleportMenu(_, root)
             menuActionButton:SetAllPoints(frame)
             menuActionButton:SetFrameStrata("TOOLTIP")
             menuActionButton:Show()
-
-            GameTooltip:SetOwner(frame, "ANCHOR_NONE")
-            GameTooltip:ClearLines()
-            tooltipSetter(GameTooltip)
-            local left, _, width = frame:GetRect()
-            local remainingSpaceOnRight = GetScreenWidth() - left - width
-            if remainingSpaceOnRight < GameTooltip:GetWidth() then
-                GameTooltip:SetPoint("TOPRIGHT", frame, "TOPLEFT") -- on left side
-            else
-                GameTooltip:SetPoint("TOPLEFT", frame, "TOPRIGHT") -- on right side
-            end
-            GameTooltip:Show()
         end)
+        if tooltipSetter then
+            element:HookOnEnter(function(frame)
+                GameTooltip:SetOwner(frame, "ANCHOR_NONE")
+                GameTooltip:ClearLines()
+                tooltipSetter(GameTooltip)
+                local left, _, width = frame:GetRect()
+                local remainingSpaceOnRight = GetScreenWidth() - left - width
+                if remainingSpaceOnRight < GameTooltip:GetWidth() then
+                    GameTooltip:SetPoint("TOPRIGHT", frame, "TOPLEFT") -- on left side
+                else
+                    GameTooltip:SetPoint("TOPLEFT", frame, "TOPRIGHT") -- on right side
+                end
+                GameTooltip:Show()
+            end)
+        end
         element:HookOnLeave(function()
             GameTooltip:Hide()
             menuActionButton:Hide()
@@ -165,6 +175,23 @@ local function generateTeleportMenu(_, root)
                 parent.StarButton = nil
             end)
         end
+        return element
+    end
+
+    local function buildMacroEntry(menuRoot, macroText, icon, location, cooldown, dbRow)
+        local element = buildEntry(
+                menuRoot,
+                "macro",
+                nil,
+                icon,
+                location,
+                nil, --tooltip
+                cooldown,
+                dbRow
+        )
+        element:HookOnEnter(function()
+            menuActionButton:SetAttribute("macrotext", macroText)
+        end)
         return element
     end
 
@@ -309,10 +336,17 @@ local function generateTeleportMenu(_, root)
             buildToyEntry(menuRoot, row.toy, ADDON:GetName(row), row)
         elseif row.item then
             buildItemEntry(menuRoot, row.item, ADDON:GetName(row), row)
+        elseif row.neighborhoodGUID and row.houseGUID and row.plotID then
+            local macroText = "/run C_Housing.VisitHouse(\""..row.neighborhoodGUID.."\",\""..row.houseGUID.."\",\""..row.plotID.."\")"
+            buildMacroEntry(menuRoot, macroText, "dashboard-panel-homestone-teleport-button", row.ownerName .. ": " .. row.houseName, nil, row)
         end
     end
 
     local function IsKnown(row)
+        if row.neighborhoodGUID and row.houseGUID and row.plotID then
+            return true
+        end
+
         if row.quest then
             local quests = type(row.quest) == "table" and row.quest or {row.quest}
             for _, questId in ipairs(quests) do
@@ -372,6 +406,21 @@ local function generateTeleportMenu(_, root)
         end
     end
 
+    do
+        -- Player Houses
+        for _, playerHouse in ipairs(ADDON.PlayerHouseInfos) do
+            -- C_Housing.ReturnAfterVisitingHouse() taints hard. can not use that yet :-/
+            --if C_HousingNeighborhood.CanReturnAfterVisitingHouse() and C_Housing.GetCurrentNeighborhoodGUID() == playerHouse.neighborhoodGUID then
+            --    buildClickEntry(root, "/run C_Housing.ReturnAfterVisitingHouse()", "dashboard-panel-homestone-teleport-out-button", HOUSING_DASHBOARD_RETURN)
+            --else
+            local cd = C_Housing.GetVisitCooldownInfo()
+            local macroText = "/run C_Housing.TeleportHome(\""..playerHouse.neighborhoodGUID.."\",\""..playerHouse.houseGUID.."\",\""..playerHouse.plotID.."\")"
+            buildMacroEntry(root, macroText, "dashboard-panel-homestone-teleport-button", playerHouse.houseName, cd.duration > 0)
+            --end
+            hasGeneralSpells = true
+        end
+    end
+
     if hasGeneralSpells then
         root:QueueSpacer()
     end
@@ -422,6 +471,39 @@ local function generateTeleportMenu(_, root)
         end
     end
 
+    if #favorites > 0 or #seasonSpells > 0 then
+        root:QueueSpacer()
+    end
+
+    -- friends houses
+    if TableHasAnyEntries(ADDON.FriendsHouseInfos) then
+        local friendsRoot = root:CreateButton("|T-13:0|t "..ADDON.L.HOUSE_FRIENDS)
+        local friendsHouses = GetValuesArray(ADDON.FriendsHouseInfos)
+        -- AccountNames are protected Strings. so we can't use them for sorting.
+        table.sort(friendsHouses, function(a, b)
+            return strcmputf8i(a.battleTag, b.battleTag) < 0
+        end)
+        for _, houseInfo in ipairs(friendsHouses) do
+            local macroText = "/run C_Housing.VisitHouse(\""..houseInfo.neighborhoodGUID.."\",\""..houseInfo.houseGUID.."\",\""..houseInfo.plotID.."\")"
+            buildMacroEntry(friendsRoot, macroText, "dashboard-panel-homestone-teleport-button", houseInfo.accountName .. ": " .. houseInfo.houseName, nil, houseInfo)
+        end
+        if not TableHasAnyEntries(ADDON.GuildHouseInfos) then
+            root:QueueSpacer()
+        end
+    end
+    -- guild member houses
+    if TableHasAnyEntries(ADDON.GuildHouseInfos) then
+        local guildRoot = root:CreateButton("|T135026:0|t "..ADDON.L.HOUSE_GUILDMEMBERS)
+        local guildHouses = GetValuesArray(ADDON.GuildHouseInfos)
+        table.sort(guildHouses, function(a, b)
+            return strcmputf8i(a.ownerName, b.ownerName) < 0
+        end)
+        for _, houseInfo in ipairs(guildHouses) do
+            buildRow(houseInfo, guildRoot)
+        end
+        root:QueueSpacer()
+    end
+
     -- continents
     do
         local groupedByContinent = {}
@@ -435,9 +517,6 @@ local function generateTeleportMenu(_, root)
         end
         local continents = GetKeysArray(groupedByContinent)
         if #continents > 0 then
-            if #favorites > 0 or #seasonSpells > 0 then
-                root:QueueSpacer()
-            end
             table.sort(continents, function(a, b) return a > b end)
             for _, continent in ipairs(continents) do
                 local list = SortRowsByName(groupedByContinent[continent])

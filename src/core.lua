@@ -61,6 +61,9 @@ function ADDON:GetName(row)
     if row.name then
         return row.name
     end
+    if row.ownerName then
+        return row.ownerName
+    end
     if row.instance then
         return GetRealZoneText(row.instance)
     end
