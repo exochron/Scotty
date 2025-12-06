@@ -15,6 +15,7 @@ Scotty improves your journey even further with some quality of life features:
 - You are a vulperan nomad and forgot where you pitched your camp? Scotty tracks it for you and provides handy menu options to camp.
 - Are you also annoyed of switching your equipment around because that one teleport to stormwind is on your cloak? Well Scotty even takes care of that by suiting you up automatically and changing you back after usage.
 - Did you forget which Wormhole button brings you to your destination or certain doom? Just choose one of Scotty's user-friendly locations and skip the following dialog automatically. The same goes for Mole Machines and the like.
+- Visit your friends and guild mates! All of their homes are also easily accessible.
 
 Like all gnomish inventions, there might be still some glitches here and there. Instead of being annoyed and instantly deleting Scotty again, please let me know about it, so we can improve Scotty together.
 Of course if you have a nice idea or suggestion, please let me know as well. You could even join the tinkering itself. :-)
