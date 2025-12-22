@@ -1,55 +1,11 @@
 local ADDON_NAME, ADDON = ...
 
-local equipQueue = {}
-local equipTicker
-local requestedItemEquip = {}
-
 local menuActionButton = CreateFrame("Button", nil, nil, "InsecureActionButtonTemplate")
 menuActionButton:SetAttribute("pressAndHoldAction", 1)
 menuActionButton:RegisterForClicks("LeftButtonUp")
 menuActionButton:SetPropagateMouseClicks(true)
 menuActionButton:SetPropagateMouseMotion(true)
 menuActionButton:Hide()
-
-local function equipItem(itemId)
-    if itemId then
-        local itemSlot = ADDON:GetItemSlot(itemId)
-
-        equipQueue[itemSlot] = itemId
-
-        ADDON.Events:RegisterFrameEventAndCallback("PLAYER_EQUIPMENT_CHANGED", function(_, equipmentSlot, hasCurrent)
-            if itemSlot == equipmentSlot and false == hasCurrent and C_Item.IsEquippedItem(itemId) then
-                if requestedItemEquip[itemSlot] == itemId then
-                    requestedItemEquip[itemSlot] = nil
-                end
-                ADDON.Events:UnregisterCallback("PLAYER_EQUIPMENT_CHANGED",'equipitem-'..itemId)
-            end
-        end, 'equipitem-'..itemId)
-
-        if not equipTicker or equipTicker:IsCancelled() then
-            equipTicker = C_Timer.NewTicker(0.2, function()
-                local requestedEquip = false
-
-                for queuedSlot, queuedItemId in pairs(equipQueue) do
-                    if queuedItemId and (
-                        requestedItemEquip[queuedSlot] ~= nil
-                        or not C_Item.IsEquippedItem(queuedItemId)
-                    ) then
-                        C_Item.EquipItemByName(queuedItemId, queuedSlot)
-                        requestedEquip = true
-                        requestedItemEquip[queuedSlot] = queuedItemId
-                        break
-                    end
-                end
-
-                if not requestedEquip then
-                    equipTicker:Cancel()
-                end
-            end)
-        end
-        equipTicker:Invoke()
-    end
-end
 
 local function OpenMenu(anchor, generator)
     local menuDescription = MenuUtil.CreateRootMenuDescription(MenuVariants.GetDefaultContextMenuMixin())
@@ -81,11 +37,16 @@ local function generateTeleportMenu(_, root)
             prefix = "|A:" .. icon .. ":16:16|a "
         end
 
+        local currentlyClicking = false
+
         local element = menuRoot:CreateButton(prefix..location, function()
             return MenuResponse.CloseAll
         end)
         element:HookOnEnter(function(frame)
-            menuActionButton:SetScript("PreClick", function() end)
+            menuActionButton:SetScript("PreClick", function()
+                currentlyClicking = true
+                ADDON.Events:TriggerEvent("OnInitializeTeleport", dbType, typeId, dbRow)
+            end)
             menuActionButton:SetScript("PostClick", function()
                 ADDON.Events:TriggerEvent("TeleportInitialized", dbType, typeId, dbRow)
             end)
@@ -96,6 +57,7 @@ local function generateTeleportMenu(_, root)
             menuActionButton:SetAllPoints(frame)
             menuActionButton:SetFrameStrata("TOOLTIP")
             menuActionButton:Show()
+            ADDON.Events:TriggerEvent("OnPrepareTeleport", dbType, typeId, dbRow)
         end)
         if tooltipSetter then
             element:HookOnEnter(function(frame)
@@ -116,6 +78,9 @@ local function generateTeleportMenu(_, root)
             GameTooltip:Hide()
             menuActionButton:Hide()
             menuActionButton:SetParent(nil)
+            if not currentlyClicking then
+                ADDON.Events:TriggerEvent("OnClearTeleport", dbType, typeId, dbRow)
+            end
         end)
         if hasCooldown then
             element:AddInitializer(function(button)
@@ -213,52 +178,18 @@ local function generateTeleportMenu(_, root)
     local function buildItemEntry(menuRoot, itemId, location, dbRow)
         local itemLocation = dbRow and dbRow.isEquippableItem and ADDON:GetItemSlot(itemId) or ADDON:FindItemInBags(itemId)
 
-        local element = buildEntry(
-                menuRoot,
-                "item",
-                itemLocation,
-                C_Item.GetItemIconByID(itemId),
-                location,
-                function(tooltip)
-                    GameTooltip.SetItemByID(tooltip, itemId)
-                end,
-                C_Container.GetItemCooldown(itemId) > 0,
-                dbRow
+        return buildEntry(
+            menuRoot,
+            "item",
+            itemLocation,
+            C_Item.GetItemIconByID(itemId),
+            location,
+            function(tooltip)
+                GameTooltip.SetItemByID(tooltip, itemId)
+            end,
+            C_Container.GetItemCooldown(itemId) > 0,
+            dbRow
         )
-        if dbRow and dbRow.isEquippableItem then
-
-            local previousEquippedItem = GetInventoryItemID("player", itemLocation)
-            local currentlyClicking = false
-
-            element:HookOnEnter(function()
-                equipItem(itemId)
-                menuActionButton:SetScript("PreClick", function()
-                    currentlyClicking = true
-
-                    if previousEquippedItem and previousEquippedItem ~= itemId then
-                        local successHandle, stopHandle, errorHandle
-                        local function reequipAfterTeleport(handlerName, unit)
-                            if handlerName == "reequip-on-error" or unit == "player" then
-                                equipItem(previousEquippedItem)
-                                successHandle:Unregister()
-                                stopHandle:Unregister()
-                                errorHandle:Unregister()
-                            end
-                        end
-                        successHandle = ADDON.Events:RegisterFrameEventAndCallbackWithHandle("UNIT_SPELLCAST_SUCCEEDED", reequipAfterTeleport, 'reequip-after-teleport')
-                        stopHandle = ADDON.Events:RegisterFrameEventAndCallbackWithHandle("UNIT_SPELLCAST_STOP", reequipAfterTeleport, 'reequip-after-teleport')
-                        errorHandle = ADDON.Events:RegisterFrameEventAndCallbackWithHandle("UI_ERROR_MESSAGE", reequipAfterTeleport, 'reequip-on-error')
-                    end
-                end)
-            end)
-            element:HookOnLeave(function()
-                if not currentlyClicking then
-                    equipItem(previousEquippedItem)
-                end
-            end)
-        end
-
-        return element
     end
 
     local function buildSpellEntry(menuRoot, spellId, location, portalId, dbRow)
@@ -408,6 +339,7 @@ local function generateTeleportMenu(_, root)
 
     do
         -- Player Houses
+        -- HousingDashboardFrame.HouseInfoContent.ContentFrame.HouseUpgradeFrame.TeleportToHouseButton
         for _, playerHouse in ipairs(ADDON.PlayerHouseInfos) do
             -- C_Housing.ReturnAfterVisitingHouse() taints hard. can not use that yet :-/
             --if C_HousingNeighborhood.CanReturnAfterVisitingHouse() and C_Housing.GetCurrentNeighborhoodGUID() == playerHouse.neighborhoodGUID then
@@ -531,7 +463,9 @@ end
 
 function ADDON:OpenTeleportMenu(frame)
     local anchor = CreateAnchor("TOP", frame, "BOTTOM")
-    return OpenMenu(anchor, generateTeleportMenu)
+    local menu = OpenMenu(anchor, generateTeleportMenu)
+    ADDON.Events:TriggerEvent("OnOpenTeleportMenu", menu)
+    return menu
 end
 function ADDON:OpenTeleportMenuAtCursor()
     local uiScale, x, y = UIParent:GetEffectiveScale(), GetCursorPosition()
@@ -544,6 +478,8 @@ function ADDON:OpenTeleportMenuAtCursor()
         anchor:Set("BOTTOMLEFT", UIParent, "BOTTOMLEFT", x, y)
         anchor:SetPoint(menu, true)
     end
+    ADDON.Events:TriggerEvent("OnOpenTeleportMenu", menu)
+    return menu
 end
 
 Scotty_OpenTeleportMenuAtCursor = ADDON.OpenTeleportMenuAtCursor

@@ -33,6 +33,7 @@ src/settings.lua
 src/menu-port.lua
 src/ldb.lua
 src/dialog-skip.lua
+src/equipment.lua
 src/command.lua
 src/waypoint.lua
 src/housing.lua
