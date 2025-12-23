@@ -1,5 +1,8 @@
 local ADDON_NAME, ADDON = ...
 
+ScottyAccountCache = ScottyAccountCache or {}
+ScottyPersonalCache = ScottyPersonalCache or {}
+
 ADDON.Events = CreateFromMixins(EventRegistry)
 ADDON.Events:OnLoad()
 ADDON.Events:SetUndefinedEventsAllowed(true)
@@ -79,8 +82,7 @@ ADDON.Events:RegisterCallback("OnLogin", function(self)
     if C_SpellBook.IsSpellInSpellBook(312372) then
         ADDON.Events:RegisterFrameEventAndCallback("UNIT_SPELLCAST_SUCCEEDED", function(_, _, _, spellId)
             if spellId == 312370 then
-                ScottyPersonalSettings = ScottyPersonalSettings or {}
-                ScottyPersonalSettings.VulperaCamp = GetZoneText()
+                ScottyPersonalCache.VulperaCamp = GetZoneText()
             end
         end, self)
     end
