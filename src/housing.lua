@@ -1,8 +1,14 @@
 local _, ADDON = ...
 
-ADDON.PlayerHouseInfos = {}
-ADDON.FriendsHouseInfos = {}
-ADDON.GuildHouseInfos = {}
+local PlayerHouseInfos = {}
+local FriendsHouseInfos = {}
+local GuildHouseInfos = {}
+
+ADDON.GetHouseInfos = function ()
+    return PlayerHouseInfos,
+            ScottyAccountCache["houseinfo-friends"] or FriendsHouseInfos,
+            ScottyPersonalCache["houseinfo-guild"] or GuildHouseInfos
+end
 
 local TICKER_INTERVAL = 0.5
 local friendsTicker, guildTicker
@@ -18,7 +24,7 @@ local function ScanGuildMembers()
             handle = ADDON.Events:RegisterFrameEventAndCallbackWithHandle("VIEW_HOUSES_LIST_RECIEVED", function(info, houseInfos)
                 for _, houseInfo in ipairs(houseInfos) do
                     if houseInfo.ownerName then
-                        ADDON.GuildHouseInfos[houseInfo.neighborhoodGUID..'-'..houseInfo.houseGUID..'-'..houseInfo.plotID] = houseInfo
+                        GuildHouseInfos[houseInfo.neighborhoodGUID..'-'..houseInfo.houseGUID..'-'..houseInfo.plotID] = houseInfo
                     end
                 end
                 handle:Unregister()
@@ -28,12 +34,14 @@ local function ScanGuildMembers()
             C_Housing.GetOthersOwnedHouses(info.guid, nil, true)
         else
             guildTicker:Cancel()
+            ScottyPersonalCache["houseinfo-guild"] = GuildHouseInfos
+            GuildHouseInfos = {}
         end
     end
 end
 local function StartScanningGuild()
     if IsInGuild() then
-        guildMembersToScan = C_Club.GetClubMembers(C_Club.GetGuildClubId(), clubId)
+        guildMembersToScan = C_Club.GetClubMembers(C_Club.GetGuildClubId())
         guildTicker = C_Timer.NewTicker(TICKER_INTERVAL, ScanGuildMembers)
     end
 end
@@ -46,14 +54,14 @@ local function ScanFriends()
             handle = ADDON.Events:RegisterFrameEventAndCallbackWithHandle("VIEW_HOUSES_LIST_RECIEVED", function(bnet, houseInfos)
                 for _, houseInfo in ipairs(houseInfos) do
                     local infoIndex = houseInfo.neighborhoodGUID..'-'..houseInfo.houseGUID..'-'..houseInfo.plotID
-                    if ADDON.FriendsHouseInfos[infoIndex] then
+                    if FriendsHouseInfos[infoIndex] then
                         -- server sometimes sends same response of previous request
                         C_Housing.GetOthersOwnedHouses(nil, bnet.bnetAccountID, false)
                         return
                     end
                     houseInfo.accountName = bnet.accountName
                     houseInfo.battleTag = bnet.battleTag
-                    ADDON.FriendsHouseInfos[infoIndex] = houseInfo
+                    FriendsHouseInfos[infoIndex] = houseInfo
                 end
                 handle:Unregister()
                 expectEvent = false
@@ -63,6 +71,8 @@ local function ScanFriends()
             C_Housing.GetOthersOwnedHouses(nil, bnetInfo.bnetAccountID, false)
         else
             friendsTicker:Cancel()
+            ScottyAccountCache["houseinfo-friends"] = FriendsHouseInfos
+            FriendsHouseInfos = {}
             StartScanningGuild()
         end
     end
@@ -84,7 +94,7 @@ ADDON.Events:RegisterCallback("OnLogin", function()
     if C_Housing and not playerIsTimerunning then
         -- see: https://warcraft.wiki.gg/wiki/PLAYER_HOUSE_LIST_UPDATED
         ADDON.Events:RegisterFrameEventAndCallback("PLAYER_HOUSE_LIST_UPDATED", function(_, houseInfos)
-            ADDON.PlayerHouseInfos = houseInfos
+            PlayerHouseInfos = houseInfos
         end, "player-housing")
         C_Housing.GetPlayerOwnedHouses() -- request loading player housing infos
 
