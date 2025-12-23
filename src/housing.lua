@@ -45,9 +45,15 @@ local function ScanFriends()
             local handle
             handle = ADDON.Events:RegisterFrameEventAndCallbackWithHandle("VIEW_HOUSES_LIST_RECIEVED", function(bnet, houseInfos)
                 for _, houseInfo in ipairs(houseInfos) do
+                    local infoIndex = houseInfo.neighborhoodGUID..'-'..houseInfo.houseGUID..'-'..houseInfo.plotID
+                    if ADDON.FriendsHouseInfos[infoIndex] then
+                        -- server sometimes sends same response of previous request
+                        C_Housing.GetOthersOwnedHouses(nil, bnet.bnetAccountID, false)
+                        return
+                    end
                     houseInfo.accountName = bnet.accountName
                     houseInfo.battleTag = bnet.battleTag
-                    ADDON.FriendsHouseInfos[houseInfo.neighborhoodGUID..'-'..houseInfo.houseGUID..'-'..houseInfo.plotID] = houseInfo
+                    ADDON.FriendsHouseInfos[infoIndex] = houseInfo
                 end
                 handle:Unregister()
                 expectEvent = false
