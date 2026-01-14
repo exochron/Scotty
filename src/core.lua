@@ -6,6 +6,11 @@ ScottyPersonalCache = ScottyPersonalCache or {}
 ADDON.Events = CreateFromMixins(EventRegistry)
 ADDON.Events:OnLoad()
 ADDON.Events:SetUndefinedEventsAllowed(true)
+-- Polyfill for split Unregister behaviour in 12.0
+-- Later: remove after classic has it
+if not ADDON.Events.UnregisterEventsByEventTable then
+    ADDON.Events.UnregisterEventsByEventTable = ADDON.Events.UnregisterEvents
+end
 
 ADDON.Events:RegisterFrameEventAndCallback("PLAYER_ENTERING_WORLD", function(_, isLogin, isReload)
     if isLogin or isReload then
@@ -13,7 +18,7 @@ ADDON.Events:RegisterFrameEventAndCallback("PLAYER_ENTERING_WORLD", function(_, 
         ADDON:InitDatabase()
         ADDON.Events:TriggerEvent("OnInit")
         ADDON.Events:TriggerEvent("OnLogin")
-        ADDON.Events:UnregisterEvents({"OnInit", "OnLogin"})
+        ADDON.Events:UnregisterEventsByEventTable({"OnInit", "OnLogin"})
         ADDON.Events:UnregisterFrameEvent("PLAYER_ENTERING_WORLD")
 
         if AddonCompartmentFrame then

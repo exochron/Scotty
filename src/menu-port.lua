@@ -90,6 +90,7 @@ local function buildEntry(menuRoot, dbType, typeId, icon, location, tooltipSette
             star:SetHighlightAtlas("auctionhouse-icon-favorite-off", "ADD")
             star:SetPoint("LEFT")
             star:SetSize(13, 12)
+            star:SetFrameStrata("TOOLTIP")
 
             parent.StarButton = star
             parent.fontString:SetPoint("LEFT", star, "RIGHT", 3, -1)
@@ -132,6 +133,7 @@ local function buildEntry(menuRoot, dbType, typeId, icon, location, tooltipSette
             star:SetScript("OnClick", nil)
             star:SetScript("OnEnter", nil)
             star:SetScript("OnLeave", nil)
+            star:SetFrameStrata("MEDIUM")
             star.UpdateTexture = nil
             parent.StarButton = nil
         end)
