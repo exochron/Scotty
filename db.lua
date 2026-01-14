@@ -22,6 +22,7 @@ function ADDON:InitDatabase()
 
     -- https://wago.tools/db2/DisplaySeason
     local WW_S3 = 30
+    local MN_S1 = 34
     local isTimerunner = PlayerIsTimerunning and PlayerIsTimerunning()
     local currentSeason = not isTimerunner and C_SeasonInfo and C_SeasonInfo.GetCurrentDisplaySeasonID() or 0
 
@@ -104,6 +105,8 @@ function ADDON:InitDatabase()
         {toy = (playerRace == "Worgen" and 211788), map = 179, continent = EASTERN_KINGDOMS}, -- Tess's Peacebloom
         {toy = 230850, name = DELVE_LABEL, continent = KHAZ_ALGAR, }, -- Delve-O-Bot 7001
         {toy = 243056, map = 2339, continent = KHAZ_ALGAR, }, -- Delver's Mana-Bound Ethergate
+        {toy = 253629, map = 2393, continent = EASTERN_KINGDOMS, }, -- Personal Key to the Arcantina
+        {toy = 263933, map = 2393, continent = EASTERN_KINGDOMS, }, -- Astalor's Summons
 
         {spell = 50977,
          map = LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_LEGION and 648 or 23,
@@ -239,6 +242,15 @@ function ADDON:InitDatabase()
         {spell = 1216786, instance = 2773, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Operation: Floodgate
         {spell = 1237215, instance = 2830, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Eco-Dome, Al'dani
         {spell = 1239155, instance = 2810, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Manaforge Omega
+        {spell = 1254400, instance = 2494, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Windrunner Spire
+        {spell = 1254572, instance = 2511, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Magisters' Terrace
+        {spell = 1254559, instance = 2501, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Maisara Cavern
+        {spell = 1254551, instance = 903, continent = BROKEN_ISLES, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Seat of the Triumvirate
+        {spell = 1254555, instance = 184, continent = NORTHREND, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Pit of Saron
+        {spell = 1254557, instance = 601, continent = DRAENOR, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Skyreach
+        {spell = 393273, instance = 2526, continent = DRAGON_ISLES, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Algeth'ar Academy
+        -- TODO: Nexus Point Xenas
+
         -- Legion Remix Dungeon Ports
         {spell = 424153, instance = 1501, continent = BROKEN_ISLES, category = (isTimerunner and ADDON.Category.SeasonInstance)}, -- Black Rook Hold
         {spell = 393764, instance = 1477, continent = BROKEN_ISLES, category = (isTimerunner and ADDON.Category.SeasonInstance)}, -- Halls of Valor
@@ -280,7 +292,6 @@ function ADDON:InitDatabase()
         {spell = 393256, instance = 2521, continent = DRAGON_ISLES}, -- Ruby Life Pools
         {spell = 393262, instance = 2516, continent = DRAGON_ISLES}, -- The Nokhud Offensive
         {spell = 393267, instance = 2520, continent = DRAGON_ISLES}, -- Brackenhide Hollow
-        {spell = 393273, instance = 2526, continent = DRAGON_ISLES}, -- Algeth'ar Academy
         {spell = 393276, instance = 2519, continent = DRAGON_ISLES}, -- Neltharus
         {spell = 393279, instance = 2515, continent = DRAGON_ISLES}, -- The Azure Vault
         {spell = 393283, instance = 2527, continent = DRAGON_ISLES}, -- Halls of Infusion
@@ -343,6 +354,8 @@ function ADDON:InitDatabase()
         {toy = 245970, category = ADDON.Category.Hearthstone}, -- P.O.S.T. Master's Express Hearthstone
         {toy = 260221, category = ADDON.Category.Hearthstone}, -- Naaru's Embrace (Classic)
         {toy = 263489, category = ADDON.Category.Hearthstone}, -- Naaru's Enfold (Retail)
+        {toy = 257736, category = ADDON.Category.Hearthstone}, -- Lightcalled Hearthstone
+        {toy = 265100, category = ADDON.Category.Hearthstone}, -- Corewarden's Hearthstone
     }
 
     -- the actual function C_Item.DoesItemExistByID() is misleading and only checks for non empty parameter.
