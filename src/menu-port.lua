@@ -412,7 +412,13 @@ local function generateTeleportMenu(_, root)
 
     -- friends houses
     if TableHasAnyEntries(friendsHouseInfos) then
-        local friendsRoot = root:CreateButton("|T-13:0|t "..ADDON.L.HOUSE_FRIENDS)
+        local appIconId = 0
+        C_Texture.GetTitleIconTexture("App", 0, function(success, fileId)
+            if success then
+                appIconId = fileId
+            end
+        end)
+        local friendsRoot = root:CreateButton("|T"..appIconId..":0|t "..ADDON.L.HOUSE_FRIENDS)
         local friendsHouses = GetValuesArray(friendsHouseInfos)
         -- AccountNames are protected Strings. so we can't use them for sorting.
         table.sort(friendsHouses, function(a, b)
