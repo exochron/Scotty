@@ -141,23 +141,6 @@ local function buildEntry(menuRoot, dbType, typeId, icon, location, tooltipSette
     return element
 end
 
-local function buildMacroEntry(menuRoot, macroText, icon, location, cooldown, dbRow)
-    local element = buildEntry(
-            menuRoot,
-            "macro",
-            nil,
-            icon,
-            location,
-            nil, --tooltip
-            cooldown,
-            dbRow
-    )
-    element:HookOnEnter(function()
-        menuActionButton:SetAttribute("macrotext", macroText)
-    end)
-    return element
-end
-
 local function buildToyEntry(menuRoot, itemId, location, dbRow)
     return buildEntry(
             menuRoot,
@@ -266,8 +249,12 @@ local function buildRow(row, menuRoot)
     elseif row.item then
         buildItemEntry(menuRoot, row.item, ADDON:GetName(row), row)
     elseif row.neighborhoodGUID and row.houseGUID and row.plotID then
-        local macroText = "/run C_Housing.VisitHouse(\""..row.neighborhoodGUID.."\",\""..row.houseGUID.."\",\""..row.plotID.."\")"
-        buildMacroEntry(menuRoot, macroText, "dashboard-panel-homestone-teleport-button", row.ownerName .. ": " .. row.houseName, nil, row)
+        local button = buildEntry(menuRoot, "visithouse", 0, "dashboard-panel-homestone-teleport-button", row.ownerName .. ": " .. row.houseName, nil, nil, row)
+        button:HookOnEnter(function()
+            menuActionButton:SetAttribute("house-neighborhood-guid", row.neighborhoodGUID)
+            menuActionButton:SetAttribute("house-guid", row.houseGUID)
+            menuActionButton:SetAttribute("house-plot-id", row.plotID)
+        end)
     end
 end
 
@@ -344,14 +331,19 @@ local function generateTeleportMenu(_, root)
         -- Player Houses
         -- HousingDashboardFrame.HouseInfoContent.ContentFrame.HouseUpgradeFrame.TeleportToHouseButton
         for _, playerHouse in ipairs(playerHouseInfos) do
-            -- C_Housing.ReturnAfterVisitingHouse() taints hard. can not use that yet :-/
-            --if C_HousingNeighborhood.CanReturnAfterVisitingHouse() and C_Housing.GetCurrentNeighborhoodGUID() == playerHouse.neighborhoodGUID then
-            --    buildClickEntry(root, "/run C_Housing.ReturnAfterVisitingHouse()", "dashboard-panel-homestone-teleport-out-button", HOUSING_DASHBOARD_RETURN)
-            --else
-            local cd = C_Housing.GetVisitCooldownInfo()
-            local macroText = "/run C_Housing.TeleportHome(\""..playerHouse.neighborhoodGUID.."\",\""..playerHouse.houseGUID.."\",\""..playerHouse.plotID.."\")"
-            buildMacroEntry(root, macroText, "dashboard-panel-homestone-teleport-button", playerHouse.houseName, cd.duration > 0)
-            --end
+            if C_HousingNeighborhood.CanReturnAfterVisitingHouse() and C_Housing.GetCurrentNeighborhoodGUID() == playerHouse.neighborhoodGUID then
+                --later: save return location
+                buildEntry(root, "returnhome", 0, "dashboard-panel-homestone-teleport-out-button", HOUSING_DASHBOARD_RETURN)
+            else
+                local cd = C_Housing.GetVisitCooldownInfo()
+                local button = buildEntry(root, "teleporthome", 0, "dashboard-panel-homestone-teleport-button", playerHouse.houseName, nil, cd.duration > 0)
+                button:HookOnEnter(function()
+                    menuActionButton:SetAttribute("house-neighborhood-guid", playerHouse.neighborhoodGUID)
+                    menuActionButton:SetAttribute("house-guid", playerHouse.houseGUID)
+                    menuActionButton:SetAttribute("house-plot-id", playerHouse.plotID)
+                end)
+            end
+            --later: add maybe tooltips
             hasGeneralSpells = true
         end
     end
@@ -425,8 +417,12 @@ local function generateTeleportMenu(_, root)
             return strcmputf8i(a.battleTag, b.battleTag) < 0
         end)
         for _, houseInfo in ipairs(friendsHouses) do
-            local macroText = "/run C_Housing.VisitHouse(\""..houseInfo.neighborhoodGUID.."\",\""..houseInfo.houseGUID.."\",\""..houseInfo.plotID.."\")"
-            buildMacroEntry(friendsRoot, macroText, "dashboard-panel-homestone-teleport-button", houseInfo.accountName .. ": " .. houseInfo.houseName, nil, houseInfo)
+            local button = buildEntry(friendsRoot, "visithouse", 0, "dashboard-panel-homestone-teleport-button", houseInfo.accountName .. ": " .. houseInfo.houseName, nil, nil, houseInfo)
+            button:HookOnEnter(function()
+                menuActionButton:SetAttribute("house-neighborhood-guid", houseInfo.neighborhoodGUID)
+                menuActionButton:SetAttribute("house-guid", houseInfo.houseGUID)
+                menuActionButton:SetAttribute("house-plot-id", houseInfo.plotID)
+            end)
         end
         if not TableHasAnyEntries(guildHousesInfos) then
             root:QueueSpacer()
