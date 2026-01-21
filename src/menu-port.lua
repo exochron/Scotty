@@ -332,8 +332,8 @@ local function generateTeleportMenu(_, root)
         -- HousingDashboardFrame.HouseInfoContent.ContentFrame.HouseUpgradeFrame.TeleportToHouseButton
         for _, playerHouse in ipairs(playerHouseInfos) do
             if C_HousingNeighborhood.CanReturnAfterVisitingHouse() and C_Housing.GetCurrentNeighborhoodGUID() == playerHouse.neighborhoodGUID then
-                --later: save return location
-                buildEntry(root, "returnhome", 0, "dashboard-panel-homestone-teleport-out-button", HOUSING_DASHBOARD_RETURN)
+                local location = ScottyPersonalCache.PlayerHomeReturn or HOUSING_DASHBOARD_RETURN
+                buildEntry(root, "returnhome", 0, "dashboard-panel-homestone-teleport-out-button", location)
             else
                 local cd = C_Housing.GetVisitCooldownInfo()
                 local button = buildEntry(root, "teleporthome", 0, "dashboard-panel-homestone-teleport-button", playerHouse.houseName, nil, cd.duration > 0)
