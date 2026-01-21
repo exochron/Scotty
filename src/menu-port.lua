@@ -333,10 +333,14 @@ local function generateTeleportMenu(_, root)
         for _, playerHouse in ipairs(playerHouseInfos) do
             if C_HousingNeighborhood.CanReturnAfterVisitingHouse() and C_Housing.GetCurrentNeighborhoodGUID() == playerHouse.neighborhoodGUID then
                 local location = ScottyPersonalCache.PlayerHomeReturn or HOUSING_DASHBOARD_RETURN
-                buildEntry(root, "returnhome", 0, "dashboard-panel-homestone-teleport-out-button", location)
+                buildEntry(root, "returnhome", 0, "dashboard-panel-homestone-teleport-out-button", location, function(tooltip)
+                    GameTooltip_AddHighlightLine(tooltip, HOUSING_DASHBOARD_RETURN);
+                end)
             else
                 local cd = C_Housing.GetVisitCooldownInfo()
-                local button = buildEntry(root, "teleporthome", 0, "dashboard-panel-homestone-teleport-button", playerHouse.houseName, nil, cd.duration > 0)
+                local button = buildEntry(root, "teleporthome", 0, "dashboard-panel-homestone-teleport-button", playerHouse.houseName, function(tooltip)
+        			GameTooltip_AddHighlightLine(tooltip, HOUSING_DASHBOARD_TELEPORT_TO_PLOT);
+                end, cd.duration > 0)
                 button:HookOnEnter(function()
                     menuActionButton:SetAttribute("house-neighborhood-guid", playerHouse.neighborhoodGUID)
                     menuActionButton:SetAttribute("house-guid", playerHouse.houseGUID)
