@@ -1,4 +1,4 @@
-## Interface: 120000, 110207, 50503
+## Interface: 120000, 50503
 ## Title: Scotty
 ## Notes: Your personal transportation assistant
 ## Author: eXochron
@@ -37,6 +37,7 @@ src/equipment.lua
 src/command.lua
 src/waypoint.lua
 src/housing.lua
+src/save-location.lua
 
 #@do-not-package@
 DevZone\Screenshot.lua

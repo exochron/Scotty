@@ -81,14 +81,3 @@ function ADDON:GetName(row)
 
     return ""
 end
-
--- detect Vulperas Make Camp location
-ADDON.Events:RegisterCallback("OnLogin", function(self)
-    if C_SpellBook.IsSpellInSpellBook(312372) then
-        ADDON.Events:RegisterFrameEventAndCallback("UNIT_SPELLCAST_SUCCEEDED", function(_, _, _, spellId)
-            if spellId == 312370 then
-                ScottyPersonalCache.VulperaCamp = GetZoneText()
-            end
-        end, self)
-    end
-end, "vulpera-camp")
