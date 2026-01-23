@@ -3,14 +3,8 @@ local _, ADDON = ...
 -- Later as Library?
 -- Later: Reset Button
 
-local DropdownWithLabelMixin = {}
-function DropdownWithLabelMixin:SetEnabled(enabled)
-    self.Dropdown:SetEnabled(enabled)
-end
-ScottySetting_DropdownWithLabelMixin = CreateFromMixins(DropdownWithLabelMixin)
-
-local DropdownControlMixin = {}
-function DropdownControlMixin:SetupDropdownMenu(dropdown, setting, options, initTooltip)
+ScottySetting_DropdownControlMixin = {}
+function ScottySetting_DropdownControlMixin:SetupDropdownMenu(dropdown, setting, options, initTooltip)
     local function IsSelected(optionData)
         return tContains(setting:GetValue(), optionData.value)
     end
@@ -28,28 +22,24 @@ function DropdownControlMixin:SetupDropdownMenu(dropdown, setting, options, init
         return MenuResponse.Refresh
     end
 
-    local function inserter(rootDescription)
-        for _, optionData in ipairs(options()) do
-            rootDescription:CreateCheckbox(optionData.text.." ", IsSelected, OnSelect, optionData)
+    local function inserter(setting, rootDescription)
+        if Settings.CreateDropdownCheckbox then -- retail
+            for _, optionData in ipairs(options()) do
+                Settings.CreateDropdownCheckbox(rootDescription, optionData, IsSelected, OnSelect)
+            end
+        else -- classic; cleanup later
+            rootDescription = setting
+            for _, optionData in ipairs(options()) do
+                rootDescription:CreateCheckbox(optionData.text.." ", IsSelected, OnSelect, optionData)
+            end
         end
     end
 
     Settings.InitDropdown(dropdown, setting, inserter, initTooltip)
-
-    -- align dropdown field
-    local point, relativeTo, relativePoint, _, offsetY = dropdown:GetParent():GetPoint(1)
-    dropdown:GetParent():SetPoint(point, relativeTo, relativePoint, -78, offsetY)
-
-    if setting.modifyDropdownCallback then
-        local callback = setting.modifyDropdownCallback
-        callback(dropdown)
-    end
 end
-ScottySetting_DropdownControlMixin = CreateFromMixins(DropdownControlMixin)
 
-function ADDON:CreateMultiSelectDropdownButton(layout, setting, optionCallback, tooltipText, modifyDropdownCallback)
-    setting.modifyDropdownCallback = modifyDropdownCallback
-
+function ADDON:CreateMultiSelectDropdownButton(layout, setting, optionCallback, tooltipText)
     local initializer = Settings.CreateControlInitializer("ScottySetting_MultiSelectTemplate", setting, optionCallback, tooltipText)
     layout:AddInitializer(initializer)
+    return initializer
 end
