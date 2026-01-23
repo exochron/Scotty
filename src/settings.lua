@@ -45,19 +45,22 @@ local function registerSettings()
             return row.toy and row.category == ADDON.Category.Hearthstone and PlayerHasToy(row.toy)
         end, true)
         for _, row in pairs(hearthstones) do
-            container:Add(row.toy, "|T" .. (C_Item.GetItemIconByID(row.toy) or "") .. ":0|t "..(cachedItemNames[row.toy] or ""))
+            local label = "|T" .. (C_Item.GetItemIconByID(row.toy) or "") .. ":0|t "..(cachedItemNames[row.toy] or "")
+            if not container.AddCheckbox then -- classic; cleanup later
+                container:Add(row.toy, label)
+            else -- retail
+                container:AddCheckbox(row.toy, label)
+            end
         end
         return container:GetData();
     end
     local hearthstonesSetting = Settings.RegisterAddOnSetting(category, ADDON_NAME.."_HEARTHSTONES", "hearthstones",
-            ScottyGlobalSettings, "table", "Choose favorite Hearthstones", {})
+            ScottyGlobalSettings, "table", L.SETTING_HEARTHSTONES, {})
     if #HearthstoneOptions() > 0 then
-        ADDON:CreateMultiSelectDropdownButton(layout, hearthstonesSetting, HearthstoneOptions, "You can narrow down your favorite Hearthstones for the Randomizer. With an empty list, it automatically uses all available Hearthstones.", function(dropdown)
-            dropdown:SetDefaultText(ALL)
-            if dropdown:GetText() == CUSTOM then
-                dropdown:SetText(ALL)
-            end
-        end)
+        local initializer = ADDON:CreateMultiSelectDropdownButton(layout, hearthstonesSetting, HearthstoneOptions, L.SETTING_HEARTHSTONES_TOOLTIP)
+        initializer.getSelectionTextFunc = function(selections)
+            return #selections == 0 and ALL or nil
+        end
     end
 
     local function onButtonClick()
