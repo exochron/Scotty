@@ -7,6 +7,8 @@ menuActionButton:SetPropagateMouseClicks(true)
 menuActionButton:SetPropagateMouseMotion(true)
 menuActionButton:Hide()
 
+local tooltip = CreateFrame("GameTooltip", "ScottyMenuToolTip", UIParent, "GameTooltipTemplate")
+
 local function OpenMenu(anchor, generator)
     local menuDescription = MenuUtil.CreateRootMenuDescription(MenuVariants.GetDefaultContextMenuMixin())
 
@@ -67,21 +69,21 @@ local function buildEntry(menuRoot, dbType, typeId, icon, location, tooltipSette
     end)
     if tooltipSetter then
         element:HookOnEnter(function(frame)
-            GameTooltip:SetOwner(frame, "ANCHOR_NONE")
-            GameTooltip:ClearLines()
-            tooltipSetter(GameTooltip)
+            tooltip:SetOwner(frame, "ANCHOR_NONE")
+            tooltip:ClearLines()
+            tooltipSetter(tooltip)
             local left, _, width = frame:GetRect()
             local remainingSpaceOnRight = GetScreenWidth() - left - width
-            if remainingSpaceOnRight < GameTooltip:GetWidth() then
-                GameTooltip:SetPoint("TOPRIGHT", frame, "TOPLEFT") -- on left side
+            if remainingSpaceOnRight < tooltip:GetWidth() then
+                tooltip:SetPoint("TOPRIGHT", frame, "TOPLEFT") -- on left side
             else
-                GameTooltip:SetPoint("TOPLEFT", frame, "TOPRIGHT") -- on right side
+                tooltip:SetPoint("TOPLEFT", frame, "TOPRIGHT") -- on right side
             end
-            GameTooltip:Show()
+            tooltip:Show()
         end)
     end
     element:HookOnLeave(function()
-        GameTooltip:Hide()
+        tooltip:Hide()
         menuActionButton:Hide()
         menuActionButton:SetParent(nil)
         if not currentlyClicking then
@@ -108,14 +110,14 @@ local function buildEntry(menuRoot, dbType, typeId, icon, location, tooltipSette
             star:SetScript("OnEnter", function()
                 local isFavorite = not ADDON.Api.IsFavorite(dbRow)
 
-                GameTooltip:SetOwner(star, "ANCHOR_CURSOR")
-                GameTooltip:ClearLines()
-                GameTooltip:SetText(isFavorite and BATTLE_PET_FAVORITE or BATTLE_PET_UNFAVORITE)
-                GameTooltip:AddLine(ADDON.L.FAVORITE_TOOLTIP_TEXT)
-                GameTooltip:Show()
+                tooltip:SetOwner(star, "ANCHOR_CURSOR")
+                tooltip:ClearLines()
+                tooltip:SetText(isFavorite and BATTLE_PET_FAVORITE or BATTLE_PET_UNFAVORITE)
+                tooltip:AddLine(ADDON.L.FAVORITE_TOOLTIP_TEXT)
+                tooltip:Show()
             end)
             star:SetScript("OnLeave", function()
-                GameTooltip:Hide()
+                tooltip:Hide()
             end)
             star:SetScript("OnClick", function(self)
                 local isFavorite = not ADDON.Api.IsFavorite(dbRow)
@@ -222,17 +224,17 @@ local function buildSpellEntry(menuRoot, spellId, location, portalId, dbRow)
                 end)
             end)
             portalButton:SetScript("OnEnter", function()
-                GameTooltip.SetSpellByID(GameTooltip, portalId)
+                GameTooltip.SetSpellByID(tooltip, portalId)
                 menuActionButton:SetAttribute("spell", portalId)
             end)
             portalButton:SetScript("OnLeave", function()
-                GameTooltip.SetSpellByID(GameTooltip, spellId)
+                GameTooltip.SetSpellByID(tooltip, spellId)
                 menuActionButton:SetAttribute("spell", spellId)
             end)
         end)
         element:HookOnEnter(function(parent)
             if parent.PortalButton and parent.PortalButton:IsMouseOver() then
-                GameTooltip.SetSpellByID(GameTooltip, portalId)
+                GameTooltip.SetSpellByID(tooltip, portalId)
                 menuActionButton:SetAttribute("spell", portalId)
             end
         end)
