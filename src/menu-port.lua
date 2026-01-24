@@ -37,6 +37,16 @@ local function GetHousingIcon(neighborhoodGUID)
     return "dashboard-panel-homestone-teleport-button"
 end
 
+local function GetBnetIcon()
+    local appIconId = 0
+    C_Texture.GetTitleIconTexture("App", 0, function(success, fileId)
+      if success then
+          appIconId = fileId
+      end
+    end)
+    return appIconId
+end
+
 local function buildEntry(menuRoot, dbType, typeId, icon, location, tooltipSetter, hasCooldown, dbRow)
     local prefix = ""
     if type(icon) == "number" then
@@ -422,13 +432,7 @@ local function generateTeleportMenu(_, root)
 
     -- friends houses
     if TableHasAnyEntries(friendsHouseInfos) then
-        local appIconId = 0
-        C_Texture.GetTitleIconTexture("App", 0, function(success, fileId)
-            if success then
-                appIconId = fileId
-            end
-        end)
-        local friendsRoot = root:CreateButton("|T"..appIconId..":0|t "..ADDON.L.HOUSE_FRIENDS)
+        local friendsRoot = root:CreateButton("|T"..GetBnetIcon()..":0|t "..ADDON.L.HOUSE_FRIENDS)
         friendsRoot:SetScrollMode(GetScreenHeight() - 100)
         local friendsHouses = GetValuesArray(friendsHouseInfos)
         -- AccountNames are protected Strings. so we can't use them for sorting.
@@ -509,3 +513,8 @@ function ADDON:OpenTeleportMenuAtCursor()
 end
 
 Scotty_OpenTeleportMenuAtCursor = ADDON.OpenTeleportMenuAtCursor
+
+ADDON.Events:RegisterCallback("OnLogin", function()
+    -- Make sure Icon is loaded
+    GetBnetIcon()
+end, "cache-icons")
