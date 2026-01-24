@@ -366,6 +366,7 @@ local function generateTeleportMenu(_, root)
             local favoriteRoot = root
             if Settings.GetValue(ADDON_NAME.."_GROUP_FAVORITES") then
                 favoriteRoot = root:CreateButton(FAVORITES)
+                favoriteRoot:SetScrollMode(GetScreenHeight() - 100)
             else
                 favoriteRoot:CreateTitle(FAVORITES)
             end
@@ -389,6 +390,7 @@ local function generateTeleportMenu(_, root)
                     root:QueueSpacer()
                 end
                 seasonRoot = root:CreateButton(currentSeasonName)
+                seasonRoot:SetScrollMode(GetScreenHeight() - 100)
             else
                 if #favorites > 0 then
                     root:QueueSpacer()
@@ -415,6 +417,7 @@ local function generateTeleportMenu(_, root)
             end
         end)
         local friendsRoot = root:CreateButton("|T"..appIconId..":0|t "..ADDON.L.HOUSE_FRIENDS)
+        friendsRoot:SetScrollMode(GetScreenHeight() - 100)
         local friendsHouses = GetValuesArray(friendsHouseInfos)
         -- AccountNames are protected Strings. so we can't use them for sorting.
         table.sort(friendsHouses, function(a, b)
@@ -435,6 +438,7 @@ local function generateTeleportMenu(_, root)
     -- guild member houses
     if TableHasAnyEntries(guildHousesInfos) then
         local guildRoot = root:CreateButton("|T135026:0|t "..ADDON.L.HOUSE_GUILDMEMBERS)
+        guildRoot:SetScrollMode(GetScreenHeight() - 100)
         local guildHouses = GetValuesArray(guildHousesInfos)
         table.sort(guildHouses, function(a, b)
             return strcmputf8i(a.ownerName, b.ownerName) < 0
@@ -462,6 +466,7 @@ local function generateTeleportMenu(_, root)
             for _, continent in ipairs(continents) do
                 local list = SortRowsByName(groupedByContinent[continent])
                 local continentRoot = root:CreateButton(GetRealZoneText(continent))
+                continentRoot:SetScrollMode(GetScreenHeight() - 100)
                 for _, row in ipairs(list) do
                     buildRow(row, continentRoot)
                 end
