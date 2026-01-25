@@ -213,7 +213,12 @@ local function buildSpellEntry(menuRoot, spellId, location, portalId, dbRow)
 
     if portalId and C_SpellBook.IsSpellInSpellBook(portalId) then
         element:AddInitializer(function(button, elementDescription, menu)
-            local portalButton = button:AttachTemplate("WowMenuAutoHideButtonTemplate")
+            local portalButton
+            if MenuTemplates.AttachBasicButton then -- retail
+                portalButton = MenuTemplates.AttachBasicButton(button)
+            else -- classic
+                portalButton = button:AttachTemplate("WowMenuAutoHideButtonTemplate")
+            end
 
             portalButton:SetNormalFontObject("GameFontHighlight")
             portalButton:SetHighlightFontObject("GameFontHighlight")
@@ -222,6 +227,10 @@ local function buildSpellEntry(menuRoot, spellId, location, portalId, dbRow)
             portalButton:SetPoint("RIGHT")
             portalButton:SetPoint("BOTTOM", button.fontString)
             button.PortalButton = portalButton
+
+            if portalButton.Texture then
+                portalButton.Texture:SetTexture() --reset previous textures
+            end
 
             local cooldown = C_Spell.GetSpellCooldown(portalId)
             if cooldown.duration > 0 or not C_Spell.IsSpellUsable(portalId) then
@@ -253,6 +262,7 @@ local function buildSpellEntry(menuRoot, spellId, location, portalId, dbRow)
             portal:ClearAllPoints()
             portal:SetSize(0,0)
             portal:SetText("")
+            portal:SetAlpha(1.0)
             portal:SetScript("OnClick", nil)
             portal:SetScript("OnEnter", nil)
             portal:SetScript("OnLeave", nil)
