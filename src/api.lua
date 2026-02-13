@@ -5,32 +5,33 @@ local tInsertUnique = tInsertUnique
 local tIndexOf = tIndexOf
 local tUnorderedRemove = tUnorderedRemove
 local tInvert = tInvert
+local tFilter = tFilter
 
 ADDON.Api = {}
 
 local function buildFavoriteKey(dbRow)
-    local type, typeId
+    local dbType, dbTypeId
 
-    if dbRow.neighborhoodGUID and dbRow.houseGUID and dbRow.plotID then
-        type = "house"
-        typeId = dbRow.neighborhoodGUID..'-'..dbRow.houseGUID..'-'..dbRow.plotID
+    if dbRow.neighborhoodGUID and dbRow.plotID then
+        dbType = "house"
+        dbTypeId = dbRow.neighborhoodGUID..'-'..dbRow.plotID
     elseif dbRow.toy then
-        type = "toy"
-        typeId = dbRow.toy
+        dbType = "toy"
+        dbTypeId = dbRow.toy
     elseif dbRow.item then
-        type = "item"
-        typeId = dbRow.item
+        dbType = "item"
+        dbTypeId = dbRow.item
     elseif dbRow.spell then
-        type = "spell"
-        typeId = dbRow.spell
+        dbType = "spell"
+        dbTypeId = dbRow.spell
     end
-    if type and typeId then
+    if dbType and dbTypeId then
         if dbRow.isMultiDestination and dbRow.map then
-            return type, typeId.."-"..dbRow.map
+            return dbType, dbTypeId.."-"..dbRow.map
         elseif dbRow.isMultiDestination then
-            return type, typeId.."-"..dbRow.continent
+            return dbType, dbTypeId.."-"..dbRow.continent
         end
-        return type, typeId
+        return dbType, dbTypeId
     end
 end
 
@@ -73,15 +74,17 @@ ADDON.Api.GetFavoriteDatabase = function()
     end, true)
 
     local _, friendsHouseInfos, guildHouseInfos = ADDON.GetHouseInfos()
-    for k, v in pairs(friendsHouseInfos) do
-        if favoriteHouses[k] then
-            table.insert(dbRows, v)
-            favoriteHouses[k] = nil
+    for _, friendsHouse in pairs(friendsHouseInfos) do
+        local _, key = buildFavoriteKey(friendsHouse)
+        if favoriteHouses[key] then
+            table.insert(dbRows, friendsHouse)
+            favoriteHouses[key] = nil
         end
     end
-    for k, v in pairs(guildHouseInfos) do
-        if favoriteHouses[k] then
-            table.insert(dbRows, v)
+    for _, guildHouse in pairs(guildHouseInfos) do
+        local _, key = buildFavoriteKey(guildHouse)
+        if favoriteHouses[key] then
+            table.insert(dbRows, guildHouse)
         end
     end
 
