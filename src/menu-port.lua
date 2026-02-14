@@ -1,5 +1,7 @@
 local ADDON_NAME, ADDON = ...
 
+local MENU_TAG = ADDON_NAME.."-LDB-Teleport"
+
 local menuActionButton = CreateFrame("Button", nil, nil, "InsecureActionButtonTemplate")
 menuActionButton:SetAttribute("pressAndHoldAction", 1)
 menuActionButton:RegisterForClicks("LeftButtonUp")
@@ -281,7 +283,11 @@ local function buildRow(row, menuRoot)
     elseif row.item then
         buildItemEntry(menuRoot, row.item, ADDON:GetName(row), row)
     elseif row.neighborhoodGUID and row.houseGUID and row.plotID then
-        local button = buildEntry(menuRoot, "visithouse", 0, GetHousingIcon(row.neighborhoodGUID), row.ownerName .. ": " .. row.houseName, nil, nil, row)
+        local houseName = row.houseName
+        if row.ownerName then
+            houseName = row.ownerName .. ": " .. houseName
+        end
+        local button = buildEntry(menuRoot, "visithouse", 0, GetHousingIcon(row.neighborhoodGUID), houseName, nil, nil, row)
         button:HookOnEnter(function()
             menuActionButton:SetAttribute("house-neighborhood-guid", row.neighborhoodGUID)
             menuActionButton:SetAttribute("house-guid", row.houseGUID)
@@ -323,7 +329,7 @@ local function SortRowsByName(list)
 end
 
 local function generateTeleportMenu(_, root)
-    root:SetTag(ADDON_NAME.."-LDB-Teleport")
+    root:SetTag(MENU_TAG)
     root:SetScrollMode(GetScreenHeight() - 100)
 
     local hasGeneralSpells = false
@@ -528,3 +534,11 @@ ADDON.Events:RegisterCallback("OnLogin", function()
     -- Make sure Icon is loaded
     GetBnetIcon()
 end, "cache-icons")
+
+-- close open menu when entering combat
+ADDON.Events:RegisterFrameEventAndCallback("PLAYER_REGEN_DISABLED", function()
+    local openTags = Menu.GetOpenMenuTags()
+    if tContains(openTags, MENU_TAG) then
+        Menu:GetManager():CloseMenus()
+    end
+end, "close-open-menu")
