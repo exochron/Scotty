@@ -494,7 +494,16 @@ local function generateTeleportMenu(_, root)
         end
         local continents = GetKeysArray(groupedByContinent)
         if #continents > 0 then
-            table.sort(continents, function(a, b) return a > b end)
+            if GetExpansionLevel() == LE_EXPANSION_MIDNIGHT then
+                -- push eastern kingdoms to the top
+                table.sort(continents, function(a, b)
+                    if a == 0 then return true end
+                    if b == 0 then return false end
+                    return a > b
+                end)
+            else
+                table.sort(continents, function(a, b) return a > b end)
+            end
             for _, continent in ipairs(continents) do
                 local list = SortRowsByName(groupedByContinent[continent])
                 local continentRoot = root:CreateButton(GetRealZoneText(continent))

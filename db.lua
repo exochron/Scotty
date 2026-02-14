@@ -23,8 +23,8 @@ function ADDON:InitDatabase()
     -- https://wago.tools/db2/DisplaySeason
     local WW_S3 = 30
     local MN_S1 = 34
-    local isTimerunner = PlayerIsTimerunning and PlayerIsTimerunning()
-    local currentSeason = not isTimerunner and C_SeasonInfo and C_SeasonInfo.GetCurrentDisplaySeasonID() or 0
+    --local isTimerunner = PlayerIsTimerunning and PlayerIsTimerunning()
+    local currentSeason = C_SeasonInfo and C_SeasonInfo.GetCurrentDisplaySeasonID() or 0
 
     local isAlliance = UnitFactionGroup("player") == "Alliance"
     local isHorde = UnitFactionGroup("player") == "Horde"
@@ -94,7 +94,7 @@ function ADDON:InitDatabase()
         {item = 166560, map = 1161, continent = KUL_TIRAS, isEquippableItem = true}, -- Captain's Signet of Command
         {item = 202046, map = 942, continent = KUL_TIRAS}, -- Lucky Tortollan Charm
         {item = 219222, map = 554, continent = PANDARIA}, -- Time-Lost Artifact
-        {item = 238727, map = 627, continent = BROKEN_ISLES}, -- Nostwin's Voucher (consumable to Infinite Bazaar)
+        --{item = 238727, map = 627, continent = BROKEN_ISLES}, -- Nostwin's Voucher (consumable to Infinite Bazaar during Remix event)
         {toy = isAlliance and 110560, map = 582, quest=34586, name=GARRISON_LOCATION_TOOLTIP, continent = DRAENOR}, -- Garrison Hearthstone (alliance)
         {toy = isHorde and 110560, map = 590, quest=34378, name=GARRISON_LOCATION_TOOLTIP, continent = DRAENOR}, -- Garrison Hearthstone (horde)
         {toy = 140192, map = 627, continent = BROKEN_ISLES}, -- Dalaran Hearthstone -- todo: lookup quest
@@ -154,6 +154,14 @@ function ADDON:InitDatabase()
         {spell = 344587, portal = 344597, map = 1670, continent = SHADOWLANDS}, -- Oribos
         {spell = 395277, portal = 395289, map = 2134, continent = DRAGON_ISLES}, -- Valdraken
         {spell = 446540, portal = 446534, map = 2339, continent = KHAZ_ALGAR}, -- Dornogal
+
+        -- Haranir Rootwalking
+        -- TODO waypoints
+        {spell = 1260715, isMultiDestination = true, map = 2413, continent = EASTERN_KINGDOMS}, -- Harandar
+        {spell = 1260715, isMultiDestination = true, map = 62, continent = KALIMDOR}, -- Darkshore
+        {spell = 1260715, isMultiDestination = true, map = 198, continent = KALIMDOR}, -- Mount Hyjal
+        {spell = 1260715, isMultiDestination = true, map = 641, continent = BROKEN_ISLES}, -- Val'sharah
+        {spell = 1260715, isMultiDestination = true, map = 2239, continent = DRAGON_ISLES}, -- Amirdrassil
 
         -- Mole Machine of Dark Iron Dwarfes
         -- from https://www.wowhead.com/spell=265225/mole-machine#comments:id=2579704 Kudos to P3lim
@@ -245,19 +253,11 @@ function ADDON:InitDatabase()
         {spell = 1254400, instance = 2494, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Windrunner Spire
         {spell = 1254572, instance = 2511, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Magisters' Terrace
         {spell = 1254559, instance = 2501, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Maisara Cavern
+        {spell = 1255391, instance = 2556, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Nexus Point Xenas
         {spell = 1254551, instance = 903, continent = BROKEN_ISLES, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Seat of the Triumvirate
         {spell = 1254555, instance = 184, continent = NORTHREND, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Pit of Saron
         {spell = 1254557, instance = 601, continent = DRAENOR, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Skyreach
         {spell = 393273, instance = 2526, continent = DRAGON_ISLES, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Algeth'ar Academy
-        -- TODO: Nexus Point Xenas
-
-        -- Legion Remix Dungeon Ports
-        {spell = 424153, instance = 1501, continent = BROKEN_ISLES, category = (isTimerunner and ADDON.Category.SeasonInstance)}, -- Black Rook Hold
-        {spell = 393764, instance = 1477, continent = BROKEN_ISLES, category = (isTimerunner and ADDON.Category.SeasonInstance)}, -- Halls of Valor
-        {spell = 393766, instance = 1571, continent = BROKEN_ISLES, category = (isTimerunner and ADDON.Category.SeasonInstance)}, -- Court of Stars
-        {spell = 410078, instance = 1458, continent = BROKEN_ISLES, category = (isTimerunner and ADDON.Category.SeasonInstance)}, -- Neltharion's Lair
-        {spell = 424163, instance = 1466, continent = BROKEN_ISLES, category = (isTimerunner and ADDON.Category.SeasonInstance)}, -- Darkheart Thicket
-        {spell = 373262, instance = 532, continent = EASTERN_KINGDOMS, category = (isTimerunner and ADDON.Category.SeasonInstance)}, -- Karazhan
 
         -- Older Dungeon Ports
         {spell = 131204, instance = 960, continent = PANDARIA}, -- Temple of the Jade Serpent
@@ -287,6 +287,7 @@ function ADDON:InitDatabase()
         {spell = 373190, instance = 2296, continent = SHADOWLANDS}, -- Castle Nathria
         {spell = 373191, instance = 2450, continent = SHADOWLANDS}, -- Sanctum of Domination
         {spell = 373192, instance = 2481, continent = SHADOWLANDS}, -- Sepulcher of the First Ones
+        {spell = 373262, instance = 532, continent = EASTERN_KINGDOMS}, -- Karazhan
         {spell = 373274, instance = 2097, continent = KUL_TIRAS,}, -- Operation: Mechagon
         {spell = 393222, instance = 2451, continent = EASTERN_KINGDOMS}, -- Uldaman: Legacy of Tyr
         {spell = 393256, instance = 2521, continent = DRAGON_ISLES}, -- Ruby Life Pools
@@ -295,10 +296,15 @@ function ADDON:InitDatabase()
         {spell = 393276, instance = 2519, continent = DRAGON_ISLES}, -- Neltharus
         {spell = 393279, instance = 2515, continent = DRAGON_ISLES}, -- The Azure Vault
         {spell = 393283, instance = 2527, continent = DRAGON_ISLES}, -- Halls of Infusion
+        {spell = 393764, instance = 1477, continent = BROKEN_ISLES}, -- Halls of Valor
+        {spell = 393766, instance = 1571, continent = BROKEN_ISLES}, -- Court of Stars
         {spell = 410071, instance = 1754, continent = KUL_TIRAS}, -- Freehold
         {spell = 410074, instance = 1841, continent = ZANDALAR}, -- The Underrot
+        {spell = 410078, instance = 1458, continent = BROKEN_ISLES}, -- Neltharion's Lair
         {spell = 410080, instance = 657, continent = KALIMDOR}, -- The Vortex Pinnacle
         {spell = 424142, instance = 643, continent = EASTERN_KINGDOMS}, -- Throne of the Tides
+        {spell = 424153, instance = 1501, continent = BROKEN_ISLES}, -- Black Rook Hold
+        {spell = 424163, instance = 1466, continent = BROKEN_ISLES}, -- Darkheart Thicket
         {spell = 424167, instance = 1862, continent = KUL_TIRAS}, -- Waycrest Manor
         {spell = 424187, instance = 1763, continent = ZANDALAR}, -- Atal'Dazar
         {spell = 424197, instance = 2579, continent = DRAGON_ISLES}, -- Dawn of the Infinite
