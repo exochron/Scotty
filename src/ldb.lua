@@ -72,7 +72,7 @@ local function buildHearthstoneButton()
         end
 
         local item = C_Container.PlayerHasHearthstone and C_Container.PlayerHasHearthstone()
-                or ADDON:FindItemInBags(HEARTHSTONE_ITEM_ID) and HEARTHSTONE_ITEM_ID
+                or HEARTHSTONE_ITEM_ID and ADDON:FindItemInBags(HEARTHSTONE_ITEM_ID)
         if item then
             self:SetAttribute("type", "item")
             self:SetAttribute("typerelease", "item")
