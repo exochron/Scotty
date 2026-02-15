@@ -5,8 +5,12 @@ local _, ADDON = ...
 -- see: https://warcraft.wiki.gg/wiki/UiMapID & https://warcraft.wiki.gg/wiki/InstanceID
 -- or: /dump WorldMapFrame:GetMapID()
 
+-- todo: dundun's abundant travel method
+-- todo: Wanderer Liu (shop pet) https://warcraft.wiki.gg/wiki/Wanderer_Liu
+
 function ADDON:InitDatabase()
 
+    -- Instance IDs of continents
     local EASTERN_KINGDOMS = 0
     local KALIMDOR = 1
     local OUTLAND = 530
@@ -14,6 +18,7 @@ function ADDON:InitDatabase()
     local PANDARIA = 870
     local DRAENOR = 1116
     local BROKEN_ISLES = 1220
+    local MAELSTROM = 1572
     local ZANDALAR = 1642
     local KUL_TIRAS = 1643
     local SHADOWLANDS = 2222
@@ -41,6 +46,7 @@ function ADDON:InitDatabase()
     local db = {
         -- Various Items and Toys
         -- isEquippableItem is actually also available via api. However it requires cached item data.
+        -- https://warcraft.wiki.gg/wiki/Category:Teleportation_items
 
         {item = 21711, map = 80, continent = KALIMDOR}, -- Lunar Festival Invitation
         {item = 22589, map = 350, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Atiesh, Greatstaff of the Guardian
@@ -68,6 +74,7 @@ function ADDON:InitDatabase()
         {item = 51559, map = 125, continent = NORTHREND, isEquippableItem = true}, -- Runed Ring of the Kirin Tor
         {item = 51560, map = 125, continent = NORTHREND, isEquippableItem = true}, -- Runed Band of the Kirin Tor
         {item = 52251, map = 125, continent = NORTHREND}, -- Jaina's Locket
+        {item = 58487, map = 207, continent = MAELSTROM, consumable=true}, -- Potion of Deepholm
         {item = 63206, map = 84, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Wrap of Unity
         {item = 63207, map = 85, continent = KALIMDOR, isEquippableItem = true}, -- Wrap of Unity
         {item = 63352, map = 84, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Shroud of Cooperation
@@ -84,6 +91,7 @@ function ADDON:InitDatabase()
         {item = 118907, map = 500, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Pit Fighter's Punching Ring
         {item = 118908, map = 503, continent = KALIMDOR, isEquippableItem = true}, -- Pit Fighter's Punching Ring
         {item = 128353, map = (isAlliance and 539 or 525), continent = DRAENOR}, -- Admiral's Compass
+        {item = 129276, map = 630, continent = BROKEN_ISLES}, -- Beginner's Guide to Dimensional Rifting
         {item = 138448, map = 627, continent = BROKEN_ISLES}, -- Emblem of Margoss
         {item = 139590, map = 25, continent = EASTERN_KINGDOMS}, -- Scroll of Teleport: Ravenholdt
         {item = 139599, map = 627, continent = BROKEN_ISLES, isEquippableItem = true}, -- Empowered Ring of the Kirin Tor
@@ -92,9 +100,11 @@ function ADDON:InitDatabase()
         {item = 144392, map = 503, continent = KALIMDOR, isEquippableItem = true}, -- Pugilist's Powerful Punching Ring
         {item = 166559, map = 1165, continent = ZANDALAR, isEquippableItem = true}, -- Commander's Signet of Battle
         {item = 166560, map = 1161, continent = KUL_TIRAS, isEquippableItem = true}, -- Captain's Signet of Command
+        {item = 167075, map = 1462, continent = KUL_TIRAS, consumable=true}, -- Ultrasafe Transporter: Mechagon
         {item = 202046, map = 942, continent = KUL_TIRAS}, -- Lucky Tortollan Charm
         {item = 219222, map = 554, continent = PANDARIA}, -- Time-Lost Artifact
-        --{item = 238727, map = 627, continent = BROKEN_ISLES}, -- Nostwin's Voucher (consumable to Infinite Bazaar during Remix event)
+        --{item = 238727, map = 627, continent = BROKEN_ISLES, consumable=true}, -- Nostwin's Voucher (consumable to Infinite Bazaar during Remix event)
+        {item = 246771, map = 2537, continent = EASTERN_KINGDOMS, consumable=true}, -- Warping Wise (consumable fish that teleports randomly)
         {toy = isAlliance and 110560, map = 582, quest=34586, name=GARRISON_LOCATION_TOOLTIP, continent = DRAENOR}, -- Garrison Hearthstone (alliance)
         {toy = isHorde and 110560, map = 590, quest=34378, name=GARRISON_LOCATION_TOOLTIP, continent = DRAENOR}, -- Garrison Hearthstone (horde)
         {toy = 140192, map = 627, continent = BROKEN_ISLES}, -- Dalaran Hearthstone -- todo: lookup quest

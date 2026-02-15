@@ -51,11 +51,16 @@ function ADDON:GetItemSlot(itemId)
 end
 
 function ADDON:FindItemInBags(itemId)
-    for bagID = 0, NUM_BAG_SLOTS do
-        local numSlots = C_Container.GetContainerNumSlots(bagID)
+    local maxBags = NUM_BAG_SLOTS
+    if LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_DRAGONFLIGHT then
+        maxBags = maxBags+1 -- include reagent bag
+    end
+
+    for containerID = 0, maxBags do
+        local numSlots = C_Container.GetContainerNumSlots(containerID)
         for slotID = 1, numSlots do
-            if C_Container.GetContainerItemID(bagID, slotID) == itemId then
-                return bagID.." "..slotID
+            if C_Container.GetContainerItemID(containerID, slotID) == itemId then
+                return containerID.." "..slotID
             end
         end
     end
