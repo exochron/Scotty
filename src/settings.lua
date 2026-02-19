@@ -39,6 +39,17 @@ local function registerSettings()
         Settings.CreateCheckbox(category, groupSeasonSetting)
     end
 
+    local showFriendsHouses = Settings.RegisterAddOnSetting(category, ADDON_NAME.."_SHOW_FRIENDS_HOUSES", "showFriendsHouses",
+            ScottyGlobalSettings, Settings.VarType.Boolean, "Show Houses of Battle.net friends", Settings.Default.True)
+    if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then -- no seasons in classic yet
+        Settings.CreateCheckbox(category, showFriendsHouses)
+    end
+    local showGuildHouses = Settings.RegisterAddOnSetting(category, ADDON_NAME.."_SHOW_GUILD_HOUSES", "showGuildHouses",
+            ScottyGlobalSettings, Settings.VarType.Boolean, "Show Houses of guild members", Settings.Default.True)
+    if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then -- no seasons in classic yet
+        Settings.CreateCheckbox(category, showGuildHouses)
+    end
+
     local function HearthstoneOptions()
         local container = Settings.CreateControlTextContainer();
         local hearthstones = tFilter(ADDON.db, function(row)

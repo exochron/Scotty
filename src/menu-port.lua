@@ -455,7 +455,7 @@ local function generateTeleportMenu(_, root)
     end
 
     -- friends houses
-    if TableHasAnyEntries(friendsHouseInfos) then
+    if Settings.GetValue(ADDON_NAME.."_SHOW_FRIENDS_HOUSES") and TableHasAnyEntries(friendsHouseInfos) then
         local friendsRoot = root:CreateButton("|T"..GetBnetIcon()..":0|t "..ADDON.L.HOUSE_FRIENDS)
         friendsRoot:SetScrollMode(GetScreenHeight() - 100)
         local friendsHouses = GetValuesArray(friendsHouseInfos)
@@ -471,12 +471,12 @@ local function generateTeleportMenu(_, root)
                 menuActionButton:SetAttribute("house-plot-id", houseInfo.plotID)
             end)
         end
-        if not TableHasAnyEntries(guildHousesInfos) then
+        if not Settings.GetValue(ADDON_NAME.."_SHOW_GUILD_HOUSES") or not TableHasAnyEntries(guildHousesInfos) then
             root:QueueSpacer()
         end
     end
     -- guild member houses
-    if TableHasAnyEntries(guildHousesInfos) then
+    if Settings.GetValue(ADDON_NAME.."_SHOW_GUILD_HOUSES") and TableHasAnyEntries(guildHousesInfos) then
         local guildRoot = root:CreateButton("|T135026:0|t "..ADDON.L.HOUSE_GUILDMEMBERS)
         guildRoot:SetScrollMode(GetScreenHeight() - 100)
         local guildHouses = GetValuesArray(guildHousesInfos)
