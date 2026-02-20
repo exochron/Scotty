@@ -20,8 +20,13 @@ local function ScanGuildMembers()
         local memberId = table.remove(guildMembersToScan)
         local info = memberId and C_Club.GetMemberInfo(C_Club.GetGuildClubId(), memberId)
         if info then
+            if issecretvalue(info) then
+                -- retry on next tick
+                table.insert(guildMembersToScan, memberId)
+                return
+            end
             local handle
-            handle = ADDON.Events:RegisterFrameEventAndCallbackWithHandle("VIEW_HOUSES_LIST_RECIEVED", function(info, houseInfos)
+            handle = ADDON.Events:RegisterFrameEventAndCallbackWithHandle("VIEW_HOUSES_LIST_RECIEVED", function(_, houseInfos)
                 for _, houseInfo in ipairs(houseInfos) do
                     if houseInfo.ownerName then
                         GuildHouseInfos[houseInfo.neighborhoodGUID..'-'..houseInfo.houseGUID..'-'..houseInfo.plotID] = houseInfo
@@ -42,7 +47,11 @@ end
 local function StartScanningGuild()
     if IsInGuild() then
         guildMembersToScan = C_Club.GetClubMembers(C_Club.GetGuildClubId())
-        guildTicker = C_Timer.NewTicker(TICKER_INTERVAL, ScanGuildMembers)
+        if issecretvalue(guildMembersToScan) then
+            C_Timer.After(10, StartScanningGuild)
+        else
+            guildTicker = C_Timer.NewTicker(TICKER_INTERVAL, ScanGuildMembers)
+        end
     end
 end
 
