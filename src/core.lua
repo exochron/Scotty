@@ -86,3 +86,20 @@ function ADDON:GetName(row)
 
     return ""
 end
+
+function ADDON:BuildCooldownString(cooldownEndTime, asSuffix)
+    local cdTime = cooldownEndTime - GetTime()
+    local value = ""
+    if cdTime > 3600 then
+        value = string.format("%.1fh", cdTime / 3600)
+    elseif cdTime > 60 then
+        value = string.format("%dm", cdTime / 60)
+    elseif cdTime > 0 then
+        value = string.format("%ds", cdTime)
+    end
+    if value ~= "" and asSuffix then
+        return " ["..value.."]"
+    end
+
+    return value
+end
