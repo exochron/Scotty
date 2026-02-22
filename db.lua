@@ -5,9 +5,6 @@ local _, ADDON = ...
 -- see: https://warcraft.wiki.gg/wiki/UiMapID & https://warcraft.wiki.gg/wiki/InstanceID
 -- or: /dump WorldMapFrame:GetMapID()
 
--- todo: dundun's abundant travel method
--- todo: Wanderer Liu (shop pet) https://warcraft.wiki.gg/wiki/Wanderer_Liu
-
 function ADDON:InitDatabase()
 
     -- Instance IDs of continents
@@ -104,7 +101,7 @@ function ADDON:InitDatabase()
         {item = 202046, map = 942, continent = KUL_TIRAS}, -- Lucky Tortollan Charm
         {item = 219222, map = 554, continent = PANDARIA}, -- Time-Lost Artifact
         --{item = 238727, map = 627, continent = BROKEN_ISLES, consumable=true}, -- Nostwin's Voucher (consumable to Infinite Bazaar during Remix event)
-        {item = 246771, map = 2537, continent = EASTERN_KINGDOMS, consumable=true}, -- Warping Wise (consumable fish that teleports randomly)
+        {item = 238379, map = 2537, continent = EASTERN_KINGDOMS, consumable=true}, -- Warping Wise (consumable fish that teleports randomly)
         {toy = isAlliance and 110560, map = 582, quest=34586, name=GARRISON_LOCATION_TOOLTIP, continent = DRAENOR}, -- Garrison Hearthstone (alliance)
         {toy = isHorde and 110560, map = 590, quest=34378, name=GARRISON_LOCATION_TOOLTIP, continent = DRAENOR}, -- Garrison Hearthstone (horde)
         {toy = 140192, map = 627, continent = BROKEN_ISLES}, -- Dalaran Hearthstone -- todo: lookup quest
@@ -117,6 +114,7 @@ function ADDON:InitDatabase()
         {toy = 243056, map = 2339, continent = KHAZ_ALGAR, }, -- Delver's Mana-Bound Ethergate
         {toy = 253629, map = 2393, continent = EASTERN_KINGDOMS, }, -- Personal Key to the Arcantina
         {toy = 263933, map = 2393, continent = EASTERN_KINGDOMS, }, -- Astalor's Summons
+        {toy = 266370, name = C_Spell.GetSpellName(1248190), continent = EASTERN_KINGDOMS, }, -- Dundun's Abundant Travel Method
 
         {spell = 50977,
          map = LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_LEGION and 648 or 23,
@@ -250,6 +248,7 @@ function ADDON:InitDatabase()
         {toy = isEngineer and 221966, isMultiDestination = true, map = 2248, continent = KHAZ_ALGAR, gossip={122361}}, -- Wormhole Generator: Khaz Algar - Isle of Dorn
         {toy = isEngineer and 221966, isMultiDestination = true, map = 2255, continent = KHAZ_ALGAR, gossip={122358}}, -- Wormhole Generator: Khaz Algar - Azj-Kahet
         {toy = isEngineer and 221966, isMultiDestination = true, accountQuest = 86630, map = 2346, continent = KHAZ_ALGAR, gossip={131563}}, -- Wormhole Generator: Khaz Algar - Undermine
+        {toy = isEngineer and 248485, map = 2537, continent = EASTERN_KINGDOMS}, -- Wormhole Generator: Quel'Thalas
 
         -- Seasonal Dungeon Port
         {spell = 354465, instance = 2287, continent = SHADOWLANDS, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Halls of Atonement
