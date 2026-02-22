@@ -192,18 +192,46 @@ ADDON.Events:RegisterCallback("OnLogin", function()
         end,
     } )
 
+    local cooldownTicker
     hearthstoneButton:HookScript("OnAttributeChanged", function(_, name, value)
+
         if value and (name == "toy" or name == "itemid") then
+            if cooldownTicker then
+                cooldownTicker:Cancel()
+                cooldownTicker = nil
+            end
             local item = Item:CreateFromItemID(value)
             item:ContinueOnItemLoad(function()
                 ldbDataObject.label = item:GetItemName()
                 ldbDataObject.icon = item:GetItemIcon()
+                local cdTime, cdDuration = C_Container.GetItemCooldown(value)
+                if cdTime > 0 then
+                    ldbDataObject.value = ADDON:BuildCooldownString(cdTime + cdDuration)
+                    cooldownTicker = C_Timer.NewTicker(1, function()
+                        ldbDataObject.value = ADDON:BuildCooldownString(cdTime + cdDuration)
+                    end, cdTime + cdDuration - GetTime() + 1)
+                else
+                    ldbDataObject.value = ""
+                end
             end)
         elseif value and name == "spell" then
+            if cooldownTicker then
+                cooldownTicker:Cancel()
+                cooldownTicker = nil
+            end
             local spell = Spell:CreateFromSpellID(value)
             spell:ContinueOnSpellLoad(function()
                 ldbDataObject.label = spell:GetSpellName()
                 ldbDataObject.icon = spell:GetSpellTexture()
+                local cooldown = C_Spell.GetSpellCooldown(value)
+                if cooldown and cooldown.startTime > 0 then
+                    ldbDataObject.value = ADDON:BuildCooldownString(cooldown.startTime + cooldown.duration)
+                    cooldownTicker = C_Timer.NewTicker(1, function()
+                        ldbDataObject.value = ADDON:BuildCooldownString(cooldown.startTime + cooldown.duration)
+                    end, cooldown.startTime + cooldown.duration - GetTime() + 1)
+                else
+                    ldbDataObject.value = ""
+                end
             end)
         end
     end)

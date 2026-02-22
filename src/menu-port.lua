@@ -9,7 +9,7 @@ menuActionButton:SetPropagateMouseClicks(true)
 menuActionButton:SetPropagateMouseMotion(true)
 menuActionButton:Hide()
 
-local tooltip = CreateFrame("GameTooltip", "ScottyMenuToolTip", UIParent, "GameTooltipTemplate")
+local scottyTooltip = CreateFrame("GameTooltip", "ScottyMenuToolTip", UIParent, "GameTooltipTemplate")
 
 local function OpenMenu(anchor, generator)
     local menuDescription = MenuUtil.CreateRootMenuDescription(MenuVariants.GetDefaultContextMenuMixin())
@@ -50,16 +50,16 @@ local function GetBnetIcon()
 end
 
 local function buildEntry(menuRoot, dbType, typeId, icon, location, tooltipSetter, hasCooldown, dbRow)
-    local prefix = ""
+    local buttonText = location
     if type(icon) == "number" then
-        prefix = "|T" .. icon .. ":0|t "
+        buttonText = "|T" .. icon .. ":0|t "..location
     elseif type(icon) == "string" then
-        prefix = "|A:" .. icon .. ":16:16|a "
+        buttonText = "|A:" .. icon .. ":16:16|a "..location
     end
 
     local currentlyClicking = false
 
-    local element = menuRoot:CreateButton(prefix..location, function()
+    local element = menuRoot:CreateButton(buttonText, function()
         return MenuResponse.CloseAll
     end)
     element:HookOnEnter(function(frame)
@@ -81,21 +81,21 @@ local function buildEntry(menuRoot, dbType, typeId, icon, location, tooltipSette
     end)
     if tooltipSetter then
         element:HookOnEnter(function(frame)
-            tooltip:SetOwner(frame, "ANCHOR_NONE")
-            tooltip:ClearLines()
-            tooltipSetter(tooltip)
+            scottyTooltip:SetOwner(frame, "ANCHOR_NONE")
+            scottyTooltip:ClearLines()
+            tooltipSetter(scottyTooltip)
             local left, _, width = frame:GetRect()
             local remainingSpaceOnRight = GetScreenWidth() - left - width
-            if remainingSpaceOnRight < tooltip:GetWidth() then
-                tooltip:SetPoint("TOPRIGHT", frame, "TOPLEFT") -- on left side
+            if remainingSpaceOnRight < scottyTooltip:GetWidth() then
+                scottyTooltip:SetPoint("TOPRIGHT", frame, "TOPLEFT") -- on left side
             else
-                tooltip:SetPoint("TOPLEFT", frame, "TOPRIGHT") -- on right side
+                scottyTooltip:SetPoint("TOPLEFT", frame, "TOPRIGHT") -- on right side
             end
-            tooltip:Show()
+            scottyTooltip:Show()
         end)
     end
     element:HookOnLeave(function()
-        tooltip:Hide()
+        scottyTooltip:Hide()
         menuActionButton:Hide()
         menuActionButton:SetParent(nil)
         if not currentlyClicking then
@@ -103,8 +103,31 @@ local function buildEntry(menuRoot, dbType, typeId, icon, location, tooltipSette
         end
     end)
     if hasCooldown then
+        local cdTimer
         element:AddInitializer(function(button)
+            local cdSuffix = ""
+            if type(hasCooldown) == "number" then
+                cdSuffix = ADDON:BuildCooldownString(hasCooldown, true)
+            end
+            button.fontString:SetText(buttonText.. cdSuffix)
             button.fontString:SetAlpha(0.5)
+            if (cdSuffix ~= "" and hasCooldown - GetTime() <= 60) then
+                cdTimer = C_Timer.NewTicker(1, function()
+                    if button.fontString then
+                        cdSuffix = ADDON:BuildCooldownString(hasCooldown, true)
+                        button.fontString:SetText(buttonText.. cdSuffix)
+                        if cdSuffix == "" then
+                            button.fontString:SetAlpha(1)
+                        end
+                    end
+                end, hasCooldown - GetTime() + 1)
+            end
+        end)
+        element:AddResetter(function(button)
+            button.fontString:SetAlpha(1)
+            if cdTimer then
+                cdTimer:Cancel()
+            end
         end)
     end
     if dbRow then
@@ -122,14 +145,14 @@ local function buildEntry(menuRoot, dbType, typeId, icon, location, tooltipSette
             star:SetScript("OnEnter", function()
                 local isFavorite = not ADDON.Api.IsFavorite(dbRow)
 
-                tooltip:SetOwner(star, "ANCHOR_CURSOR")
-                tooltip:ClearLines()
-                tooltip:SetText(isFavorite and BATTLE_PET_FAVORITE or BATTLE_PET_UNFAVORITE)
-                tooltip:AddLine(ADDON.L.FAVORITE_TOOLTIP_TEXT)
-                tooltip:Show()
+                scottyTooltip:SetOwner(star, "ANCHOR_CURSOR")
+                scottyTooltip:ClearLines()
+                scottyTooltip:SetText(isFavorite and BATTLE_PET_FAVORITE or BATTLE_PET_UNFAVORITE)
+                scottyTooltip:AddLine(ADDON.L.FAVORITE_TOOLTIP_TEXT)
+                scottyTooltip:Show()
             end)
             star:SetScript("OnLeave", function()
-                tooltip:Hide()
+                scottyTooltip:Hide()
             end)
             star:SetScript("OnClick", function(self)
                 local isFavorite = not ADDON.Api.IsFavorite(dbRow)
@@ -166,6 +189,14 @@ local function buildEntry(menuRoot, dbType, typeId, icon, location, tooltipSette
 end
 
 local function buildToyEntry(menuRoot, itemId, location, dbRow)
+
+    local cdTime, cdDuration = C_Container.GetItemCooldown(itemId)
+    if cdTime > 0 then
+        cdTime = cdTime + cdDuration
+    else
+        cdTime = false
+    end
+
     return buildEntry(
             menuRoot,
             "toy",
@@ -175,7 +206,7 @@ local function buildToyEntry(menuRoot, itemId, location, dbRow)
             function(tooltip)
                 GameTooltip.SetToyByItemID(tooltip, itemId)
             end,
-            not C_ToyBox.IsToyUsable(itemId) or C_Container.GetItemCooldown(itemId) > 0,
+            cdTime or not C_ToyBox.IsToyUsable(itemId),
             dbRow
     )
 end
@@ -191,6 +222,13 @@ local function buildItemEntry(menuRoot, itemId, location, dbRow)
         end
     end
 
+    local cdTime, cdDuration = C_Container.GetItemCooldown(itemId)
+    if cdTime > 0 then
+        cdTime = cdTime + cdDuration
+    else
+        cdTime = false
+    end
+
     return buildEntry(
         menuRoot,
         "item",
@@ -200,13 +238,17 @@ local function buildItemEntry(menuRoot, itemId, location, dbRow)
         function(tooltip)
             GameTooltip.SetItemByID(tooltip, itemId)
         end,
-        C_Container.GetItemCooldown(itemId) > 0,
+        cdTime,
         dbRow
     )
 end
 
 local function buildSpellEntry(menuRoot, spellId, location, portalId, dbRow)
-    local cooldown = C_Spell.GetSpellCooldown(spellId)
+    local cdTime = false
+    local spellCooldown = C_Spell.GetSpellCooldown(spellId)
+    if spellCooldown and spellCooldown.startTime > 0 then
+        cdTime = spellCooldown.startTime + spellCooldown.duration
+    end
 
     local element = buildEntry(
             menuRoot,
@@ -217,7 +259,7 @@ local function buildSpellEntry(menuRoot, spellId, location, portalId, dbRow)
             function(tooltip)
                 GameTooltip.SetSpellByID(tooltip, spellId)
             end,
-            cooldown.duration > 0 or not C_Spell.IsSpellUsable(spellId),
+            cdTime or not C_Spell.IsSpellUsable(spellId),
             dbRow
     )
 
@@ -242,8 +284,8 @@ local function buildSpellEntry(menuRoot, spellId, location, portalId, dbRow)
                 portalButton.Texture:SetTexture() --reset previous textures
             end
 
-            local cooldown = C_Spell.GetSpellCooldown(portalId)
-            if cooldown.duration > 0 or not C_Spell.IsSpellUsable(portalId) then
+            local portalCooldown = C_Spell.GetSpellCooldown(portalId)
+            if portalCooldown.duration > 0 or not C_Spell.IsSpellUsable(portalId) then
                 portalButton:SetAlpha(0.5)
             end
 
@@ -253,17 +295,17 @@ local function buildSpellEntry(menuRoot, spellId, location, portalId, dbRow)
                 end)
             end)
             portalButton:SetScript("OnEnter", function()
-                GameTooltip.SetSpellByID(tooltip, portalId)
+                GameTooltip.SetSpellByID(scottyTooltip, portalId)
                 menuActionButton:SetAttribute("spell", portalId)
             end)
             portalButton:SetScript("OnLeave", function()
-                GameTooltip.SetSpellByID(tooltip, spellId)
+                GameTooltip.SetSpellByID(scottyTooltip, spellId)
                 menuActionButton:SetAttribute("spell", spellId)
             end)
         end)
         element:HookOnEnter(function(parent)
             if parent.PortalButton and parent.PortalButton:IsMouseOver() then
-                GameTooltip.SetSpellByID(tooltip, portalId)
+                GameTooltip.SetSpellByID(scottyTooltip, portalId)
                 menuActionButton:SetAttribute("spell", portalId)
             end
         end)
@@ -383,10 +425,15 @@ local function generateTeleportMenu(_, root)
                     GameTooltip_AddHighlightLine(tooltip, HOUSING_DASHBOARD_RETURN);
                 end)
             else
-                local cd = C_Housing.GetVisitCooldownInfo()
+                local houseCooldown = false
+                local houseTpCd = C_Housing.GetVisitCooldownInfo()
+                if houseTpCd.startTime > 0 then
+                    houseCooldown = houseTpCd.startTime + houseTpCd.duration
+                end
+
                 local button = buildEntry(root, "teleporthome", 0, GetHousingIcon(playerHouse.neighborhoodGUID), playerHouse.houseName, function(tooltip)
         			GameTooltip_AddHighlightLine(tooltip, HOUSING_DASHBOARD_TELEPORT_TO_PLOT);
-                end, cd.duration > 0)
+                end, houseCooldown)
                 button:HookOnEnter(function()
                     menuActionButton:SetAttribute("house-neighborhood-guid", playerHouse.neighborhoodGUID)
                     menuActionButton:SetAttribute("house-guid", playerHouse.houseGUID)
