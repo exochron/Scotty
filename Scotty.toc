@@ -39,6 +39,7 @@ src/command.lua
 src/waypoint.lua
 src/housing.lua
 src/save-location.lua
+src/class.lua
 
 #@do-not-package@
 DevZone\Screenshot.lua
