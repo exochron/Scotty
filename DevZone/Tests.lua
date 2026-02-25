@@ -59,7 +59,7 @@ local function TestDB()
 end
 
 -- quest checker for dragonflight wormhole triangulation
-local minQuestId, maxQuestId = 10000, 76017
+local minQuestId, maxQuestId = 70500, 80000
 local quests = {}
 local function InitialCheckQuests()
     for i = minQuestId, maxQuestId do
@@ -75,10 +75,11 @@ function Scotty_RecheckQuests()
            print("Found Completed Quest!", i)
         end
     end
-    print("finished check")
+    alert("Finished Check")
 end
 
 ADDON.Events:RegisterCallback("OnLogin", function()
     TestDB()
     --InitialCheckQuests()
+    --alert("Checks Completed!")
 end, "tests")

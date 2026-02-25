@@ -5,6 +5,8 @@ local _, ADDON = ...
 -- see: https://warcraft.wiki.gg/wiki/UiMapID & https://warcraft.wiki.gg/wiki/InstanceID
 -- or: /dump WorldMapFrame:GetMapID()
 
+-- todo: A Reaves teleport option for legion
+
 function ADDON:InitDatabase()
 
     -- Instance IDs of continents
@@ -240,6 +242,7 @@ function ADDON:InitDatabase()
         {toy = isEngineer and 198156, isMultiDestination = true, quest = {70576,70577,70578}, map = 2023, continent = DRAGON_ISLES, gossip={63910}}, -- Wyrmhole Generator: Dragon Isles - Ohn'ahran Plains
         {toy = isEngineer and 198156, isMultiDestination = true, quest = {70579,70580,70581}, map = 2024, continent = DRAGON_ISLES, gossip={63909}}, -- Wyrmhole Generator: Dragon Isles - The Azure Span
         {toy = isEngineer and 198156, isMultiDestination = true, quest = {70583,70584,70585}, map = 2025, continent = DRAGON_ISLES, gossip={63908}}, -- Wyrmhole Generator: Dragon Isles - Thaldraszus
+        {toy = isEngineer and 198156, isMultiDestination = true, quest = {73143,73144,73145}, map = 2151, continent = DRAGON_ISLES, gossip={108016}}, -- Wyrmhole Generator: Dragon Isles - Forbidden Reach
         {toy = isEngineer and 198156, isMultiDestination = true, quest = 76017, map = 2133, continent = DRAGON_ISLES, gossip={109715}}, -- Wyrmhole Generator: Dragon Isles - Zaralek Cavern
         {toy = isEngineer and 198156, isMultiDestination = true, map = 2200, continent = DRAGON_ISLES, gossip={114080}}, -- Wyrmhole Generator: Dragon Isles -.Emerald Dream
         {toy = isEngineer and 221966, isMultiDestination = true, map = 2274, continent = KHAZ_ALGAR, gossip={122362}}, -- Wormhole Generator: Khaz Algar - Random
