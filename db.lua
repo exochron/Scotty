@@ -5,8 +5,6 @@ local _, ADDON = ...
 -- see: https://warcraft.wiki.gg/wiki/UiMapID & https://warcraft.wiki.gg/wiki/InstanceID
 -- or: /dump WorldMapFrame:GetMapID()
 
--- todo: A Reaves teleport option for legion
-
 function ADDON:InitDatabase()
 
     -- Instance IDs of continents
@@ -226,6 +224,16 @@ function ADDON:InitDatabase()
         {toy = isEngineer and 112059, isMultiDestination = true, map = 542, continent = DRAENOR, gossip={42586}}, -- Wormhole Centrifuge - Spires of Arak
         {toy = isEngineer and 112059, isMultiDestination = true, map = 543, continent = DRAENOR, gossip={42590}}, -- Wormhole Centrifuge - Gorgrond
         {toy = isEngineer and 112059, isMultiDestination = true, map = 550, continent = DRAENOR, gossip={42589}}, -- Wormhole Centrifuge - Nagrand
+        {item = isEngineer and 132523, isMultiDestination = true, quest = 40738, map = 630, gossip={44987, 46325}, consumable=true, continent = BROKEN_ISLES}, -- Reaves Battery - Azsuna
+        {item = isEngineer and 132523, isMultiDestination = true, quest = 40738, map = 641, gossip={44987, 46326}, consumable=true, continent = BROKEN_ISLES}, -- Reaves Battery - Val'sharah
+        {item = isEngineer and 132523, isMultiDestination = true, quest = 40738, map = 650, gossip={44987, 46327}, consumable=true, continent = BROKEN_ISLES}, -- Reaves Battery - Highmountain
+        {item = isEngineer and 132523, isMultiDestination = true, quest = 40738, map = 634, gossip={44987, 46328}, consumable=true, continent = BROKEN_ISLES}, -- Reaves Battery - Stormheim
+        {item = isEngineer and 132523, isMultiDestination = true, quest = 40738, map = 680, gossip={44987, 46329}, consumable=true, continent = BROKEN_ISLES}, -- Reaves Battery - Suramar
+        {item = isEngineer and 144341, isMultiDestination = true, quest = 40738, map = 630, gossip={44987, 46325}, continent = BROKEN_ISLES}, -- Rechargeable Reaves Battery - Azsuna
+        {item = isEngineer and 144341, isMultiDestination = true, quest = 40738, map = 641, gossip={44987, 46326}, continent = BROKEN_ISLES}, -- Rechargeable Reaves Battery - Val'sharah
+        {item = isEngineer and 144341, isMultiDestination = true, quest = 40738, map = 650, gossip={44987, 46327}, continent = BROKEN_ISLES}, -- Rechargeable Reaves Battery - Highmountain
+        {item = isEngineer and 144341, isMultiDestination = true, quest = 40738, map = 634, gossip={44987, 46328}, continent = BROKEN_ISLES}, -- Rechargeable Reaves Battery - Stormheim
+        {item = isEngineer and 144341, isMultiDestination = true, quest = 40738, map = 680, gossip={44987, 46329}, continent = BROKEN_ISLES}, -- Rechargeable Reaves Battery - Suramar
         {toy = isEngineer and 151652, map = 994, continent = BROKEN_ISLES}, -- Wormhole Generator: Argus
         {toy = isEngineer and 168807, map = 992, continent = KUL_TIRAS}, -- Wormhole Generator: Kul Tiras
         {toy = isEngineer and 168808, map = 991, continent = ZANDALAR}, -- Wormhole Generator: Zandalar
