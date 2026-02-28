@@ -179,6 +179,7 @@ local function addSlot()
     slotFrame:SetParent(charPreview)
     slotFrame:SetFrameLevel(5)
     slotFrame:Show()
+    charPreview.ScottyHearthstoneSlot = slotFrame
 
     slotFrame:SetPoint("TOP", charPreview.BottomSlots, "TOP")
     slotFrame:SetPoint("LEFT", charPreview.RightSlots, "LEFT")
@@ -202,7 +203,7 @@ local function addSlot()
         }
     end
 
-    slotFrame:SetScript("OnEnter", function(self)
+    slotFrame.OnEnter = function(self)
         local mogToys = GetViewedOutfitToys()
         local mogToy = #mogToys == 1 and mogToys[1] or nil
         if mogToy then
@@ -217,13 +218,16 @@ local function addSlot()
             GameTooltip:SetText(ADDON.L.MOG_SLOT_DEFAULT)
             GameTooltip:Show();
         end
+    end
+    slotFrame:SetScript("OnEnter", function(self)
+        self:OnEnter()
     end)
 end
 
 local function cleanupSlotFrame(slotFrame)
     slotFrame.IsScottyHearthstoneSlot = nil
     slotFrame.GetSlotInfo = TransmogSlotMixin.GetSlotInfo
-    slotFrame:SetScript("OnEnter", TransmogSlotMixin.OnEnter)
+    slotFrame.OnEnter = TransmogSlotMixin.OnEnter
 end
 
 local init = true
