@@ -214,7 +214,7 @@ end
 local function buildItemEntry(menuRoot, itemId, location, dbRow)
     local itemLocation = dbRow and dbRow.isEquippableItem and ADDON:GetItemSlot(itemId) or ADDON:FindItemInBags(itemId)
 
-    if dbRow.consumable then
+    if dbRow and dbRow.consumable then
         local _, bag, slot = SecureCmdItemParse(itemLocation)
         local containerInfo = C_Container.GetContainerItemInfo(bag, slot)
         if containerInfo then

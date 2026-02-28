@@ -1,8 +1,8 @@
 ## General Ideas / Todos
  - [ ] Classic Support? (Season of Discovery might have added new Port Items/Spells)
- - [ ] Druid: cancel flight form while on ground (doesn't work atm in macro)
- - [ ] show cooldown timer in menu
- - [ ] return macro of Housing Teleport (currently taints hard); also save previous position to teleport back to (like Vulpera Camp)
+ - [ ] show cooldown timer for equipment with initial cd
+ - [ ] update screenshots with transmog ui
+ - [ ] druid: resummon flight form on menu close
 
 ## Adventure Journal
  - [ ] add dungeon ports on overview
