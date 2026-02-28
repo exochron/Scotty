@@ -111,7 +111,7 @@ local function CombineSettings(settings, defaultSettings)
 end
 
 ADDON.Events:RegisterCallback("OnInit", function()
-    local defaults = {
+    local globalDefaults = {
         favorites = {
             toy = {},
             item = {},
@@ -121,8 +121,14 @@ ADDON.Events:RegisterCallback("OnInit", function()
         minimap = {} -- for LibDBIcon
     }
 
-    ScottyGlobalSettings = ScottyGlobalSettings or defaults
-    CombineSettings(ScottyGlobalSettings, defaults)
+    ScottyGlobalSettings = ScottyGlobalSettings or globalDefaults
+    CombineSettings(ScottyGlobalSettings, globalDefaults)
+
+    local personalDefaults = {
+        outfitHearthstones = {}
+    }
+    ScottyPersonalSettings = ScottyPersonalSettings or personalDefaults
+    CombineSettings(ScottyPersonalSettings, personalDefaults)
 
     cacheHearthstonesData()
     registerSettings()

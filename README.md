@@ -9,12 +9,13 @@ Just choose your target location from a simple menu.
 It is easily categorized by continents. So you can select your destination more quickly.
 
 Scotty improves your journey even further with some quality of life features:
-- Tired of using the same old hearthstone over and over? Scotty dusts of your collected hearthstones und puts them to use. One random hearthstone at time.
+- Are you tired of using the same old hearthstone over and over? Scotty dusts of your collected hearthstones und puts them to use. One random hearthstone at time.
 - Is your hearthstone already out of juice? For Shamans, Scotty falls automatically back to Astral Recall and uses it instead.
-- As master of the Arcane you might misplace sometimes your Portal spells in your books. Well Scotty shows them right next to their regular teleport. Simply select which variant you'd like to cast next.
-- You are a vulperan nomad and forgot where you pitched your camp? Scotty tracks it for you and provides handy menu options to camp.
+- **new:** [Retail] You can also assign your hearthstone to your transmog outfit for the fitting exit in style.
+- Even as Master of the Arcane you might misplace sometimes your portal spells in your books. Well Scotty shows them right next to their regular teleport. Simply select which variant you'd like to cast next.
+- You are a vulperan Nomad and forgot where you pitched your camp? Scotty tracks it for you and provides handy menu options to camp.
 - Are you also annoyed of switching your equipment around because that one teleport to stormwind is on your cloak? Well Scotty even takes care of that by suiting you up automatically and changing you back after usage.
-- Did you forget which Wormhole button brings you to your destination or certain doom? Just choose one of Scotty's user-friendly locations and skip the following dialog automatically. The same goes for Mole Machines and the like.
+- Did you forget which wormhole button brings you to your destination or certain doom? Just choose one of Scotty's user-friendly locations and skip the following dialog automatically. The same goes for Mole Machines and the like.
 - Visit your friends and guild mates! All of their homes are also easily accessible.
 
 Like all gnomish inventions, there might be still some glitches here and there. Instead of being annoyed and instantly deleting Scotty again, please let me know about it, so we can improve Scotty together.
