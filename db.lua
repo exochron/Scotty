@@ -162,6 +162,7 @@ function ADDON:InitDatabase()
         {spell = 344587, portal = 344597, map = 1670, continent = SHADOWLANDS}, -- Oribos
         {spell = 395277, portal = 395289, map = 2134, continent = DRAGON_ISLES}, -- Valdraken
         {spell = 446540, portal = 446534, map = 2339, continent = KHAZ_ALGAR}, -- Dornogal
+        {spell = 1259190, portal = 1259194, map = 2393, continent = EASTERN_KINGDOMS}, -- Silvermoon City
 
         -- Haranir Rootwalking
         -- TODO waypoints
