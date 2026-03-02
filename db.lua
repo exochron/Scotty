@@ -3,9 +3,14 @@ local _, ADDON = ...
 -- for classic: filter db for existing items & spells
 
 -- see: https://warcraft.wiki.gg/wiki/UiMapID & https://warcraft.wiki.gg/wiki/InstanceID
--- or: /dump WorldMapFrame:GetMapID()
+-- or for map: /dump WorldMapFrame:GetMapID()
+-- or for instance: https://wago.tools/db2/Map
 
 function ADDON:InitDatabase()
+
+    local GetQuestName = function(questId)
+        return C_QuestLog.GetTitleForQuestID and C_QuestLog.GetTitleForQuestID(questId) or ""
+    end
 
     -- Instance IDs of continents
     local EASTERN_KINGDOMS = 0
@@ -27,6 +32,7 @@ function ADDON:InitDatabase()
     local MN_S1 = 34
     --local isTimerunner = PlayerIsTimerunning and PlayerIsTimerunning()
     local currentSeason = C_SeasonInfo and C_SeasonInfo.GetCurrentDisplaySeasonID() or 0
+    local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 
     local isAlliance = UnitFactionGroup("player") == "Alliance"
     local isHorde = UnitFactionGroup("player") == "Horde"
@@ -112,8 +118,7 @@ function ADDON:InitDatabase()
         {toy = (playerRace == "Worgen" and 211788), map = 179, continent = EASTERN_KINGDOMS}, -- Tess's Peacebloom
         {toy = 230850, name = DELVE_LABEL, continent = KHAZ_ALGAR, }, -- Delve-O-Bot 7001
         {toy = 243056, map = 2339, continent = KHAZ_ALGAR, }, -- Delver's Mana-Bound Ethergate
-        {toy = 253629, map = 2393, continent = EASTERN_KINGDOMS, }, -- Personal Key to the Arcantina
-        {toy = 263933, map = 2393, continent = EASTERN_KINGDOMS, }, -- Astalor's Summons
+        {toy = 253629, map = 2393, continent = EASTERN_KINGDOMS, nameSuffix="("..GetQuestName(86903)..")"}, -- Personal Key to the Arcantina
         {toy = 266370, name = C_Spell.GetSpellName(1248190), continent = EASTERN_KINGDOMS, }, -- Dundun's Abundant Travel Method
 
         {spell = 50977,
@@ -143,7 +148,7 @@ function ADDON:InitDatabase()
         {spell = 3566, portal = 11420, map = 88, continent = KALIMDOR}, -- Thunder Bluff
         {spell = 3567, portal = 11417, map = 85, continent = KALIMDOR}, -- Orgrimmar
         {spell = 32271, portal = 32266, map = 103, continent = KALIMDOR}, -- Exodar
-        {spell = 32272, portal = 32267, map = 110, continent = EASTERN_KINGDOMS}, -- Silvermoon
+        {spell = 32272, portal = 32267, map = 110, continent = EASTERN_KINGDOMS, nameSuffix=(isRetail and "(BC)")}, -- Silvermoon
         {spell = 35715, portal = 35717, map = 111, continent = OUTLAND}, -- Shattrath
         {spell = 33690, portal = 33691, map = 111, continent = OUTLAND}, -- Shattrath
         {spell = 49358, portal = 49361, map = 51, continent = EASTERN_KINGDOMS}, -- Stonard
@@ -271,13 +276,13 @@ function ADDON:InitDatabase()
         {spell = 1216786, instance = 2773, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Operation: Floodgate
         {spell = 1237215, instance = 2830, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Eco-Dome, Al'dani
         {spell = 1239155, instance = 2810, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Manaforge Omega
-        {spell = 1254400, instance = 2494, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Windrunner Spire
-        {spell = 1254572, instance = 2511, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Magisters' Terrace
-        {spell = 1254559, instance = 2501, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Maisara Cavern
-        {spell = 1255391, instance = 2556, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Nexus Point Xenas
-        {spell = 1254551, instance = 903, continent = BROKEN_ISLES, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Seat of the Triumvirate
-        {spell = 1254555, instance = 184, continent = NORTHREND, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Pit of Saron
-        {spell = 1254557, instance = 601, continent = DRAENOR, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Skyreach
+        {spell = 1254400, instance = 2805, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Windrunner Spire
+        {spell = 1254572, instance = 2811, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Magisters' Terrace
+        {spell = 1254559, instance = 2874, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Maisara Cavern
+        {spell = 1255391, instance = 2915, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Nexus Point Xenas
+        {spell = 1254551, instance = 1753, continent = BROKEN_ISLES, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Seat of the Triumvirate
+        {spell = 1254555, instance = 658, continent = NORTHREND, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Pit of Saron
+        {spell = 1254557, instance = 1209, continent = DRAENOR, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Skyreach
         {spell = 393273, instance = 2526, continent = DRAGON_ISLES, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Algeth'ar Academy
 
         -- Older Dungeon Ports
@@ -293,7 +298,6 @@ function ADDON:InitDatabase()
         {spell = 159895, instance = 1175, continent = DRAENOR}, -- Bloodmaul Slag Mines
         {spell = 159896, instance = 1195, continent = DRAENOR}, -- Iron Docks
         {spell = 159897, instance = 1182, continent = DRAENOR}, -- Auchindoun
-        {spell = 159898, instance = 1209, continent = DRAENOR}, -- Skyreach
         {spell = 159899, instance = 1176, continent = DRAENOR}, -- Shadowmoon Burial Grounds
         {spell = 159900, instance = 1208, continent = DRAENOR}, -- Grimrail Depot
         {spell = 159901, instance = 1279, continent = DRAENOR}, -- The Everbloom
@@ -383,6 +387,7 @@ function ADDON:InitDatabase()
         {toy = 263489, category = ADDON.Category.Hearthstone}, -- Naaru's Enfold (Retail)
         {toy = 257736, category = ADDON.Category.Hearthstone}, -- Lightcalled Hearthstone
         {toy = 265100, category = ADDON.Category.Hearthstone}, -- Corewarden's Hearthstone
+        {toy = 263933, category = ADDON.Category.Hearthstone}, -- Preyseeker's Hearthstone
     }
 
     -- the actual function C_Item.DoesItemExistByID() is misleading and only checks for non empty parameter.

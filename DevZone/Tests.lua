@@ -16,11 +16,8 @@ local function alert(msg, row)
 end
 
 local function CheckNameAvailable(row)
-    if row.instance ~= nil and nil == GetRealZoneText(row.instance) then
-        alert("no Name detected for Instance: ".. row.instance, row)
-    end
-    if row.map ~= nil and nil == C_Map.GetMapInfo(row.map) then
-        alert("no Name detected for Map: ".. row.map, row)
+    if row.category ~= ADDON.Category.Hearthstone and "" == ADDON:GetName(row) then
+        alert("no Name detected!", row)
     end
 end
 

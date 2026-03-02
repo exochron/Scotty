@@ -71,20 +71,26 @@ function ADDON:PlayerHasItemInBag(itemId)
 end
 
 function ADDON:GetName(row)
+    local name = ""
+
     if row.name then
-        return row.name
-    end
-    if row.ownerName then
-        return row.ownerName
-    end
-    if row.instance then
-        return GetRealZoneText(row.instance)
-    end
-    if row.map then
-        return C_Map.GetMapInfo(row.map).name
+        name = row.name
+    elseif row.ownerName then
+        name = row.ownerName
+    elseif row.instance then
+        name = GetRealZoneText(row.instance)
+    elseif row.map then
+        local info = C_Map.GetMapInfo(row.map)
+        if info and info.name then
+            name = info.name
+        end
     end
 
-    return ""
+    if name ~= "" and row.nameSuffix then
+        name = name.." "..row.nameSuffix
+    end
+
+    return name
 end
 
 function ADDON:BuildCooldownString(cooldownEndTime, asSuffix)
