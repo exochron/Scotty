@@ -28,7 +28,6 @@ function ADDON:InitDatabase()
     local KHAZ_ALGAR = 2601
 
     -- https://wago.tools/db2/DisplaySeason
-    local WW_S3 = 30
     local MN_S1 = 34
     --local isTimerunner = PlayerIsTimerunning and PlayerIsTimerunning()
     local currentSeason = C_SeasonInfo and C_SeasonInfo.GetCurrentDisplaySeasonID() or 0
@@ -268,14 +267,6 @@ function ADDON:InitDatabase()
         {toy = isEngineer and 248485, map = 2537, continent = EASTERN_KINGDOMS}, -- Wormhole Generator: Quel'Thalas
 
         -- Seasonal Dungeon Port
-        {spell = 354465, instance = 2287, continent = SHADOWLANDS, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Halls of Atonement
-        {spell = 367416, instance = 2441, continent = SHADOWLANDS, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Tazavesh the Veiled Market
-        {spell = 445414, instance = 2662, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- The Dawnbreaker
-        {spell = 445417, instance = 2660, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Ara Kara: City of Echoes
-        {spell = 445444, instance = 2649, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Priory of the Sacred Flame
-        {spell = 1216786, instance = 2773, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Operation: Floodgate
-        {spell = 1237215, instance = 2830, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Eco-Dome, Al'dani
-        {spell = 1239155, instance = 2810, continent = KHAZ_ALGAR, category = (currentSeason == WW_S3 and ADDON.Category.SeasonInstance)}, -- Manaforge Omega
         {spell = 1254400, instance = 2805, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Windrunner Spire
         {spell = 1254572, instance = 2811, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Magisters' Terrace
         {spell = 1254559, instance = 2874, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Maisara Cavern
@@ -305,10 +296,12 @@ function ADDON:InitDatabase()
         {spell = 354462, instance = 2286, continent = SHADOWLANDS}, -- Necrotic Wake
         {spell = 354463, instance = 2289, continent = SHADOWLANDS}, -- Plaguefall
         {spell = 354464, instance = 2290, continent = SHADOWLANDS}, -- Mists of Tirna Scithe
+        {spell = 354465, instance = 2287, continent = SHADOWLANDS}, -- Halls of Atonement
         {spell = 354466, instance = 2285, continent = SHADOWLANDS}, -- Spires of Ascension
         {spell = 354467, instance = 2293, continent = SHADOWLANDS,}, -- Theater of Pain
         {spell = 354468, instance = 2291, continent = SHADOWLANDS}, -- De Other Side
         {spell = 354469, instance = 2284, continent = SHADOWLANDS}, -- Sanguine Depths
+        {spell = 367416, instance = 2441, continent = SHADOWLANDS}, -- Tazavesh the Veiled Market
         {spell = 373190, instance = 2296, continent = SHADOWLANDS}, -- Castle Nathria
         {spell = 373191, instance = 2450, continent = SHADOWLANDS}, -- Sanctum of Domination
         {spell = 373192, instance = 2481, continent = SHADOWLANDS}, -- Sepulcher of the First Ones
@@ -343,11 +336,17 @@ function ADDON:InitDatabase()
         {spell = 464256, instance = 1822, continent = KUL_TIRAS}, -- Siege of Boralus
         {spell = isAlliance and 467553, instance = 1594, continent = ZANDALAR,}, -- The MOTHERLODE (alliance)
         {spell = isHorde and 467555, instance = 1594, continent = ZANDALAR,}, -- The MOTHERLODE (horde)
+        {spell = 445414, instance = 2662, continent = KHAZ_ALGAR,}, -- The Dawnbreaker
+        {spell = 445417, instance = 2660, continent = KHAZ_ALGAR,}, -- Ara Kara: City of Echoes
+        {spell = 445440, instance = 2661, continent = KHAZ_ALGAR,}, -- Cinderbrew Meadery
         {spell = 445441, instance = 2651, continent = KHAZ_ALGAR,}, -- Darkflame Cleft
         {spell = 445443, instance = 2648, continent = KHAZ_ALGAR,}, -- The Rookery
-        {spell = 445440, instance = 2661, continent = KHAZ_ALGAR,}, -- Cinderbrew Meadery
+        {spell = 445444, instance = 2649, continent = KHAZ_ALGAR,}, -- Priory of the Sacred Flame
         {spell = 467546, instance = 2661, continent = KHAZ_ALGAR,}, -- Cinderbrew Meadery
+        {spell = 1216786, instance = 2773, continent = KHAZ_ALGAR}, -- Operation: Floodgate
         {spell = 1226482, instance = 2769, continent = KHAZ_ALGAR,}, -- Liberation of Undermine
+        {spell = 1237215, instance = 2830, continent = KHAZ_ALGAR}, -- Eco-Dome, Al'dani
+        {spell = 1239155, instance = 2810, continent = KHAZ_ALGAR}, -- Manaforge Omega
 
         -- Hearthstones
         {toy = 54452, category = ADDON.Category.Hearthstone},
