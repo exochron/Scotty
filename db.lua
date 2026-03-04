@@ -8,8 +8,11 @@ local _, ADDON = ...
 
 function ADDON:InitDatabase()
 
-    local GetQuestName = function(questId)
-        return C_QuestLog.GetTitleForQuestID and C_QuestLog.GetTitleForQuestID(questId) or ""
+    local GetMapName = function(mapId)
+        local info = C_Map.GetMapInfo(mapId)
+        if info and info.name then
+            return info.name
+        end
     end
 
     -- Instance IDs of continents
@@ -117,7 +120,7 @@ function ADDON:InitDatabase()
         {toy = (playerRace == "Worgen" and 211788), map = 179, continent = EASTERN_KINGDOMS}, -- Tess's Peacebloom
         {toy = 230850, name = DELVE_LABEL, continent = KHAZ_ALGAR, }, -- Delve-O-Bot 7001
         {toy = 243056, map = 2339, continent = KHAZ_ALGAR, }, -- Delver's Mana-Bound Ethergate
-        {toy = 253629, map = 2393, continent = EASTERN_KINGDOMS, nameSuffix="("..GetQuestName(86903)..")"}, -- Personal Key to the Arcantina
+        {toy = 253629, map = 2393, continent = EASTERN_KINGDOMS, nameSuffix="("..GetMapName(2541)..")"}, -- Personal Key to the Arcantina
         {toy = 266370, name = C_Spell.GetSpellName(1248190), continent = EASTERN_KINGDOMS, }, -- Dundun's Abundant Travel Method
 
         {spell = 50977,
