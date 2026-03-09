@@ -38,7 +38,8 @@ function ADDON:InitDatabase()
 
     local isAlliance = UnitFactionGroup("player") == "Alliance"
     local isHorde = UnitFactionGroup("player") == "Horde"
-    local playerRace = UnitRace("player")
+    local _, playerRace = UnitRace("player")
+    local playerClass = UnitClassBase("player")
     local prof1, prof2 = GetProfessions()
     local isEngineer = prof1 and select(7, GetProfessionInfo(prof1)) == 202
     isEngineer = isEngineer or prof2 and select(7, GetProfessionInfo(prof2)) == 202
@@ -123,96 +124,96 @@ function ADDON:InitDatabase()
         {toy = 253629, map = 2393, continent = EASTERN_KINGDOMS, nameSuffix="("..GetMapName(2541)..")"}, -- Personal Key to the Arcantina
         {toy = 266370, name = C_Spell.GetSpellName(1248190), continent = EASTERN_KINGDOMS, }, -- Dundun's Abundant Travel Method
 
-        {spell = 50977,
+        {spell = (playerClass=="DEATHKNIGHT" and 50977),
          map = LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_LEGION and 648 or 23,
          continent = LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_LEGION and BROKEN_ISLES or EASTERN_KINGDOMS
         }, -- Archerus (DK)
-        {spell = 126892, isMultiDestination = true, map = 379, continent = PANDARIA }, -- Zen Pilgrimage (Monk)
-        {spell = LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_LEGION and 126892, isMultiDestination = true, quest = 40236, map = 709, continent = BROKEN_ISLES}, -- Zen Pilgrimage (Monk)
-        {spell = 193759, map = 734, continent = BROKEN_ISLES}, -- Hall of the guardian (Mage)
+        {spell = (playerClass == "MONK" and 126892), isMultiDestination = true, map = 379, continent = PANDARIA }, -- Zen Pilgrimage (Monk)
+        {spell = (LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_LEGION and playerClass=="MONK" and 126892), isMultiDestination = true, quest = 40236, map = 709, continent = BROKEN_ISLES}, -- Zen Pilgrimage (Monk)
+        {spell = (playerClass == "MAGE" and 193759), map = 734, continent = BROKEN_ISLES}, -- Hall of the guardian (Mage)
 
         -- Druid Dreamwalk
-        {spell = 18960, map = 80, continent = KALIMDOR},
-        {spell = 193753, isMultiDestination = true, map = 26, continent = EASTERN_KINGDOMS, waypoint={715, 0.506056, 0.657546}}, -- Hinterlands
-        {spell = 193753, isMultiDestination = true, map = 47, continent = EASTERN_KINGDOMS, waypoint={715, 0.398373, 0.693299}}, -- Duskwood
-        {spell = 193753, isMultiDestination = true, map = 69, continent = KALIMDOR, waypoint={715, 0.232351, 0.385249}}, -- Feralas
-        {spell = 193753, isMultiDestination = true, map = 80, continent = KALIMDOR, waypoint={715, 0.259648, 0.795225}}, -- Moonglade
-        {spell = 193753, isMultiDestination = true, map = 116, continent = NORTHREND, waypoint={715, 0.317142, 0.264065}}, -- Grizzly Hills
-        {spell = 193753, isMultiDestination = true, map = 198, continent = KALIMDOR, waypoint={715, 0.533934, 0.526978}}, -- Mount Hyjal
-        {spell = 193753, isMultiDestination = true, map = 747, continent = BROKEN_ISLES, waypoint={715, 0.456, 0.242929}}, -- Dreamgrove
+        {spell = playerClass=="DRUID" and 18960, map = 80, continent = KALIMDOR},
+        {spell = playerClass=="DRUID" and 193753, isMultiDestination = true, map = 26, continent = EASTERN_KINGDOMS, waypoint={715, 0.506056, 0.657546}}, -- Hinterlands
+        {spell = playerClass=="DRUID" and 193753, isMultiDestination = true, map = 47, continent = EASTERN_KINGDOMS, waypoint={715, 0.398373, 0.693299}}, -- Duskwood
+        {spell = playerClass=="DRUID" and 193753, isMultiDestination = true, map = 69, continent = KALIMDOR, waypoint={715, 0.232351, 0.385249}}, -- Feralas
+        {spell = playerClass=="DRUID" and 193753, isMultiDestination = true, map = 80, continent = KALIMDOR, waypoint={715, 0.259648, 0.795225}}, -- Moonglade
+        {spell = playerClass=="DRUID" and 193753, isMultiDestination = true, map = 116, continent = NORTHREND, waypoint={715, 0.317142, 0.264065}}, -- Grizzly Hills
+        {spell = playerClass=="DRUID" and 193753, isMultiDestination = true, map = 198, continent = KALIMDOR, waypoint={715, 0.533934, 0.526978}}, -- Mount Hyjal
+        {spell = playerClass=="DRUID" and 193753, isMultiDestination = true, map = 747, continent = BROKEN_ISLES, waypoint={715, 0.456, 0.242929}}, -- Dreamgrove
 
         -- Mage Teleports with Portals
         -- https://www.wowhead.com/guide/transportation#mage-portals
-        {spell = 3561, portal = 10059, map = 84, continent = EASTERN_KINGDOMS}, -- Stormwind
-        {spell = 3562, portal = 11416, map = 87, continent = EASTERN_KINGDOMS}, -- Ironforge
-        {spell = 3563, portal = 11418, map = 998, continent = EASTERN_KINGDOMS}, -- Undercity
-        {spell = 3565, portal = 11419, map = 89, continent = KALIMDOR}, -- Darnassus
-        {spell = 3566, portal = 11420, map = 88, continent = KALIMDOR}, -- Thunder Bluff
-        {spell = 3567, portal = 11417, map = 85, continent = KALIMDOR}, -- Orgrimmar
-        {spell = 32271, portal = 32266, map = 103, continent = KALIMDOR}, -- Exodar
-        {spell = 32272, portal = 32267, map = 110, continent = EASTERN_KINGDOMS, nameSuffix=(isRetail and "(BC)")}, -- Silvermoon
-        {spell = 35715, portal = 35717, map = 111, continent = OUTLAND}, -- Shattrath
-        {spell = 33690, portal = 33691, map = 111, continent = OUTLAND}, -- Shattrath
-        {spell = 49358, portal = 49361, map = 51, continent = EASTERN_KINGDOMS}, -- Stonard
-        {spell = 49359, portal = 49360, map = 70, continent = KALIMDOR}, -- Theramore
-        {spell = 53140, portal = 53142, map = 125, continent = NORTHREND}, -- Dalaran
-        {spell = 88342, portal = 88345, map = 245, continent = EASTERN_KINGDOMS}, -- Tol Barad
-        {spell = 88344, portal = 88346, map = 245, continent = EASTERN_KINGDOMS}, -- Tol Barad
-        {spell = 120145, portal = 120146, map = 25, continent = EASTERN_KINGDOMS}, -- Dalaran Crater
-        {spell = 132621, portal = 132620, map = 390, continent = PANDARIA}, -- Vale of Eternal BLossoms
-        {spell = 132627, portal = 132626, map = 390, continent = PANDARIA}, -- Vale of Eternal BLossoms
-        {spell = 176242, portal = 176244, map = 624, continent = DRAENOR}, -- Warspear
-        {spell = 176248, portal = 176246, map = 622, continent = DRAENOR}, -- Stormshield
-        {spell = 224869, portal = 224871, map = 627, continent = BROKEN_ISLES}, -- Dalaran
-        {spell = 281403, portal = 281400, map = 1161, continent = KUL_TIRAS}, -- Boralus
-        {spell = 281404, portal = 281402, map = 1165, continent = ZANDALAR}, -- Dazar'alor
-        {spell = 344587, portal = 344597, map = 1670, continent = SHADOWLANDS}, -- Oribos
-        {spell = 395277, portal = 395289, map = 2134, continent = DRAGON_ISLES}, -- Valdraken
-        {spell = 446540, portal = 446534, map = 2339, continent = KHAZ_ALGAR}, -- Dornogal
-        {spell = 1259190, portal = 1259194, map = 2393, continent = EASTERN_KINGDOMS}, -- Silvermoon City
+        {spell = playerClass=="MAGE" and 3561, portal = 10059, map = 84, continent = EASTERN_KINGDOMS}, -- Stormwind
+        {spell = playerClass=="MAGE" and 3562, portal = 11416, map = 87, continent = EASTERN_KINGDOMS}, -- Ironforge
+        {spell = playerClass=="MAGE" and 3563, portal = 11418, map = 998, continent = EASTERN_KINGDOMS}, -- Undercity
+        {spell = playerClass=="MAGE" and 3565, portal = 11419, map = 89, continent = KALIMDOR}, -- Darnassus
+        {spell = playerClass=="MAGE" and 3566, portal = 11420, map = 88, continent = KALIMDOR}, -- Thunder Bluff
+        {spell = playerClass=="MAGE" and 3567, portal = 11417, map = 85, continent = KALIMDOR}, -- Orgrimmar
+        {spell = playerClass=="MAGE" and 32271, portal = 32266, map = 103, continent = KALIMDOR}, -- Exodar
+        {spell = playerClass=="MAGE" and 32272, portal = 32267, map = 110, continent = EASTERN_KINGDOMS, nameSuffix=(isRetail and "(BC)")}, -- Silvermoon
+        {spell = playerClass=="MAGE" and 35715, portal = 35717, map = 111, continent = OUTLAND}, -- Shattrath
+        {spell = playerClass=="MAGE" and 33690, portal = 33691, map = 111, continent = OUTLAND}, -- Shattrath
+        {spell = playerClass=="MAGE" and 49358, portal = 49361, map = 51, continent = EASTERN_KINGDOMS}, -- Stonard
+        {spell = playerClass=="MAGE" and 49359, portal = 49360, map = 70, continent = KALIMDOR}, -- Theramore
+        {spell = playerClass=="MAGE" and 53140, portal = 53142, map = 125, continent = NORTHREND}, -- Dalaran
+        {spell = playerClass=="MAGE" and 88342, portal = 88345, map = 245, continent = EASTERN_KINGDOMS}, -- Tol Barad
+        {spell = playerClass=="MAGE" and 88344, portal = 88346, map = 245, continent = EASTERN_KINGDOMS}, -- Tol Barad
+        {spell = playerClass=="MAGE" and 120145, portal = 120146, map = 25, continent = EASTERN_KINGDOMS}, -- Dalaran Crater
+        {spell = playerClass=="MAGE" and 132621, portal = 132620, map = 390, continent = PANDARIA}, -- Vale of Eternal BLossoms
+        {spell = playerClass=="MAGE" and 132627, portal = 132626, map = 390, continent = PANDARIA}, -- Vale of Eternal BLossoms
+        {spell = playerClass=="MAGE" and 176242, portal = 176244, map = 624, continent = DRAENOR}, -- Warspear
+        {spell = playerClass=="MAGE" and 176248, portal = 176246, map = 622, continent = DRAENOR}, -- Stormshield
+        {spell = playerClass=="MAGE" and 224869, portal = 224871, map = 627, continent = BROKEN_ISLES}, -- Dalaran
+        {spell = playerClass=="MAGE" and 281403, portal = 281400, map = 1161, continent = KUL_TIRAS}, -- Boralus
+        {spell = playerClass=="MAGE" and 281404, portal = 281402, map = 1165, continent = ZANDALAR}, -- Dazar'alor
+        {spell = playerClass=="MAGE" and 344587, portal = 344597, map = 1670, continent = SHADOWLANDS}, -- Oribos
+        {spell = playerClass=="MAGE" and 395277, portal = 395289, map = 2134, continent = DRAGON_ISLES}, -- Valdraken
+        {spell = playerClass=="MAGE" and 446540, portal = 446534, map = 2339, continent = KHAZ_ALGAR}, -- Dornogal
+        {spell = playerClass=="MAGE" and 1259190, portal = 1259194, map = 2393, continent = EASTERN_KINGDOMS}, -- Silvermoon City
 
         -- Haranir Rootwalking
         -- TODO waypoints
-        {spell = 1260715, isMultiDestination = true, map = 2413, continent = EASTERN_KINGDOMS}, -- Harandar
-        {spell = 1260715, isMultiDestination = true, map = 62, continent = KALIMDOR}, -- Darkshore
-        {spell = 1260715, isMultiDestination = true, map = 198, continent = KALIMDOR}, -- Mount Hyjal
-        {spell = 1260715, isMultiDestination = true, map = 641, continent = BROKEN_ISLES}, -- Val'sharah
-        {spell = 1260715, isMultiDestination = true, map = 2239, continent = DRAGON_ISLES}, -- Amirdrassil
+        {spell = playerRace=="Harronir" and 1260715, isMultiDestination = true, map = 2413, continent = EASTERN_KINGDOMS}, -- Harandar
+        {spell = playerRace=="Harronir" and 1260715, isMultiDestination = true, map = 62, continent = KALIMDOR}, -- Darkshore
+        {spell = playerRace=="Harronir" and 1260715, isMultiDestination = true, map = 198, continent = KALIMDOR}, -- Mount Hyjal
+        {spell = playerRace=="Harronir" and 1260715, isMultiDestination = true, map = 641, continent = BROKEN_ISLES}, -- Val'sharah
+        {spell = playerRace=="Harronir" and 1260715, isMultiDestination = true, map = 2239, continent = DRAGON_ISLES}, -- Amirdrassil
 
         -- Mole Machine of Dark Iron Dwarfes
         -- from https://www.wowhead.com/spell=265225/mole-machine#comments:id=2579704 Kudos to P3lim
         -- /dump C_GossipInfo.GetOptions()
-        {spell = 265225, isMultiDestination = true, map = 87, continent = EASTERN_KINGDOMS, gossip={49322, 49331}}, -- Ironforge
-        {spell = 265225, isMultiDestination = true, map = 84, continent = EASTERN_KINGDOMS, gossip={49322, 49332}}, -- Stormwind
-        {spell = 265225, isMultiDestination = true, map = 243, continent = EASTERN_KINGDOMS, gossip={49322, 49336}}, -- Shadowforge City
-        {spell = 265225, isMultiDestination = true, quest = 53594, map = 17, continent = EASTERN_KINGDOMS, gossip={49322, 49333}}, -- Blasted Lands
-        {spell = 265225, isMultiDestination = true, quest = 53585, map = 26, continent = EASTERN_KINGDOMS, gossip={49322, 49334}}, -- The Hinterlands
-        {spell = 265225, isMultiDestination = true, quest = 53587, map = 35, continent = EASTERN_KINGDOMS, gossip={49322, 49335}}, -- Blackrock Mountain
-        {spell = 265225, isMultiDestination = true, quest = 53591, map = 78, continent = KALIMDOR, gossip={49323, 49337}}, -- Un'Goro Crater
-        {spell = 265225, isMultiDestination = true, quest = 53601, map = 198, continent = KALIMDOR, gossip={49323, 49338}}, -- Mount Hyjal
-        {spell = 265225, isMultiDestination = true, quest = 53600, map = 199, continent = KALIMDOR, gossip={49323, 49339}}, -- Southern Barrens
-        {spell = 265225, isMultiDestination = true, quest = 53592, map = 100, continent = OUTLAND, gossip={49324, 49340}}, -- Hellfire Peninsula
-        {spell = 265225, isMultiDestination = true, quest = 53599, map = 104, continent = OUTLAND, gossip={49324, 49341}}, -- Shadowmoon Valley
-        {spell = 265225, isMultiDestination = true, quest = 53597, map = 105, continent = OUTLAND, gossip={49324, 49342}}, -- Blade's Edge Mountains
-        {spell = 265225, isMultiDestination = true, quest = 53586, map = 118, continent = NORTHREND,gossip={49325, 49343}}, -- Icecrown
-        {spell = 265225, isMultiDestination = true, quest = 53596, map = 115, continent = NORTHREND, gossip={49325, 49344}}, -- Dragonblight
-        {spell = 265225, isMultiDestination = true, quest = 53595, map = 379, continent = PANDARIA, gossip={49326, 49345}}, -- Kun-Lai Summit
-        {spell = 265225, isMultiDestination = true, quest = 53598, map = 376, continent = PANDARIA, gossip={49326, 49346}}, -- Valley of the Four Winds
-        {spell = 265225, isMultiDestination = true, quest = 53588, map = 543, continent = DRAENOR, gossip={49327, 49347}}, -- Gorgond
-        {spell = 265225, isMultiDestination = true, quest = 53590, map = 550, continent = DRAENOR, gossip={49327, 49348}}, -- Nagrand
-        {spell = 265225, isMultiDestination = true, quest = 53593, map = 650, continent = BROKEN_ISLES, gossip={49328, 49349}}, -- Highmountain
-        {spell = 265225, isMultiDestination = true, quest = 53589, map = 646, continent = BROKEN_ISLES, gossip={49328, 49350}}, -- Broken Shore
-        {spell = 265225, isMultiDestination = true, quest = 80099, map = 863, continent = ZANDALAR, gossip={49330, 125454}}, -- Nazmir
-        {spell = 265225, isMultiDestination = true, quest = 80100, map = 862, continent = ZANDALAR, gossip={49330, 125453}}, -- Zuldazar
-        {spell = 265225, isMultiDestination = true, quest = 80101, map = 895, continent = KUL_TIRAS, gossip={49329, 125456}}, -- Tiragarde Sound
-        {spell = 265225, isMultiDestination = true, quest = 80102, map = 942, continent = KUL_TIRAS, gossip={49329, 125455}}, -- Stormsong Valley
-        {spell = 265225, isMultiDestination = true, quest = 80103, map = 1536, continent = SHADOWLANDS, gossip={125452, 125460}}, -- Maldraxxus
-        {spell = 265225, isMultiDestination = true, quest = 80104, map = 1525, continent = SHADOWLANDS, gossip={125452, 125459}}, -- Revendreth
-        {spell = 265225, isMultiDestination = true, quest = 80105, map = 1533, continent = SHADOWLANDS, gossip={125452, 125458}}, -- Bastion
-        {spell = 265225, isMultiDestination = true, quest = 80106, map = 1565, continent = SHADOWLANDS, gossip={125452, 125457}}, -- Ardenweald
-        {spell = 265225, isMultiDestination = true, quest = 80107, map = 2022, continent = DRAGON_ISLES, gossip={125451, 125463}}, -- Waking Shores
-        {spell = 265225, isMultiDestination = true, quest = 80108, map = 2024, continent = DRAGON_ISLES, gossip={125451, 125462}}, -- Azure Span
-        {spell = 265225, isMultiDestination = true, quest = 80109, map = 2133, continent = DRAGON_ISLES, gossip={125451, 132053}}, -- Zaralek Cavern
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, map = 87, continent = EASTERN_KINGDOMS, gossip={49322, 49331}}, -- Ironforge
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, map = 84, continent = EASTERN_KINGDOMS, gossip={49322, 49332}}, -- Stormwind
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, map = 243, continent = EASTERN_KINGDOMS, gossip={49322, 49336}}, -- Shadowforge City
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 53594, map = 17, continent = EASTERN_KINGDOMS, gossip={49322, 49333}}, -- Blasted Lands
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 53585, map = 26, continent = EASTERN_KINGDOMS, gossip={49322, 49334}}, -- The Hinterlands
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 53587, map = 35, continent = EASTERN_KINGDOMS, gossip={49322, 49335}}, -- Blackrock Mountain
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 53591, map = 78, continent = KALIMDOR, gossip={49323, 49337}}, -- Un'Goro Crater
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 53601, map = 198, continent = KALIMDOR, gossip={49323, 49338}}, -- Mount Hyjal
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 53600, map = 199, continent = KALIMDOR, gossip={49323, 49339}}, -- Southern Barrens
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 53592, map = 100, continent = OUTLAND, gossip={49324, 49340}}, -- Hellfire Peninsula
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 53599, map = 104, continent = OUTLAND, gossip={49324, 49341}}, -- Shadowmoon Valley
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 53597, map = 105, continent = OUTLAND, gossip={49324, 49342}}, -- Blade's Edge Mountains
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 53586, map = 118, continent = NORTHREND,gossip={49325, 49343}}, -- Icecrown
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 53596, map = 115, continent = NORTHREND, gossip={49325, 49344}}, -- Dragonblight
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 53595, map = 379, continent = PANDARIA, gossip={49326, 49345}}, -- Kun-Lai Summit
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 53598, map = 376, continent = PANDARIA, gossip={49326, 49346}}, -- Valley of the Four Winds
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 53588, map = 543, continent = DRAENOR, gossip={49327, 49347}}, -- Gorgond
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 53590, map = 550, continent = DRAENOR, gossip={49327, 49348}}, -- Nagrand
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 53593, map = 650, continent = BROKEN_ISLES, gossip={49328, 49349}}, -- Highmountain
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 53589, map = 646, continent = BROKEN_ISLES, gossip={49328, 49350}}, -- Broken Shore
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 80099, map = 863, continent = ZANDALAR, gossip={49330, 125454}}, -- Nazmir
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 80100, map = 862, continent = ZANDALAR, gossip={49330, 125453}}, -- Zuldazar
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 80101, map = 895, continent = KUL_TIRAS, gossip={49329, 125456}}, -- Tiragarde Sound
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 80102, map = 942, continent = KUL_TIRAS, gossip={49329, 125455}}, -- Stormsong Valley
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 80103, map = 1536, continent = SHADOWLANDS, gossip={125452, 125460}}, -- Maldraxxus
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 80104, map = 1525, continent = SHADOWLANDS, gossip={125452, 125459}}, -- Revendreth
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 80105, map = 1533, continent = SHADOWLANDS, gossip={125452, 125458}}, -- Bastion
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 80106, map = 1565, continent = SHADOWLANDS, gossip={125452, 125457}}, -- Ardenweald
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 80107, map = 2022, continent = DRAGON_ISLES, gossip={125451, 125463}}, -- Waking Shores
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 80108, map = 2024, continent = DRAGON_ISLES, gossip={125451, 125462}}, -- Azure Span
+        {spell = playerRace=="DarkIronDwarf" and 265225, isMultiDestination = true, quest = 80109, map = 2133, continent = DRAGON_ISLES, gossip={125451, 132053}}, -- Zaralek Cavern
 
         -- Engineering Items
         -- /dump C_GossipInfo.GetOptions()
