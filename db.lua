@@ -173,12 +173,11 @@ function ADDON:InitDatabase()
         {spell = playerClass=="MAGE" and 1259190, portal = 1259194, map = 2393, continent = EASTERN_KINGDOMS}, -- Silvermoon City
 
         -- Haranir Rootwalking
-        -- TODO waypoints
-        {spell = playerRace=="Harronir" and 1260715, isMultiDestination = true, map = 2413, continent = EASTERN_KINGDOMS}, -- Harandar
-        {spell = playerRace=="Harronir" and 1260715, isMultiDestination = true, map = 62, continent = KALIMDOR}, -- Darkshore
-        {spell = playerRace=="Harronir" and 1260715, isMultiDestination = true, map = 198, continent = KALIMDOR}, -- Mount Hyjal
-        {spell = playerRace=="Harronir" and 1260715, isMultiDestination = true, map = 641, continent = BROKEN_ISLES}, -- Val'sharah
-        {spell = playerRace=="Harronir" and 1260715, isMultiDestination = true, map = 2239, continent = DRAGON_ISLES}, -- Amirdrassil
+        {spell = playerRace=="Harronir" and 1238686, isMultiDestination = true, map = 2413, continent = EASTERN_KINGDOMS}, -- Harandar
+        {spell = playerRace=="Harronir" and 1238686, isMultiDestination = true, map = 62, continent = KALIMDOR, waypoint={2413, 0.3241, 0.2344}}, -- Darkshore, Teldrassil
+        {spell = playerRace=="Harronir" and 1238686, isMultiDestination = true, map = 198, continent = KALIMDOR, waypoint={2413, 0.6462, 0.2323}}, -- Mount Hyjal, Nordrassil
+        {spell = playerRace=="Harronir" and 1238686, isMultiDestination = true, map = 641, continent = BROKEN_ISLES, waypoint={2413, 0.3123, 0.7395}}, -- Val'sharah, Shaladrassil
+        {spell = playerRace=="Harronir" and 1238686, isMultiDestination = true, map = 2239, continent = DRAGON_ISLES, waypoint={2413, 0.7177, 0.5139}}, -- Amirdrassil
 
         -- Mole Machine of Dark Iron Dwarfes
         -- from https://www.wowhead.com/spell=265225/mole-machine#comments:id=2579704 Kudos to P3lim
