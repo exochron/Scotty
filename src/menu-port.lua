@@ -415,6 +415,21 @@ local function generateTeleportMenu(_, root)
         end
     end
 
+    -- Haranir Root Walking
+    do
+        -- Return
+        if C_SpellBook.IsSpellInSpellBook(1238695) then
+            buildSpellEntry(root, 1238686, ScottyPersonalCache.RootWalking or C_Spell.GetSpellName(1238695))
+            hasGeneralSpells = true
+        else
+            local rootSpells = tFilter({1260722, 1260806, 1261018, 1261022}, function(id) return C_SpellBook.IsSpellInSpellBook(id) end, true)
+            if #rootSpells > 0 then
+                buildSpellEntry(root, 1238686, C_Spell.GetSpellName(rootSpells[1]))
+                hasGeneralSpells = true
+            end
+        end
+    end
+
     do
         -- Player Houses
         -- HousingDashboardFrame.HouseInfoContent.ContentFrame.HouseUpgradeFrame.TeleportToHouseButton

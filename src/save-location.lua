@@ -5,6 +5,7 @@ ADDON.Events:RegisterCallback("OnLogin", function(self)
     local observeSpells = {
         [312370] = "VulperaCamp", -- Make Camp (Vulpera)
         [1233637] = "PlayerHomeReturn", -- Teleport Home (Housing)
+        [1238686] = "RootWalking", -- Root Walking (Haranir)
     }
 
     ADDON.Events:RegisterFrameEventAndCallback("UNIT_SPELLCAST_SUCCEEDED", function(_, unitTarget, _, spellId)
