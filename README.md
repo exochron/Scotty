@@ -1,8 +1,8 @@
-# Scotty
+<img src="icon.png" alt="Scotty" width="200">
 
 Scotty is your personal transportation assistant for WoW.
 It provides an easy-to-access menu with all your collected spells, toys or items.
-So you can teleport to your destination as easy as possible.
+So you can teleport to your destination with as few clicks as possible.
 
 You don't need to know specific spell names or look for items in your bag.
 Just choose your target location from a simple menu. 
@@ -13,7 +13,7 @@ Scotty improves your journey even further with some quality of life features:
 - Is your hearthstone already out of juice? For Shamans, Scotty falls automatically back to Astral Recall and uses it instead.
 - **new:** [Retail] You can also assign your hearthstone to your transmog outfit for the fitting exit in style.
 - Even as Master of the Arcane you might misplace sometimes your portal spells in your books. Well Scotty shows them right next to their regular teleport. Simply select which variant you'd like to cast next.
-- You are a vulperan Nomad and forgot where you pitched your camp? Scotty tracks it for you and provides handy menu options to camp.
+- You are a vulperan Nomad and forgot where you pitched your camp? Scotty tracks it for you and provides a handy menu option to camp.
 - Are you also annoyed of switching your equipment around because that one teleport to stormwind is on your cloak? Well Scotty even takes care of that by suiting you up automatically and changing you back after usage.
 - Did you forget which wormhole button brings you to your destination or certain doom? Just choose one of Scotty's user-friendly locations and skip the following dialog automatically. The same goes for Mole Machines and the like.
 - Visit your friends and guild mates! All of their homes are also easily accessible.
