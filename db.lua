@@ -13,6 +13,7 @@ function ADDON:InitDatabase()
         if info and info.name then
             return info.name
         end
+        return ""
     end
 
     -- Instance IDs of continents

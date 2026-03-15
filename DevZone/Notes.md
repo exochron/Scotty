@@ -1,5 +1,5 @@
 ## General Ideas / Todos
- - [ ] Haranir Rootwalking waypoints
+ - [ ] improve UI feedback on portal button (it's not quite intuitive)
  - [ ] Classic Support? (Season of Discovery might have added new Port Items/Spells)
  - [ ] show cooldown timer for equipment with initial cd
  - [ ] save return location for Key to the Arcantina
