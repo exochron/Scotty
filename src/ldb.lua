@@ -12,7 +12,7 @@ local function loadHearthStoneItemIds()
     return stones
 end
 local function buildHearthstoneButton()
-    local button = CreateFrame("Button", ADDON_NAME.."HearthstoneButton", nil, "SecureActionButtonTemplate")
+    local button = CreateFrame("Button", "ScottyHearthstoneButton", UIParent, "SecureActionButtonTemplate")
 
     local function GetRandomHearthstoneToy()
         local stones = loadHearthStoneItemIds()
@@ -90,29 +90,29 @@ local function buildHearthstoneButton()
     button:SetAttribute("pressAndHoldAction", 1)
     button:RegisterForClicks("LeftButtonUp")
     button:SetPropagateMouseMotion(true)
-    button:SetFrameStrata("DIALOG")
+    button:SetFrameStrata("FULLSCREEN_DIALOG")
     button:SetSize(1,1)
     button:SetPoint("RIGHT", -10, -10)
     button:RegisterForDrag("LeftButton")
     button:Show()
 
-    -- forward dragging to parent since mouse click propagation doesn't work anymore
+    -- forward dragging to hooked frame since mouse click propagation doesn't work anymore
     button:SetScript("OnDragStart", function(self)
         if not InCombatLockdown() then
             --disable click handler
             button:SetAttribute("type", "")
             button:SetAttribute("typerelease", "")
 
-            local parent = self:GetParent()
-            local handler = parent:GetScript("OnDragStart")
-            handler(parent)
+            local hook = self.HookedFrame
+            local handler = hook:GetScript("OnDragStart")
+            handler(hook)
         end
     end)
     button:SetScript("OnDragStop", function(self)
         if not InCombatLockdown() then
-            local parent = self:GetParent()
-            local handler = parent:GetScript("OnDragStop")
-            handler(parent)
+            local hook = self.HookedFrame
+            local handler = hook:GetScript("OnDragStop")
+            handler(hook)
 
             -- reset attributes
             self:ShuffleHearthstone()
@@ -170,9 +170,25 @@ ADDON.Events:RegisterCallback("OnLogin", function()
     end, ADDON_NAME.."-ldb")
 
     local attachHSButtonToFrame = function(frame)
-        if frame then
-            hearthstoneButton:SetParent(frame)
-            hearthstoneButton:SetAllPoints(frame)
+        if frame and not InCombatLockdown() then
+            hearthstoneButton.HookedFrame = frame
+            hearthstoneButton:ClearAllPoints()
+            hearthstoneButton:SetPoint("BOTTOMLEFT", frame:GetLeft(), frame:GetBottom())
+            hearthstoneButton:SetSize(frame:GetWidth(), frame:GetHeight())
+            hearthstoneButton:SetShown(frame:IsShown())
+            if not frame.ScottyHooked then
+                frame:HookScript("OnShow", function(self)
+                    if self == hearthstoneButton.HookedFrame and not InCombatLockdown() then
+                        hearthstoneButton:Show()
+                    end
+                end)
+                frame:HookScript("OnHide", function(self)
+                    if self == hearthstoneButton.HookedFrame and not InCombatLockdown() then
+                        hearthstoneButton:Hide()
+                    end
+                end)
+                frame.ScottyHooked = true
+            end
         end
     end
 
@@ -213,6 +229,7 @@ ADDON.Events:RegisterCallback("OnLogin", function()
                     ldbDataObject.value = ADDON:BuildCooldownString(cdTime + cdDuration)
                     cooldownTicker = C_Timer.NewTicker(1, function()
                         ldbDataObject.value = ADDON:BuildCooldownString(cdTime + cdDuration)
+                        attachHSButtonToFrame(hearthstoneButton.HookedFrame)
                     end, cdTime + cdDuration - GetTime() + 1)
                 else
                     ldbDataObject.value = ""
@@ -232,12 +249,14 @@ ADDON.Events:RegisterCallback("OnLogin", function()
                     ldbDataObject.value = ADDON:BuildCooldownString(cooldown.startTime + cooldown.duration)
                     cooldownTicker = C_Timer.NewTicker(1, function()
                         ldbDataObject.value = ADDON:BuildCooldownString(cooldown.startTime + cooldown.duration)
+                        attachHSButtonToFrame(hearthstoneButton.HookedFrame)
                     end, cooldown.startTime + cooldown.duration - GetTime() + 1)
                 else
                     ldbDataObject.value = ""
                 end
             end)
         end
+        attachHSButtonToFrame(hearthstoneButton.HookedFrame)
     end)
     hearthstoneButton:ShuffleHearthstone()
 
