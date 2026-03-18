@@ -20,7 +20,7 @@ local function ScanGuildMembers()
         local memberId = table.remove(guildMembersToScan)
         local info = memberId and C_Club.GetMemberInfo(C_Club.GetGuildClubId(), memberId)
         if info then
-            if issecretvalue(info) then
+            if InCombatLockdown() or issecretvalue(info) then
                 -- retry on next tick
                 table.insert(guildMembersToScan, memberId)
                 return
@@ -59,6 +59,11 @@ local function ScanFriends()
     if not expectEvent and (not HouseListFrame or not HouseListFrame:IsShown()) then
         local bnetInfo = table.remove(friendsToScan)
         if bnetInfo then
+            if InCombatLockdown() then
+                -- retry on next tick
+                table.insert(friendsToScan, bnetInfo)
+                return
+            end
             local handle
             handle = ADDON.Events:RegisterFrameEventAndCallbackWithHandle("VIEW_HOUSES_LIST_RECIEVED", function(bnet, houseInfos)
                 for _, houseInfo in ipairs(houseInfos) do
