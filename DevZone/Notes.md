@@ -1,10 +1,10 @@
 ## General Ideas / Todos
- - [ ] improve UI feedback on portal button (it's not quite intuitive)
- - [ ] Classic Support? (Season of Discovery might have added new Port Items/Spells)
+ - [ ] improve UX on portal button, it's not quite intuitive
  - [ ] show cooldown timer for equipment with initial cd
- - [ ] save return location for Key to the Arcantina
  - [ ] build macro from settings page 
  - [ ] Druid: resummon flight form on menu close; CastShapeshiftForm() is protected :(
+ - [ ] Hearthstone preview in Transmog UI
+ - [ ] Classic Support? (Season of Discovery might have added new Port Items/Spells)
 
 ## Adventure Journal
  - [ ] add dungeon ports on overview
