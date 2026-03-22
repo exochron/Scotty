@@ -1,7 +1,10 @@
-local _, ADDON = ...
+local ADDON_NAME, ADDON = ...
 
 function ADDON:TakeScreenshots()
     Transmog_LoadUI()
+
+    local favoritesSetting = Settings.GetValue(ADDON_NAME.."_GROUP_FAVORITES")
+    Settings.SetValue(ADDON_NAME.."_GROUP_FAVORITES", true)
 
     local gg = LibStub("GalleryGenerator")
     gg:TakeScreenshots(
@@ -10,8 +13,8 @@ function ADDON:TakeScreenshots()
                 api:BackScreen()
                 ADDON:OpenTeleportMenu(BazookaPlugin_Scotty)
 
-                api:WaitAndPointOnMenuElement(1,14, function() -- Khaz Algar
-                    api:WaitAndPointOnMenuElement(2,8)
+                api:WaitAndPointOnMenuElement(1, 10, function() -- Eastern Kingdom
+                    api:WaitAndPointOnMenuElement(2, 2) -- Duskwood
                 end)
             end,
             function(api)
@@ -28,6 +31,9 @@ function ADDON:TakeScreenshots()
                 api:BackScreen()
                 ADDON:OpenSettings()
             end,
-        }
+        },
+        function()
+            Settings.SetValue(ADDON_NAME.."_GROUP_FAVORITES", favoritesSetting)
+        end
     )
 end
