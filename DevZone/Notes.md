@@ -1,5 +1,4 @@
 ## General Ideas / Todos
- - [ ] improve UX on portal button, it's not quite intuitive
  - [ ] show cooldown timer for equipment with initial cd
  - [ ] build macro from settings page 
  - [ ] Druid: resummon flight form on menu close; CastShapeshiftForm() is protected :(
