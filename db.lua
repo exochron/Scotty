@@ -274,9 +274,10 @@ function ADDON:InitDatabase()
         {spell = 1254400, instance = 2805, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Windrunner Spire
         {spell = 1254572, instance = 2811, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Magisters' Terrace
         {spell = 1254559, instance = 2874, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Maisara Cavern
-        {spell = 1255391, instance = 2915, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Nexus Point Xenas
+        {spell = 1254563, instance = 2915, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Nexus Point Xenas
         {spell = 1254551, instance = 1753, continent = BROKEN_ISLES, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Seat of the Triumvirate
         {spell = 1254555, instance = 658, continent = NORTHREND, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Pit of Saron
+        {spell = 159898, instance = 1209, continent = DRAENOR, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Skyreach
         {spell = 1254557, instance = 1209, continent = DRAENOR, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Skyreach
         {spell = 393273, instance = 2526, continent = DRAGON_ISLES, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Algeth'ar Academy
 
