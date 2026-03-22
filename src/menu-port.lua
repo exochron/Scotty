@@ -51,17 +51,34 @@ end
 
 local function buildEntry(menuRoot, dbType, typeId, icon, location, tooltipSetter, hasCooldown, dbRow)
     local buttonText = location
-    if type(icon) == "number" then
-        buttonText = "|T" .. icon .. ":0|t "..location
-    elseif type(icon) == "string" then
-        buttonText = "|A:" .. icon .. ":16:16|a "..location
-    end
 
     local currentlyClicking = false
 
     local element = menuRoot:CreateButton(buttonText, function()
         return MenuResponse.CloseAll
     end)
+    element:AddInitializer(function(parent)
+        local tex = parent:AttachTexture()
+        if type(icon) == "number" then
+            tex:SetTexture(icon)
+            tex:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+        elseif type(icon) == "string" then
+            tex:SetAtlas(icon, false)
+        end
+        tex:SetPoint("LEFT")
+        tex:SetSize(21, 21)
+        parent.Icon = tex
+        parent.fontString:SetPoint("LEFT", tex, "RIGHT", 4, 0)
+    end)
+    element:AddResetter(function(parent)
+        local tex = parent.Icon
+        tex:ClearAllPoints()
+        tex:SetSize(0,0)
+        tex:SetTexture()
+        tex:SetAlpha(1)
+        parent.Icon = nil
+    end)
+
     element:HookOnEnter(function(frame)
         menuActionButton:SetScript("PreClick", function()
             currentlyClicking = true
@@ -111,6 +128,7 @@ local function buildEntry(menuRoot, dbType, typeId, icon, location, tooltipSette
             end
             button.fontString:SetText(buttonText.. cdSuffix)
             button.fontString:SetAlpha(0.5)
+            button.Icon:SetAlpha(0.5)
             if (cdSuffix ~= "" and hasCooldown - GetTime() <= 60) then
                 cdTimer = C_Timer.NewTicker(1, function()
                     if button.fontString then
@@ -118,6 +136,7 @@ local function buildEntry(menuRoot, dbType, typeId, icon, location, tooltipSette
                         button.fontString:SetText(buttonText.. cdSuffix)
                         if cdSuffix == "" then
                             button.fontString:SetAlpha(1)
+                            button.Icon:SetAlpha(1)
                         end
                     end
                 end, hasCooldown - GetTime() + 1)
@@ -135,12 +154,12 @@ local function buildEntry(menuRoot, dbType, typeId, icon, location, tooltipSette
             local star = parent:AttachFrame("CheckButton")
             star:SetNormalAtlas("auctionhouse-icon-favorite")
             star:SetHighlightAtlas("auctionhouse-icon-favorite-off", "ADD")
-            star:SetPoint("LEFT")
-            star:SetSize(13, 12)
+            star:SetPoint("LEFT", 0, 0)
+            star:SetSize(12, 12)
             star:SetFrameStrata("TOOLTIP")
 
             parent.StarButton = star
-            parent.fontString:SetPoint("LEFT", star, "RIGHT", 3, -1)
+            parent.Icon:SetPoint("LEFT", 17, 0)
 
             star:SetScript("OnEnter", function()
                 local isFavorite = not ADDON.Api.IsFavorite(dbRow)
@@ -272,9 +291,17 @@ local function buildSpellEntry(menuRoot, spellId, location, portalId, dbRow)
                 portalButton = button:AttachTemplate("WowMenuAutoHideButtonTemplate")
             end
 
+            local portalIcon = button:AttachTexture()
+            portalIcon:SetTexture(C_Spell.GetSpellTexture(portalId))
+            portalIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+            portalIcon:SetSize(21, 21)
+            portalIcon:SetParent(portalButton)
+            portalIcon:SetPoint("RIGHT")
+            button.PortalIcon = portalIcon
+
             portalButton:SetNormalFontObject("GameFontHighlight")
             portalButton:SetHighlightFontObject("GameFontHighlight")
-            portalButton:SetText(" "..ADDON.L.MENU_PORTAL.." |T" .. C_Spell.GetSpellTexture(portalId) .. ":0|t")
+            portalButton:SetText(" "..ADDON.L.MENU_PORTAL.."       ") -- space for portalIcon
             portalButton:SetSize(portalButton:GetTextWidth(), button.fontString:GetHeight())
             portalButton:SetPoint("RIGHT")
             portalButton:SetPoint("BOTTOM", button.fontString)
@@ -319,6 +346,12 @@ local function buildSpellEntry(menuRoot, spellId, location, portalId, dbRow)
             portal:SetScript("OnEnter", nil)
             portal:SetScript("OnLeave", nil)
             parent.PortalButton = nil
+
+            local portalIcon = parent.PortalIcon
+            portalIcon:ClearAllPoints()
+            portalIcon:SetSize(0, 0)
+            portalIcon:SetTexture()
+            parent.PortalIcon = nil
         end)
     end
 
@@ -408,7 +441,7 @@ local function generateTeleportMenu(_, root)
         if C_SpellBook.IsSpellInSpellBook(312372) then
             local location = ScottyPersonalCache.VulperaCamp or C_Spell.GetSpellName(312372)
             buildSpellEntry(root, 312372, location, 312370):AddInitializer(function(button)
-                button.PortalButton:SetText(" "..ADDON.L.MENU_VULPERA_CAMP.." |T" .. C_Spell.GetSpellTexture(312370) .. ":0|t")
+                button.PortalButton:SetText(" "..ADDON.L.MENU_VULPERA_CAMP.."       ")
                 button.PortalButton:SetSize(button.PortalButton:GetTextWidth(), button.fontString:GetHeight())
             end)
             hasGeneralSpells = true
