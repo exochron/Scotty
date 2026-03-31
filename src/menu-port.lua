@@ -265,7 +265,7 @@ end
 local function buildSpellEntry(menuRoot, spellId, location, portalId, dbRow)
     local cdTime = false
     local spellCooldown = C_Spell.GetSpellCooldown(spellId)
-    if spellCooldown and spellCooldown.startTime > 0 then
+    if spellCooldown and not issecretvalue(spellCooldown.startTime) and spellCooldown.startTime > 0 then
         cdTime = spellCooldown.startTime + spellCooldown.duration
     end
 
@@ -312,7 +312,7 @@ local function buildSpellEntry(menuRoot, spellId, location, portalId, dbRow)
             end
 
             local portalCooldown = C_Spell.GetSpellCooldown(portalId)
-            if portalCooldown.duration > 0 or not C_Spell.IsSpellUsable(portalId) then
+            if portalCooldown and not issecretvalue(portalCooldown.duration) and portalCooldown.duration > 0 or not C_Spell.IsSpellUsable(portalId) then
                 portalButton:SetAlpha(0.5)
             end
 

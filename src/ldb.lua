@@ -48,14 +48,8 @@ local function buildHearthstoneButton()
            and C_SpellBook.IsSpellInSpellBook(ASTRAL_RECALL)
            and C_Spell.IsSpellUsable(ASTRAL_RECALL)
        then
-            local spellOnCoolDown = false
-            if C_Spell.GetSpellCooldown then -- Retail
-                local spellCooldown = C_Spell.GetSpellCooldown(ASTRAL_RECALL)
-                spellOnCoolDown = spellCooldown.startTime > 0
-            elseif GetSpellCooldown then -- Classics
-                spellOnCoolDown = GetSpellCooldown(ASTRAL_RECALL) > 0
-            end
-            if not spellOnCoolDown then
+            local spellCooldown = C_Spell.GetSpellCooldown(ASTRAL_RECALL)
+            if not issecretvalue(spellCooldown.duration) and spellCooldown.duration == 0 then
                 self:SetAttribute("type", "spell")
                 self:SetAttribute("typerelease", "spell")
                 self:SetAttribute("spell", ASTRAL_RECALL)
@@ -245,7 +239,7 @@ ADDON.Events:RegisterCallback("OnLogin", function()
                 ldbDataObject.label = spell:GetSpellName()
                 ldbDataObject.icon = spell:GetSpellTexture()
                 local cooldown = C_Spell.GetSpellCooldown(value)
-                if cooldown and cooldown.startTime > 0 then
+                if cooldown and not issecretvalue(cooldown.startTime) and cooldown.startTime > 0 then
                     ldbDataObject.value = ADDON:BuildCooldownString(cooldown.startTime + cooldown.duration)
                     cooldownTicker = C_Timer.NewTicker(1, function()
                         ldbDataObject.value = ADDON:BuildCooldownString(cooldown.startTime + cooldown.duration)
