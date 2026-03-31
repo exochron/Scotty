@@ -1,4 +1,4 @@
-local _, ADDON = ...
+local ADDON_NAME, ADDON = ...
 
 local PlayerHouseInfos = {}
 local FriendsHouseInfos = {}
@@ -45,7 +45,7 @@ local function ScanGuildMembers()
     end
 end
 local function StartScanningGuild()
-    if IsInGuild() then
+    if IsInGuild() and Settings.GetValue(ADDON_NAME.."_SHOW_GUILD_HOUSES") then
         guildMembersToScan = C_Club.GetClubMembers(C_Club.GetGuildClubId())
         if issecretvalue(guildMembersToScan) then
             C_Timer.After(10, StartScanningGuild)
@@ -92,11 +92,14 @@ local function ScanFriends()
     end
 end
 local function StartScanningFriends()
-    local numBNetTotal = BNGetNumFriends();
-    for index = 1, numBNetTotal do
-        local bnetInfo = C_BattleNet.GetFriendAccountInfo(index)
-        if bnetInfo then
-            table.insert(friendsToScan, bnetInfo)
+    friendsToScan = {}
+    if Settings.GetValue(ADDON_NAME.."_SHOW_FRIENDS_HOUSES") then
+        local numBNetTotal = BNGetNumFriends();
+        for index = 1, numBNetTotal do
+            local bnetInfo = C_BattleNet.GetFriendAccountInfo(index)
+            if bnetInfo then
+                table.insert(friendsToScan, bnetInfo)
+            end
         end
     end
 
