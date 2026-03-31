@@ -20,7 +20,7 @@ local function ScanGuildMembers()
         local memberId = table.remove(guildMembersToScan)
         local info = memberId and C_Club.GetMemberInfo(C_Club.GetGuildClubId(), memberId)
         if info then
-            if InCombatLockdown() or issecretvalue(info) then
+            if InCombatLockdown() or issecretvalue(info) or issecretvalue(info.guid) then
                 -- retry on next tick
                 table.insert(guildMembersToScan, memberId)
                 return
@@ -59,7 +59,7 @@ local function ScanFriends()
     if not expectEvent and (not HouseListFrame or not HouseListFrame:IsShown()) then
         local bnetInfo = table.remove(friendsToScan)
         if bnetInfo then
-            if InCombatLockdown() then
+            if InCombatLockdown() or issecretvalue(bnetInfo) or issecretvalue(bnetInfo.bnetAccountID) then
                 -- retry on next tick
                 table.insert(friendsToScan, bnetInfo)
                 return
