@@ -1,6 +1,7 @@
 local ADDON_NAME, ADDON = ...
 
 local MENU_TAG = ADDON_NAME.."-LDB-Teleport"
+local issecretvalue = issecretvalue or function() return false end
 
 local menuActionButton = CreateFrame("Button", nil, nil, "InsecureActionButtonTemplate")
 menuActionButton:SetAttribute("pressAndHoldAction", 1)
