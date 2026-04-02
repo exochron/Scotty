@@ -12,6 +12,8 @@ if not ADDON.Events.UnregisterEventsByEventTable then
     ADDON.Events.UnregisterEventsByEventTable = ADDON.Events.UnregisterEvents
 end
 
+local issecretvalue = issecretvalue or function() return false end
+
 ADDON.Events:RegisterFrameEventAndCallback("PLAYER_ENTERING_WORLD", function(_, isLogin, isReload)
     if isLogin or isReload then
 

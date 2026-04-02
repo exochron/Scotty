@@ -1,5 +1,7 @@
 local ADDON_NAME, ADDON = ...
 
+local issecretvalue = issecretvalue or function() return false end
+
 local PlayerHouseInfos = {}
 local FriendsHouseInfos = {}
 local GuildHouseInfos = {}
