@@ -17,15 +17,15 @@ local function buildHearthstoneButton()
     local function GetRandomHearthstoneToy()
         local stones = loadHearthStoneItemIds()
 
-        local preferedToys = ADDON.GetMogOutfitHearthstones and ADDON:GetMogOutfitHearthstones() or {}
-        if #preferedToys == 0 then
-            preferedToys = Settings.GetValue(ADDON_NAME.."_HEARTHSTONES")
+        local preferredToys = ADDON.GetMogOutfitHearthstones and ADDON:GetMogOutfitHearthstones() or {}
+        if #preferredToys == 0 then
+            preferredToys = Settings.GetValue(ADDON_NAME.."_HEARTHSTONES")
         end
 
-        if #preferedToys > 0 then
-            preferedToys = CopyValuesAsKeys(preferedToys)
+        if #preferredToys > 0 then
+            preferredToys = CopyValuesAsKeys(preferredToys)
             stones = tFilter(stones, function(toyId)
-                return preferedToys[toyId]
+                return preferredToys[toyId]
             end, true)
         end
 
@@ -220,7 +220,12 @@ ADDON.Events:RegisterCallback("OnLogin", function()
                 ldbDataObject.icon = item:GetItemIcon()
                 local cdTime, cdDuration = C_Container.GetItemCooldown(value)
                 if cdTime > 0 then
-                    ldbDataObject.value = ADDON:BuildCooldownString(cdTime + cdDuration)
+                    local cdValue = ADDON:BuildCooldownString(cdTime + cdDuration)
+                    if (cdValue == "0s" or cdValue == "1s" or cdValue == "2s") and ADDON:IsGCD() then
+                        ldbDataObject.value = ""
+                        return
+                    end
+                    ldbDataObject.value = cdValue
                     cooldownTicker = C_Timer.NewTicker(1, function()
                         ldbDataObject.value = ADDON:BuildCooldownString(cdTime + cdDuration)
                         attachHSButtonToFrame(hearthstoneButton.HookedFrame)
@@ -240,7 +245,12 @@ ADDON.Events:RegisterCallback("OnLogin", function()
                 ldbDataObject.icon = spell:GetSpellTexture()
                 local cooldown = C_Spell.GetSpellCooldown(value)
                 if cooldown and not issecretvalue(cooldown.startTime) and cooldown.startTime > 0 then
-                    ldbDataObject.value = ADDON:BuildCooldownString(cooldown.startTime + cooldown.duration)
+                    local cdValue = ADDON:BuildCooldownString(cooldown.startTime + cooldown.duration)
+                    if (cdValue == "0s" or cdValue == "1s" or cdValue == "2s") and ADDON:IsGCD() then
+                        ldbDataObject.value = ""
+                        return
+                    end
+                    ldbDataObject.value = cdValue
                     cooldownTicker = C_Timer.NewTicker(1, function()
                         ldbDataObject.value = ADDON:BuildCooldownString(cooldown.startTime + cooldown.duration)
                         attachHSButtonToFrame(hearthstoneButton.HookedFrame)

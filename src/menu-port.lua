@@ -125,6 +125,9 @@ local function buildEntry(menuRoot, dbType, typeId, icon, location, tooltipSette
             local cdSuffix = ""
             if type(hasCooldown) == "number" then
                 cdSuffix = ADDON:BuildCooldownString(hasCooldown, true)
+                if (cdSuffix == "0s" or cdSuffix == "1s" or cdSuffix == "2s") and ADDON:IsGCD() then
+                    return
+                end
             end
             button.fontString:SetText(buttonText.. cdSuffix)
             button.fontString:SetAlpha(0.5)

@@ -109,3 +109,11 @@ function ADDON:BuildCooldownString(cooldownEndTime, asSuffix)
 
     return value
 end
+
+function ADDON:IsGCD()
+    local spellCooldownInfo = C_Spell.GetSpellCooldown(61304)
+    if spellCooldownInfo and not issecretvalue(spellCooldownInfo.duration) and spellCooldownInfo.duration > 0 then
+        return true
+    end
+    return false
+end
