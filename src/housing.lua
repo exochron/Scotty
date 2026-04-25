@@ -47,12 +47,15 @@ local function ScanGuildMembers()
     end
 end
 local function StartScanningGuild()
-    if IsInGuild() and Settings.GetValue(ADDON_NAME.."_SHOW_GUILD_HOUSES") then
-        guildMembersToScan = C_Club.GetClubMembers(C_Club.GetGuildClubId())
-        if issecretvalue(guildMembersToScan) then
-            C_Timer.After(10, StartScanningGuild)
-        else
-            guildTicker = C_Timer.NewTicker(TICKER_INTERVAL, ScanGuildMembers)
+    if Settings.GetValue(ADDON_NAME.."_SHOW_GUILD_HOUSES") then
+        local clubId = C_Club.GetGuildClubId()
+        if clubId then
+            guildMembersToScan = C_Club.GetClubMembers(clubId)
+            if issecretvalue(guildMembersToScan) then
+                C_Timer.After(10, StartScanningGuild)
+            else
+                guildTicker = C_Timer.NewTicker(TICKER_INTERVAL, ScanGuildMembers)
+            end
         end
     end
 end
