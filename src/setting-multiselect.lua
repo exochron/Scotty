@@ -23,15 +23,8 @@ function ScottySetting_DropdownControlMixin:SetupDropdownMenu(dropdown, setting,
     end
 
     local function inserter(setting, rootDescription)
-        if Settings.CreateDropdownCheckbox then -- retail
-            for _, optionData in ipairs(options()) do
-                Settings.CreateDropdownCheckbox(rootDescription, optionData, IsSelected, OnSelect)
-            end
-        else -- classic; cleanup later
-            rootDescription = setting
-            for _, optionData in ipairs(options()) do
-                rootDescription:CreateCheckbox(optionData.text.." ", IsSelected, OnSelect, optionData)
-            end
+        for _, optionData in ipairs(options()) do
+            Settings.CreateDropdownCheckbox(rootDescription, optionData, IsSelected, OnSelect)
         end
     end
 

@@ -1,7 +1,6 @@
 local ADDON_NAME, ADDON = ...
 
 local ASTRAL_RECALL = 556
-local issecretvalue = issecretvalue or function() return false end
 
 local hearthstoneButton
 

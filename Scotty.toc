@@ -1,4 +1,4 @@
-## Interface: 120005, 50503
+## Interface: 120005, 50504
 ## Title: Scotty
 ## Notes: Your personal transportation assistant
 ## Author: eXochron
@@ -37,7 +37,7 @@ src/dialog-skip.lua
 src/equipment.lua
 src/command.lua
 src/waypoint.lua
-src/housing.lua
+src/housing.lua [AllowLoadGameType mainline]
 src/save-location.lua
 src/class.lua
 src/outfit-hearthstone.lua [AllowLoadGameType mainline]

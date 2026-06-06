@@ -41,12 +41,12 @@ local function registerSettings()
 
     local showFriendsHouses = Settings.RegisterAddOnSetting(category, ADDON_NAME.."_SHOW_FRIENDS_HOUSES", "showFriendsHouses",
             ScottyGlobalSettings, Settings.VarType.Boolean, L.SETTING_FRIENDS_HOUSES, Settings.Default.True)
-    if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then -- no seasons in classic yet
+    if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then -- no housing in classic yet
         Settings.CreateCheckbox(category, showFriendsHouses)
     end
     local showGuildHouses = Settings.RegisterAddOnSetting(category, ADDON_NAME.."_SHOW_GUILD_HOUSES", "showGuildHouses",
             ScottyGlobalSettings, Settings.VarType.Boolean, L.SETTING_GUILD_HOUSES, Settings.Default.True)
-    if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then -- no seasons in classic yet
+    if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then -- no housing in classic yet
         Settings.CreateCheckbox(category, showGuildHouses)
     end
 
@@ -57,11 +57,7 @@ local function registerSettings()
         end, true)
         for _, row in pairs(hearthstones) do
             local label = "|T" .. (C_Item.GetItemIconByID(row.toy) or "") .. ":0|t "..(cachedItemNames[row.toy] or "")
-            if not container.AddCheckbox then -- classic; cleanup later
-                container:Add(row.toy, label)
-            else -- retail
-                container:AddCheckbox(row.toy, label)
-            end
+            container:AddCheckbox(row.toy, label)
         end
         return container:GetData();
     end
