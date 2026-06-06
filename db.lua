@@ -355,6 +355,7 @@ function ADDON:InitDatabase()
         {spell = 1239155, instance = 2810, continent = KHAZ_ALGAR}, -- Manaforge Omega
 
         -- Hearthstones
+        -- https://wago.tools/db2/SpellCategories?filter%5BChargeCategory%5D=exact%3A2309&page=1
         {toy = 54452, category = ADDON.Category.Hearthstone},
         {toy = 64488, category = ADDON.Category.Hearthstone},
         {toy = 93672, category = ADDON.Category.Hearthstone},
@@ -393,6 +394,8 @@ function ADDON:InitDatabase()
         {toy = 257736, category = ADDON.Category.Hearthstone}, -- Lightcalled Hearthstone
         {toy = 265100, category = ADDON.Category.Hearthstone}, -- Corewarden's Hearthstone
         {toy = 263933, category = ADDON.Category.Hearthstone}, -- Preyseeker's Hearthstone
+        {toy = 264367, category = ADDON.Category.Hearthstone}, -- Mycomancer's Hearthspore
+        {toy = 276370, category = ADDON.Category.Hearthstone}, -- Lightveil Hearth Beacon
     }
 
     -- the actual function C_Item.DoesItemExistByID() is misleading and only checks for non empty parameter.
