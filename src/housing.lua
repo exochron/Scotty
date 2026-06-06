@@ -1,7 +1,5 @@
 local ADDON_NAME, ADDON = ...
 
-local issecretvalue = issecretvalue or function() return false end
-
 local PlayerHouseInfos = {}
 local FriendsHouseInfos = {}
 local GuildHouseInfos = {}
@@ -112,8 +110,7 @@ local function StartScanningFriends()
 end
 
 ADDON.Events:RegisterCallback("OnLogin", function()
-    local playerIsTimerunning = PlayerIsTimerunning and PlayerIsTimerunning()
-    if C_Housing and not playerIsTimerunning then
+    if not PlayerIsTimerunning() then
         -- see: https://warcraft.wiki.gg/wiki/PLAYER_HOUSE_LIST_UPDATED
         ADDON.Events:RegisterFrameEventAndCallback("PLAYER_HOUSE_LIST_UPDATED", function(_, houseInfos)
             PlayerHouseInfos = houseInfos

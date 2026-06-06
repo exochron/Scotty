@@ -6,13 +6,6 @@ ScottyPersonalCache = ScottyPersonalCache or {}
 ADDON.Events = CreateFromMixins(EventRegistry)
 ADDON.Events:OnLoad()
 ADDON.Events:SetUndefinedEventsAllowed(true)
--- Polyfill for split Unregister behaviour in 12.0
--- Later: remove after classic has it
-if not ADDON.Events.UnregisterEventsByEventTable then
-    ADDON.Events.UnregisterEventsByEventTable = ADDON.Events.UnregisterEvents
-end
-
-local issecretvalue = issecretvalue or function() return false end
 
 ADDON.Events:RegisterFrameEventAndCallback("PLAYER_ENTERING_WORLD", function(_, isLogin, isReload)
     if isLogin or isReload then
