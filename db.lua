@@ -269,7 +269,11 @@ function ADDON:InitDatabase()
         {toy = isEngineer and 221966, isMultiDestination = true, map = 2248, continent = KHAZ_ALGAR, gossip={122361}}, -- Wormhole Generator: Khaz Algar - Isle of Dorn
         {toy = isEngineer and 221966, isMultiDestination = true, map = 2255, continent = KHAZ_ALGAR, gossip={122358}}, -- Wormhole Generator: Khaz Algar - Azj-Kahet
         {toy = isEngineer and 221966, isMultiDestination = true, accountQuest = 86630, map = 2346, continent = KHAZ_ALGAR, gossip={131563}}, -- Wormhole Generator: Khaz Algar - Undermine
-        {toy = isEngineer and 248485, map = 2537, continent = EASTERN_KINGDOMS}, -- Wormhole Generator: Quel'Thalas
+        {toy = isEngineer and 248485, isMultiDestination = true, map = 2537, continent = EASTERN_KINGDOMS, gossip={134982}}, -- Wormhole Generator: Quel'Thalas - Random
+        {toy = isEngineer and 248485, isMultiDestination = true, map = 2395, continent = EASTERN_KINGDOMS, gossip={134981}}, -- Wormhole Generator: Quel'Thalas - Eversong Woods
+        {toy = isEngineer and 248485, isMultiDestination = true, map = 2437, continent = EASTERN_KINGDOMS, gossip={134980}}, -- Wormhole Generator: Quel'Thalas - Zul'Aman
+        {toy = isEngineer and 248485, isMultiDestination = true, map = 2413, continent = EASTERN_KINGDOMS, gossip={134979}}, -- Wormhole Generator: Quel'Thalas - Harandar
+        {toy = isEngineer and 248485, isMultiDestination = true, map = 2405, continent = EASTERN_KINGDOMS, gossip={134978}}, -- Wormhole Generator: Quel'Thalas - Voidstorm
 
         -- Seasonal Dungeon Port
         {spell = 1254400, instance = 2805, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Windrunner Spire
