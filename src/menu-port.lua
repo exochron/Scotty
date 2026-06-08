@@ -433,7 +433,10 @@ local function generateTeleportMenu(_, root)
     root:SetScrollMode(GetScreenHeight() - 100)
 
     local hasGeneralSpells = false
-    local playerHouseInfos, friendsHouseInfos, guildHousesInfos = ADDON.GetHouseInfos and ADDON.GetHouseInfos() or {}
+    local playerHouseInfos, friendsHouseInfos, guildHousesInfos = {}, {}, {}
+    if ADDON.GetHouseInfos then
+        playerHouseInfos, friendsHouseInfos, guildHousesInfos = ADDON.GetHouseInfos()
+    end
 
     -- Hearthstone
     do
@@ -567,7 +570,7 @@ local function generateTeleportMenu(_, root)
     end
 
     -- friends houses
-    if Settings.GetValue(ADDON_NAME.."_SHOW_FRIENDS_HOUSES") and friendsHouseInfos and TableHasAnyEntries(friendsHouseInfos) then
+    if Settings.GetValue(ADDON_NAME.."_SHOW_FRIENDS_HOUSES") and TableHasAnyEntries(friendsHouseInfos) then
         local friendsRoot = root:CreateButton("|T"..GetBnetIcon()..":0|t "..ADDON.L.HOUSE_FRIENDS)
         friendsRoot:SetScrollMode(GetScreenHeight() - 100)
         local friendsHouses = GetValuesArray(friendsHouseInfos)
@@ -588,7 +591,7 @@ local function generateTeleportMenu(_, root)
         end
     end
     -- guild member houses
-    if Settings.GetValue(ADDON_NAME.."_SHOW_GUILD_HOUSES") and guildHousesInfos and TableHasAnyEntries(guildHousesInfos) then
+    if Settings.GetValue(ADDON_NAME.."_SHOW_GUILD_HOUSES") and TableHasAnyEntries(guildHousesInfos) then
         local guildRoot = root:CreateButton("|T135026:0|t "..ADDON.L.HOUSE_GUILDMEMBERS)
         guildRoot:SetScrollMode(GetScreenHeight() - 100)
         local guildHouses = GetValuesArray(guildHousesInfos)

@@ -73,15 +73,18 @@ ADDON.Api.GetFavoriteDatabase = function()
                 or (type == "item" and favoriteItems[typeKey])
     end, true)
 
-    local _, friendsHouseInfos, guildHouseInfos = ADDON.GetHouseInfos and ADDON.GetHouseInfos()
-    for _, friendsHouse in pairs(friendsHouseInfos or {}) do
+    local friendsHouseInfos, guildHouseInfos = {}, {}
+    if ADDON.GetHouseInfos then
+        _, friendsHouseInfos, guildHouseInfos = ADDON.GetHouseInfos()
+    end
+    for _, friendsHouse in pairs(friendsHouseInfos) do
         local _, key = buildFavoriteKey(friendsHouse)
         if favoriteHouses[key] then
             table.insert(dbRows, friendsHouse)
             favoriteHouses[key] = nil
         end
     end
-    for _, guildHouse in pairs(guildHouseInfos or {}) do
+    for _, guildHouse in pairs(guildHouseInfos) do
         local _, key = buildFavoriteKey(guildHouse)
         if favoriteHouses[key] then
             table.insert(dbRows, guildHouse)
