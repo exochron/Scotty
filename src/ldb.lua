@@ -50,38 +50,41 @@ local function buildHearthstoneButton()
        then
             local spellCooldown = C_Spell.GetSpellCooldown(ASTRAL_RECALL)
             if not issecretvalue(spellCooldown.duration) and spellCooldown.duration == 0 then
-                self:SetAttribute("type", "spell")
-                self:SetAttribute("typerelease", "spell")
-                self:SetAttribute("spell", ASTRAL_RECALL)
-                self:SetAttribute("item", nil)
-                self:SetAttribute("itemid", nil)
-                self:SetAttribute("toy", nil)
+                self:SetAttributeNoHandler("type", "spell")
+                self:SetAttributeNoHandler("typerelease", "spell")
+                self:SetAttributeNoHandler("spell", ASTRAL_RECALL)
+                self:SetAttributeNoHandler("item", nil)
+                self:SetAttributeNoHandler("itemid", nil)
+                self:SetAttributeNoHandler("toy", nil)
+                self:UpdateLDB()
                 return
             end
         end
         if toy then
-            self:SetAttribute("type", "toy")
-            self:SetAttribute("typerelease", "toy")
-            self:SetAttribute("toy", toy)
-            self:SetAttribute("item", nil)
-            self:SetAttribute("itemid", nil)
-            self:SetAttribute("spell", nil)
+            self:SetAttributeNoHandler("type", "toy")
+            self:SetAttributeNoHandler("typerelease", "toy")
+            self:SetAttributeNoHandler("toy", toy)
+            self:SetAttributeNoHandler("item", nil)
+            self:SetAttributeNoHandler("itemid", nil)
+            self:SetAttributeNoHandler("spell", nil)
+            self:UpdateLDB()
             return
         end
 
         local item = C_Container.PlayerHasHearthstone and C_Container.PlayerHasHearthstone()
                 or ADDON:FindItemInBags(HEARTHSTONE_ITEM_ID) and HEARTHSTONE_ITEM_ID
         if item then
-            self:SetAttribute("type", "item")
-            self:SetAttribute("typerelease", "item")
-            self:SetAttribute("item", ADDON:FindItemInBags(item))
-            self:SetAttribute("itemid", item)
-            self:SetAttribute("toy", nil)
-            self:SetAttribute("spell", nil)
+            self:SetAttributeNoHandler("type", "item")
+            self:SetAttributeNoHandler("typerelease", "item")
+            self:SetAttributeNoHandler("item", ADDON:FindItemInBags(item))
+            self:SetAttributeNoHandler("itemid", item)
+            self:SetAttributeNoHandler("toy", nil)
+            self:SetAttributeNoHandler("spell", nil)
+            self:UpdateLDB()
         end
     end
 
-    button:SetAttribute("pressAndHoldAction", 1)
+    button:SetAttributeNoHandler("pressAndHoldAction", 1)
     button:RegisterForClicks("LeftButtonUp")
     button:SetPropagateMouseMotion(true)
     button:SetFrameStrata("FULLSCREEN_DIALOG")
@@ -94,8 +97,8 @@ local function buildHearthstoneButton()
     button:SetScript("OnDragStart", function(self)
         if not InCombatLockdown() then
             --disable click handler
-            button:SetAttribute("type", "")
-            button:SetAttribute("typerelease", "")
+            button:SetAttributeNoHandler("type", "")
+            button:SetAttributeNoHandler("typerelease", "")
 
             local hook = self.HookedFrame
             local handler = hook:GetScript("OnDragStart")
@@ -207,18 +210,20 @@ ADDON.Events:RegisterCallback("OnLogin", function()
     } )
 
     local cooldownTicker
-    hearthstoneButton:HookScript("OnAttributeChanged", function(_, name, value)
-
-        if value and (name == "toy" or name == "itemid") then
+    function hearthstoneButton:UpdateLDB()
+        local itemid = hearthstoneButton:GetAttribute("itemid")
+        local toy = hearthstoneButton:GetAttribute("toy")
+        local spellId = hearthstoneButton:GetAttribute("spell")
+        if toy or itemid then
             if cooldownTicker then
                 cooldownTicker:Cancel()
                 cooldownTicker = nil
             end
-            local item = Item:CreateFromItemID(value)
+            local item = Item:CreateFromItemID(toy or itemid)
             item:ContinueOnItemLoad(function()
                 ldbDataObject.label = item:GetItemName()
                 ldbDataObject.icon = item:GetItemIcon()
-                local cdTime, cdDuration = C_Container.GetItemCooldown(value)
+                local cdTime, cdDuration = C_Container.GetItemCooldown(item:GetStaticBackingItem())
                 if cdTime > 0 then
                     local cdValue = ADDON:BuildCooldownString(cdTime + cdDuration)
                     if (cdValue == "0s" or cdValue == "1s" or cdValue == "2s") and ADDON:IsGCD() then
@@ -234,16 +239,16 @@ ADDON.Events:RegisterCallback("OnLogin", function()
                     ldbDataObject.value = ""
                 end
             end)
-        elseif value and name == "spell" then
+        elseif spellId then
             if cooldownTicker then
                 cooldownTicker:Cancel()
                 cooldownTicker = nil
             end
-            local spell = Spell:CreateFromSpellID(value)
+            local spell = Spell:CreateFromSpellID(spellId)
             spell:ContinueOnSpellLoad(function()
                 ldbDataObject.label = spell:GetSpellName()
                 ldbDataObject.icon = spell:GetSpellTexture()
-                local cooldown = C_Spell.GetSpellCooldown(value)
+                local cooldown = C_Spell.GetSpellCooldown(spell:GetSpellID())
                 if cooldown and not issecretvalue(cooldown.startTime) and cooldown.startTime > 0 then
                     local cdValue = ADDON:BuildCooldownString(cooldown.startTime + cooldown.duration)
                     if (cdValue == "0s" or cdValue == "1s" or cdValue == "2s") and ADDON:IsGCD() then
@@ -261,7 +266,7 @@ ADDON.Events:RegisterCallback("OnLogin", function()
             end)
         end
         attachHSButtonToFrame(hearthstoneButton.HookedFrame)
-    end)
+    end
     hearthstoneButton:ShuffleHearthstone()
 
     ADDON.Events:RegisterFrameEventAndCallback("HEARTHSTONE_BOUND", function()
@@ -288,6 +293,6 @@ ADDON.Events:RegisterCallback("OnLogin", function()
     -- force initial update for ElvUI
     -- since ElvUI is loaded before Scotty and it doesn't update its panels during registration. :(
     -- https://github.com/tukui-org/ElvUI/issues/1640
-    local _ = ElvUI and ElvUI[1]:GetModule('DataTexts'):LoadDataTexts()
+    local _ = ElvUI and ElvUI[1] and ElvUI[1].GetModule and ElvUI[1]:GetModule('DataTexts'):LoadDataTexts()
 
 end, "ldb-plugin")
