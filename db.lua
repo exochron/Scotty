@@ -407,7 +407,7 @@ function ADDON:InitDatabase()
         {toy = 265100, category = ADDON.Category.Hearthstone}, -- Corewarden's Hearthstone
         {toy = 263933, category = ADDON.Category.Hearthstone}, -- Preyseeker's Hearthstone
         {toy = 264367, category = ADDON.Category.Hearthstone}, -- Mycomancer's Hearthspore
-        {toy = 276370, category = ADDON.Category.Hearthstone}, -- Lightveil Hearth Beacon
+        {toy = 276371, category = ADDON.Category.Hearthstone}, -- Lightveil Recall Beacon
     }
 
     -- the actual function C_Item.DoesItemExistByID() is misleading and only checks for non empty parameter.
