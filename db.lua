@@ -33,6 +33,7 @@ function ADDON:InitDatabase()
 
     -- https://wago.tools/db2/DisplaySeason
     local MN_S1 = 34
+    local MN_S2 = 37
     --local isTimerunner = PlayerIsTimerunning and PlayerIsTimerunning()
     local currentSeason = C_SeasonInfo and C_SeasonInfo.GetCurrentDisplaySeasonID() or 0
     local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
@@ -285,6 +286,14 @@ function ADDON:InitDatabase()
         {spell = 159898, instance = 1209, continent = DRAENOR, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Skyreach
         {spell = 1254557, instance = 1209, continent = DRAENOR, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Skyreach
         {spell = 393273, instance = 2526, continent = DRAGON_ISLES, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Algeth'ar Academy
+        {spell = 1286801, instance = 2859, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S2 and ADDON.Category.SeasonInstance)}, -- Blinding Vale
+        {spell = 1286804, instance = 2923, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S2 and ADDON.Category.SeasonInstance)}, -- Voidscar Arena
+        {spell = 1286807, instance = 2825, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S2 and ADDON.Category.SeasonInstance)}, -- Den of Nalorak
+        {spell = 1286809, instance = 2813, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S2 and ADDON.Category.SeasonInstance)}, -- Murder Row
+        {spell = 1286812, instance = 2993, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S2 and ADDON.Category.SeasonInstance)}, -- Altar of Fangs
+        {spell = 1286828, instance = 1877, continent = ZANDALAR, category = (currentSeason == MN_S2 and ADDON.Category.SeasonInstance)}, -- Temple of Sethralis
+        {spell = 1286831, instance = 1762, continent = ZANDALAR, category = (currentSeason == MN_S2 and ADDON.Category.SeasonInstance)}, -- Kings Rest
+        {spell = 393256, instance = 2521, continent = DRAGON_ISLES, category = (currentSeason == MN_S2 and ADDON.Category.SeasonInstance)}, -- Ruby Life Pools
 
         -- Older Dungeon Ports
         {spell = 131204, instance = 960, continent = PANDARIA}, -- Temple of the Jade Serpent
@@ -318,7 +327,6 @@ function ADDON:InitDatabase()
         {spell = 373262, instance = 532, continent = EASTERN_KINGDOMS}, -- Karazhan
         {spell = 373274, instance = 2097, continent = KUL_TIRAS,}, -- Operation: Mechagon
         {spell = 393222, instance = 2451, continent = EASTERN_KINGDOMS}, -- Uldaman: Legacy of Tyr
-        {spell = 393256, instance = 2521, continent = DRAGON_ISLES}, -- Ruby Life Pools
         {spell = 393262, instance = 2516, continent = DRAGON_ISLES}, -- The Nokhud Offensive
         {spell = 393267, instance = 2520, continent = DRAGON_ISLES}, -- Brackenhide Hollow
         {spell = 393276, instance = 2519, continent = DRAGON_ISLES}, -- Neltharus
