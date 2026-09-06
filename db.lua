@@ -32,7 +32,6 @@ function ADDON:InitDatabase()
     local KHAZ_ALGAR = 2601
 
     -- https://wago.tools/db2/DisplaySeason
-    local MN_S1 = 34
     local MN_S2 = 37
     --local isTimerunner = PlayerIsTimerunning and PlayerIsTimerunning()
     local currentSeason = C_SeasonInfo and C_SeasonInfo.GetCurrentDisplaySeasonID() or 0
@@ -278,15 +277,6 @@ function ADDON:InitDatabase()
         {toy = isEngineer and 248485, isMultiDestination = true, map = 2405, continent = EASTERN_KINGDOMS, gossip={134978}}, -- Wormhole Generator: Quel'Thalas - Voidstorm
 
         -- Seasonal Dungeon Port
-        {spell = 1254400, instance = 2805, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Windrunner Spire
-        {spell = 1254572, instance = 2811, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Magisters' Terrace
-        {spell = 1254559, instance = 2874, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Maisara Cavern
-        {spell = 1254563, instance = 2915, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Nexus Point Xenas
-        {spell = 1254551, instance = 1753, continent = BROKEN_ISLES, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Seat of the Triumvirate
-        {spell = 1254555, instance = 658, continent = NORTHREND, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Pit of Saron
-        {spell = 159898, instance = 1209, continent = DRAENOR, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Skyreach
-        {spell = 1254557, instance = 1209, continent = DRAENOR, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Skyreach
-        {spell = 393273, instance = 2526, continent = DRAGON_ISLES, category = (currentSeason == MN_S1 and ADDON.Category.SeasonInstance)}, -- Algeth'ar Academy
         {spell = 1286801, instance = 2859, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S2 and ADDON.Category.SeasonInstance)}, -- Blinding Vale
         {spell = 1286804, instance = 2923, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S2 and ADDON.Category.SeasonInstance)}, -- Voidscar Arena
         {spell = 1286807, instance = 2825, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S2 and ADDON.Category.SeasonInstance)}, -- Den of Nalorak
@@ -309,6 +299,7 @@ function ADDON:InitDatabase()
         {spell = 159895, instance = 1175, continent = DRAENOR}, -- Bloodmaul Slag Mines
         {spell = 159896, instance = 1195, continent = DRAENOR}, -- Iron Docks
         {spell = 159897, instance = 1182, continent = DRAENOR}, -- Auchindoun
+        {spell = 159898, instance = 1209, continent = DRAENOR}, -- Skyreach
         {spell = 159899, instance = 1176, continent = DRAENOR}, -- Shadowmoon Burial Grounds
         {spell = 159900, instance = 1208, continent = DRAENOR}, -- Grimrail Depot
         {spell = 159901, instance = 1279, continent = DRAENOR}, -- The Everbloom
@@ -330,6 +321,7 @@ function ADDON:InitDatabase()
         {spell = 393222, instance = 2451, continent = EASTERN_KINGDOMS}, -- Uldaman: Legacy of Tyr
         {spell = 393262, instance = 2516, continent = DRAGON_ISLES}, -- The Nokhud Offensive
         {spell = 393267, instance = 2520, continent = DRAGON_ISLES}, -- Brackenhide Hollow
+        {spell = 393273, instance = 2526, continent = DRAGON_ISLES}, -- Algeth'ar Academy
         {spell = 393276, instance = 2519, continent = DRAGON_ISLES}, -- Neltharus
         {spell = 393279, instance = 2515, continent = DRAGON_ISLES}, -- The Azure Vault
         {spell = 393283, instance = 2527, continent = DRAGON_ISLES}, -- Halls of Infusion
@@ -366,6 +358,13 @@ function ADDON:InitDatabase()
         {spell = 1226482, instance = 2769, continent = KHAZ_ALGAR,}, -- Liberation of Undermine
         {spell = 1237215, instance = 2830, continent = KHAZ_ALGAR}, -- Eco-Dome, Al'dani
         {spell = 1239155, instance = 2810, continent = KHAZ_ALGAR}, -- Manaforge Omega
+        {spell = 1254400, instance = 2805, continent = EASTERN_KINGDOMS}, -- Windrunner Spire
+        {spell = 1254551, instance = 1753, continent = BROKEN_ISLES}, -- Seat of the Triumvirate
+        {spell = 1254555, instance = 658, continent = NORTHREND}, -- Pit of Saron
+        {spell = 1254557, instance = 1209, continent = DRAENOR}, -- Skyreach
+        {spell = 1254559, instance = 2874, continent = EASTERN_KINGDOMS}, -- Maisara Cavern
+        {spell = 1254563, instance = 2915, continent = EASTERN_KINGDOMS}, -- Nexus Point Xenas
+        {spell = 1254572, instance = 2811, continent = EASTERN_KINGDOMS}, -- Magisters' Terrace
 
         -- Hearthstones
         -- https://wago.tools/db2/SpellCategories?filter%5BChargeCategory%5D=exact%3A2309&page=1
