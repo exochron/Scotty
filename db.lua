@@ -7,6 +7,7 @@ local _, ADDON = ...
 -- or for instance: https://wago.tools/db2/Map
 
 function ADDON:InitDatabase()
+    local L = ADDON.L
 
     local GetMapName = function(mapId)
         local info = C_Map.GetMapInfo(mapId)
@@ -121,8 +122,8 @@ function ADDON:InitDatabase()
         {toy = 151016, map = 104, continent = OUTLAND}, -- Fractured Necrolyte Skull
         {toy = 205255, map = 2133, continent = DRAGON_ISLES}, -- Niffen Diggin' Mitts
         {toy = (playerRace == "Worgen" and 211788), map = 179, continent = EASTERN_KINGDOMS}, -- Tess's Peacebloom
-        {toy = 230850, name = DELVE_LABEL, isMultiDestination = true, gossip=140193, continent = KHAZ_ALGAR, }, -- Delve-O-Bot 7001 - Khaz Algar
-        {toy = 230850, name = DELVE_LABEL, isMultiDestination = true, gossip=140192, quest=96961, continent = EASTERN_KINGDOMS, }, -- Delve-O-Bot 7001 - Midnight
+        {toy = 230850, name = L.BOUNTIFUL_DELVE, isMultiDestination = true, gossip={140193}, continent = KHAZ_ALGAR, }, -- Delve-O-Bot 7001 - Khaz Algar
+        {toy = 230850, name = L.BOUNTIFUL_DELVE, isMultiDestination = true, gossip={140192}, quest=96961, continent = EASTERN_KINGDOMS, }, -- Delve-O-Bot 7001 - Midnight
         {toy = 243056, map = 2339, continent = KHAZ_ALGAR, }, -- Delver's Mana-Bound Ethergate
         {toy = 253629, map = 2393, continent = EASTERN_KINGDOMS, nameSuffix="("..GetMapName(2541)..")"}, -- Personal Key to the Arcantina
         {toy = 266370, name = C_Spell.GetSpellName(1248190), continent = EASTERN_KINGDOMS, }, -- Dundun's Abundant Travel Method
