@@ -421,9 +421,33 @@ local function IsKnown(row)
         )
 end
 
+local function TransliterateName(name)
+    -- has latin-1 supplement
+    if string.find(name, "\195", 1, true) then
+        local replaceMap = { ["À"] = "A", ["Á"] = "A", ["Â"] = "A", ["Ã"] = "A", ["Ä"] = "A", ["Å"] = "A", ["Æ"] = "AE", ["Ç"] = "C", ["È"] = "E", ["É"] = "E", ["Ê"] = "E", ["Ë"] = "E", ["Ì"] = "I", ["Í"] = "I", ["Î"] = "I", ["Ï"] = "I", ["Ð"] = "D", ["Ñ"] = "N", ["Ò"] = "O", ["Ó"] = "O", ["Ô"] = "O", ["Õ"] = "O", ["Ö"] = "O", ["Ø"] = "O", ["Ù"] = "U", ["Ú"] = "U", ["Û"] = "U", ["Ü"] = "U", ["Ý"] = "Y", ["ß"] = "ss", ["à"] = "a", ["á"] = "a", ["â"] = "a", ["ã"] = "a", ["ä"] = "a", ["å"] = "a", ["æ"] = "ae", ["ç"] = "c", ["è"] = "e", ["é"] = "e", ["ê"] = "e", ["ë"] = "e", ["ì"] = "i", ["í"] = "i", ["î"] = "i", ["ï"] = "i", ["ñ"] = "n", ["ò"] = "o", ["ó"] = "o", ["ô"] = "o", ["õ"] = "o", ["ö"] = "o", ["ø"] = "o", ["ù"] = "u", ["ú"] = "u", ["û"] = "u", ["ü"] = "u", ["ý"] = "y", ["ÿ"] = "y", }
+        name = string.gsub(name, "\195.", replaceMap)
+    end
+
+    return name
+end
 local function SortRowsByName(list)
+    local cachedNames = {}
+
     table.sort(list, function(a, b)
-        return ADDON:GetName(a) < ADDON:GetName(b)
+        local aName = ADDON:GetName(a)
+        local bName = ADDON:GetName(b)
+        local modifiedName
+
+        if nil == cachedNames[aName] then
+            modifiedName = TransliterateName(aName)
+            cachedNames[aName] = modifiedName ~= aName and modifiedName or false
+        end
+        if nil == cachedNames[bName] then
+            modifiedName = TransliterateName(bName)
+            cachedNames[bName] = modifiedName ~= bName and modifiedName or false
+        end
+
+        return (cachedNames[aName] or aName) < (cachedNames[bName] or bName)
     end)
     return list
 end
