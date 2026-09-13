@@ -19,6 +19,7 @@ L.SETTING_MINIMAP = "Show Minimap Icon"
 L.SETTING_SKIP_DIALOG = "Select destination on dialogs automatically"
 L.SETTING_HEARTHSTONES = "Choose favorite Hearthstones"
 L.SETTING_HEARTHSTONES_TOOLTIP = "You can narrow down your favorite Hearthstones for the Randomizer. It automatically uses all available Hearthstones if none are selected."
+L.BOUNTIFUL_DELVE = "Bountiful Delve"
 
 
 local locale = GetLocale()
