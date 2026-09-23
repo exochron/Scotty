@@ -674,10 +674,10 @@ function ADDON:OpenTeleportMenuAtCursor()
     x = x/uiScale
     y = y/uiScale
 
-    local anchor = CreateAnchor("TOPLEFT", UIParent, "BOTTOMLEFT", x, y)
+    local anchor = CreateAnchor("TOPLEFT", UIParent, "BOTTOMLEFT", x-15, y+15)
     local menu = OpenMenu(anchor, generateTeleportMenu)
     if menu:GetHeight() > y then
-        anchor:Set("BOTTOMLEFT", UIParent, "BOTTOMLEFT", x, y)
+        anchor:Set("BOTTOMLEFT", UIParent, "BOTTOMLEFT", x-15, y-25)
         anchor:SetPoint(menu, true)
     end
     ADDON.Events:TriggerEvent("OnOpenTeleportMenu", menu)
