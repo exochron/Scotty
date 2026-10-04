@@ -1,4 +1,4 @@
-## Interface: 120100, 50504
+## Interface: 50504,120100,120105
 ## Title: Scotty
 ## Notes: Your personal transportation assistant
 ## Author: eXochron
@@ -15,6 +15,7 @@
 ## Category-esMX: Intermediario de Datos
 ## Category-frFR: Courtier de Données
 ## Category-itIT: Data Broker
+## Category-koKR: 데이터 브로커
 ## Category-ptBR: Corretor de Dados
 ## Category-ruRU: Посредник данных
 ## Category-zhCN: 数据管理
