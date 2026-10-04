@@ -169,9 +169,11 @@ ADDON.Events:RegisterCallback("OnLogin", function()
     local attachHSButtonToFrame = function(frame)
         if frame and not InCombatLockdown() then
             hearthstoneButton.HookedFrame = frame
+            local left, bottom, width, height = frame:GetScaledRect() -- includes UIParent scaling
+            local scale = UIParent:GetScale() -- so we need to compensate for that scaling
             hearthstoneButton:ClearAllPoints()
-            hearthstoneButton:SetPoint("BOTTOMLEFT", frame:GetLeft(), frame:GetBottom())
-            hearthstoneButton:SetSize(frame:GetWidth(), frame:GetHeight())
+            hearthstoneButton:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", left/scale, bottom/scale)
+            hearthstoneButton:SetSize(width/scale, height/scale)
             hearthstoneButton:SetShown(frame:IsShown())
             if not frame.ScottyHooked then
                 frame:HookScript("OnShow", function(self)
@@ -197,7 +199,7 @@ ADDON.Events:RegisterCallback("OnLogin", function()
         icon = "Interface\Addons\Scotty\icon.png",
 
         OnEnter = function(frame)
-            if not InCombatLockdown() then
+            if not InCombatLockdown() and frame:IsShown() and 0 < frame:GetEffectiveAlpha() then
                 attachHSButtonToFrame(frame)
                 menu = ADDON:OpenTeleportMenu(frame)
             end
