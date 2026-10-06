@@ -30,8 +30,8 @@ local function buildHearthstoneButton()
         end
 
         -- avoid last used hearthstone
-        if #stones > 1 and button:GetAttribute("toy") then
-            local skipToy = button:GetAttribute("toy")
+        if #stones > 1 and button:GetAttribute("toy1") then
+            local skipToy = button:GetAttribute("toy1")
             stones = tFilter(stones, function(v) return v ~= skipToy end, true)
         end
 
@@ -50,23 +50,23 @@ local function buildHearthstoneButton()
        then
             local spellCooldown = C_Spell.GetSpellCooldown(ASTRAL_RECALL)
             if not issecretvalue(spellCooldown.duration) and spellCooldown.duration == 0 then
-                self:SetAttributeNoHandler("type", "spell")
-                self:SetAttributeNoHandler("typerelease", "spell")
-                self:SetAttributeNoHandler("spell", ASTRAL_RECALL)
-                self:SetAttributeNoHandler("item", nil)
-                self:SetAttributeNoHandler("itemid", nil)
-                self:SetAttributeNoHandler("toy", nil)
+                self:SetAttributeNoHandler("type1", "spell")
+                self:SetAttributeNoHandler("typerelease1", "spell")
+                self:SetAttributeNoHandler("spell1", ASTRAL_RECALL)
+                self:SetAttributeNoHandler("item1", nil)
+                self:SetAttributeNoHandler("itemID", nil)
+                self:SetAttributeNoHandler("toy1", nil)
                 self:UpdateLDB()
                 return
             end
         end
         if toy then
-            self:SetAttributeNoHandler("type", "toy")
-            self:SetAttributeNoHandler("typerelease", "toy")
-            self:SetAttributeNoHandler("toy", toy)
-            self:SetAttributeNoHandler("item", nil)
-            self:SetAttributeNoHandler("itemid", nil)
-            self:SetAttributeNoHandler("spell", nil)
+            self:SetAttributeNoHandler("type1", "toy")
+            self:SetAttributeNoHandler("typerelease1", "toy")
+            self:SetAttributeNoHandler("toy1", toy)
+            self:SetAttributeNoHandler("item1", nil)
+            self:SetAttributeNoHandler("itemID", nil)
+            self:SetAttributeNoHandler("spell1", nil)
             self:UpdateLDB()
             return
         end
@@ -74,18 +74,21 @@ local function buildHearthstoneButton()
         local item = C_Container.PlayerHasHearthstone and C_Container.PlayerHasHearthstone()
                 or ADDON:FindItemInBags(HEARTHSTONE_ITEM_ID) and HEARTHSTONE_ITEM_ID
         if item then
-            self:SetAttributeNoHandler("type", "item")
-            self:SetAttributeNoHandler("typerelease", "item")
-            self:SetAttributeNoHandler("item", ADDON:FindItemInBags(item))
-            self:SetAttributeNoHandler("itemid", item)
-            self:SetAttributeNoHandler("toy", nil)
-            self:SetAttributeNoHandler("spell", nil)
+            self:SetAttributeNoHandler("type1", "item")
+            self:SetAttributeNoHandler("typerelease1", "item")
+            self:SetAttributeNoHandler("item1", ADDON:FindItemInBags(item))
+            self:SetAttributeNoHandler("itemID", item)
+            self:SetAttributeNoHandler("toy1", nil)
+            self:SetAttributeNoHandler("spell1", nil)
             self:UpdateLDB()
         end
     end
 
     button:SetAttributeNoHandler("pressAndHoldAction", 1)
-    button:RegisterForClicks("LeftButtonUp")
+    button:SetAttributeNoHandler("type2", "macro")
+    button:SetAttributeNoHandler("typerelease2", "macro")
+    button:SetAttributeNoHandler("macrotext2", "/scotty options")
+    button:RegisterForClicks("AnyUp")
     button:SetPropagateMouseMotion(true)
     button:SetFrameStrata("FULLSCREEN_DIALOG")
     button:SetSize(1,1)
@@ -97,8 +100,8 @@ local function buildHearthstoneButton()
     button:SetScript("OnDragStart", function(self)
         if not InCombatLockdown() then
             --disable click handler
-            button:SetAttributeNoHandler("type", "")
-            button:SetAttributeNoHandler("typerelease", "")
+            button:SetAttributeNoHandler("type1", "")
+            button:SetAttributeNoHandler("typerelease1", "")
 
             local hook = self.HookedFrame
             local handler = hook:GetScript("OnDragStart")
@@ -113,11 +116,6 @@ local function buildHearthstoneButton()
 
             -- reset attributes
             self:ShuffleHearthstone()
-        end
-    end)
-    button:HookScript("OnMouseDown", function(_, mouseButton)
-        if mouseButton == "RightButton" then
-            ADDON:OpenSettings()
         end
     end)
     button:HookScript("PreClick", function()
@@ -158,6 +156,20 @@ local function buildHearthstoneButton()
     return button
 end
 
+-- toggle actionbutton in combat when hooked frame is not visible
+ADDON.Events:RegisterFrameEventAndCallback("PLAYER_REGEN_DISABLED", function()
+    local hook = hearthstoneButton.HookedFrame
+    if not hook:IsShown() or 0 > hook:GetEffectiveAlpha() then
+        hearthstoneButton:Hide()
+    end
+end, "toggle-actionbutton-combat")
+ADDON.Events:RegisterFrameEventAndCallback("PLAYER_REGEN_ENABLED", function()
+    local hook = hearthstoneButton.HookedFrame
+    if hook:IsShown() and 0 < hook:GetEffectiveAlpha() then
+        hearthstoneButton:Show()
+    end
+end, "toggle-actionbutton-combat")
+
 ADDON.Events:RegisterCallback("OnLogin", function()
     local ldb = LibStub("LibDataBroker-1.1")
 
@@ -174,7 +186,7 @@ ADDON.Events:RegisterCallback("OnLogin", function()
             hearthstoneButton:ClearAllPoints()
             hearthstoneButton:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", left/scale, bottom/scale)
             hearthstoneButton:SetSize(width/scale, height/scale)
-            hearthstoneButton:SetShown(frame:IsShown())
+            hearthstoneButton:SetShown(frame:IsShown() and 0 < frame:GetEffectiveAlpha())
             if not frame.ScottyHooked then
                 frame:HookScript("OnShow", function(self)
                     if self == hearthstoneButton.HookedFrame and not InCombatLockdown() then
@@ -213,9 +225,9 @@ ADDON.Events:RegisterCallback("OnLogin", function()
 
     local cooldownTicker
     function hearthstoneButton:UpdateLDB()
-        local itemid = hearthstoneButton:GetAttribute("itemid")
-        local toy = hearthstoneButton:GetAttribute("toy")
-        local spellId = hearthstoneButton:GetAttribute("spell")
+        local itemid = hearthstoneButton:GetAttribute("itemID")
+        local toy = hearthstoneButton:GetAttribute("toy1")
+        local spellId = hearthstoneButton:GetAttribute("spell1")
         if toy or itemid then
             if cooldownTicker then
                 cooldownTicker:Cancel()
