@@ -465,14 +465,14 @@ local function generateTeleportMenu(_, root)
     -- Hearthstone
     do
         local hearthstoneButton = _G[ADDON_NAME.."HearthstoneButton"]
-        if hearthstoneButton:GetAttribute("toy") then
-            buildToyEntry(root, hearthstoneButton:GetAttribute("toy"), GetBindLocation()):SetResponder(function()
+        if hearthstoneButton:GetAttribute("toy1") then
+            buildToyEntry(root, hearthstoneButton:GetAttribute("toy1"), GetBindLocation()):SetResponder(function()
                 hearthstoneButton:ShuffleHearthstone()
                 return MenuResponse.CloseAll
             end)
             hasGeneralSpells = true
-        elseif hearthstoneButton:GetAttribute("spell") then
-            buildSpellEntry(root, hearthstoneButton:GetAttribute("spell"), GetBindLocation())
+        elseif hearthstoneButton:GetAttribute("spell1") then
+            buildSpellEntry(root, hearthstoneButton:GetAttribute("spell1"), GetBindLocation())
             hasGeneralSpells = true
         elseif hearthstoneButton:GetAttribute("itemID") then
             buildItemEntry(root, hearthstoneButton:GetAttribute("itemID"), GetBindLocation())
