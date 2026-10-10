@@ -3,6 +3,8 @@ local ADDON_NAME, ADDON = ...
 ScottyAccountCache = ScottyAccountCache or {}
 ScottyPersonalCache = ScottyPersonalCache or {}
 
+ADDON.Version = C_AddOns.GetAddOnMetadata(ADDON_NAME, "Version") -- This also gets dumped on errors. It's for catching people posting bugs and using an outdated version.
+
 ADDON.Events = CreateFromMixins(EventRegistry)
 ADDON.Events:OnLoad()
 ADDON.Events:SetUndefinedEventsAllowed(true)
