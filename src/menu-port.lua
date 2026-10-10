@@ -375,13 +375,13 @@ local function buildSpellEntry(menuRoot, spellId, location, portalId, dbRow)
     return element
 end
 
-local function buildRow(row, menuRoot)
+local function buildRow(row, menuRoot, withoutFavoring)
     if row.spell then
-        buildSpellEntry(menuRoot, row.spell, ADDON:GetName(row), row.portal, row)
+        buildSpellEntry(menuRoot, row.spell, ADDON:GetName(row), row.portal, not withoutFavoring and row)
     elseif row.toy then
-        buildToyEntry(menuRoot, row.toy, ADDON:GetName(row), row)
+        buildToyEntry(menuRoot, row.toy, ADDON:GetName(row), not withoutFavoring and row)
     elseif row.item then
-        buildItemEntry(menuRoot, row.item, ADDON:GetName(row), row)
+        buildItemEntry(menuRoot, row.item, ADDON:GetName(row), not withoutFavoring and row)
     elseif row.neighborhoodGUID and row.houseGUID and row.plotID then
         local houseName = row.houseName
         if row.ownerName then
@@ -503,6 +503,34 @@ local function generateTeleportMenu(_, root)
             if #rootSpells > 0 then
                 buildSpellEntry(root, 1238686, C_Spell.GetSpellName(rootSpells[1]))
                 hasGeneralSpells = true
+            end
+        end
+    end
+
+    -- In Zone: Back to Base
+    do
+        local baseRows = tFilter(ADDON.db, function(row)
+            return row.category == ADDON.Category.BackToBase and IsKnown(row)
+        end, true)
+        if #baseRows > 0 then
+            local playerMap = C_Map.GetBestMapForUnit("player")
+            if playerMap then
+                local mapsToCheck = {}
+                repeat
+                    mapsToCheck[playerMap] = true
+                    playerMap = C_Map.GetMapInfo(playerMap).parentMapID
+                until (playerMap == 0)
+                baseRows = tFilter(baseRows, function(row)
+                    for _, mapId in ipairs(row.mapIds) do
+                        if mapsToCheck[mapId] then
+                            return true
+                        end
+                    end
+                    return false
+                end, true)
+                for _, row in ipairs(baseRows) do
+                    buildRow(row, root, true)
+                end
             end
         end
     end

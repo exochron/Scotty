@@ -49,6 +49,7 @@ function ADDON:InitDatabase()
     ADDON.Category = {
         Hearthstone = 1,
         SeasonInstance = 2,
+        BackToBase = 3,
     }
 
     local db = {
@@ -116,9 +117,6 @@ function ADDON:InitDatabase()
         {toy = isAlliance and 110560, map = 582, quest=34586, name=GARRISON_LOCATION_TOOLTIP, continent = DRAENOR}, -- Garrison Hearthstone (alliance)
         {toy = isHorde and 110560, map = 590, quest=34378, name=GARRISON_LOCATION_TOOLTIP, continent = DRAENOR}, -- Garrison Hearthstone (horde)
         {toy = 140192, map = 627, continent = BROKEN_ISLES}, -- Dalaran Hearthstone -- todo: lookup quest
-        {toy = 141605, isMultiDestination = true, name=MINIMAP_TRACKING_FLIGHTMASTER, continent = BROKEN_ISLES}, -- Flight Master's Whistle
-        {toy = 141605, isMultiDestination = true, name=MINIMAP_TRACKING_FLIGHTMASTER, continent = ZANDALAR}, -- Flight Master's Whistle
-        {toy = 141605, isMultiDestination = true, name=MINIMAP_TRACKING_FLIGHTMASTER, continent = KUL_TIRAS}, -- Flight Master's Whistle
         {toy = 151016, map = 104, continent = OUTLAND}, -- Fractured Necrolyte Skull
         {toy = 205255, map = 2133, continent = DRAGON_ISLES}, -- Niffen Diggin' Mitts
         {toy = (playerRace == "Worgen" and 211788), map = 179, continent = EASTERN_KINGDOMS}, -- Tess's Peacebloom
@@ -366,6 +364,10 @@ function ADDON:InitDatabase()
         {spell = 1254559, instance = 2874, continent = EASTERN_KINGDOMS}, -- Maisara Cavern
         {spell = 1254563, instance = 2915, continent = EASTERN_KINGDOMS}, -- Nexus Point Xenas
         {spell = 1254572, instance = 2811, continent = EASTERN_KINGDOMS}, -- Magisters' Terrace
+
+        -- Back To Base
+        {toy = 141605, name=MINIMAP_TRACKING_FLIGHTMASTER, mapIds = {619, 875, 876}, category = ADDON.Category.BackToBase}, -- Flight Master's Whistle
+        {toy = 276371, name=C_Spell.GetSpellName(288238), mapIds = {2599, 2600}, category = ADDON.Category.BackToBase}, -- Lightveil Recall Beacon
 
         -- Hearthstones
         -- https://wago.tools/db2/SpellCategories?filter%5BChargeCategory%5D=exact%3A2309&page=1
