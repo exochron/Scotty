@@ -368,6 +368,7 @@ function ADDON:InitDatabase()
         -- Back To Base
         {toy = 141605, name=MINIMAP_TRACKING_FLIGHTMASTER, mapIds = {619, 875, 876}, category = ADDON.Category.BackToBase}, -- Flight Master's Whistle
         {toy = 276371, name=C_Spell.GetSpellName(288238), mapIds = {2599, 2600}, category = ADDON.Category.BackToBase}, -- Lightveil Recall Beacon
+        {toy = 286643, name=C_Spell.GetSpellName(1320601), mapIds = {3043}, category = ADDON.Category.BackToBase}, -- Kinduru's Spiriting Quill
 
         -- Hearthstones
         -- https://wago.tools/db2/SpellCategories?filter%5BChargeCategory%5D=exact%3A2309&page=1

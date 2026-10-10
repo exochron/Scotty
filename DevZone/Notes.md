@@ -1,5 +1,4 @@
 ## General Ideas / Todos
- - port to base/exit
  - open spell/item in book/inventory with modifier key+click
  - Druid: resummon flight form on menu close; CastShapeshiftForm() is protected :(
  - Hearthstone preview in Transmog UI
