@@ -159,13 +159,13 @@ end
 -- toggle actionbutton in combat when hooked frame is not visible
 ADDON.Events:RegisterFrameEventAndCallback("PLAYER_REGEN_DISABLED", function()
     local hook = hearthstoneButton.HookedFrame
-    if not hook:IsShown() or 0 > hook:GetEffectiveAlpha() then
+    if hook and (not hook:IsShown() or 0 > hook:GetEffectiveAlpha()) then
         hearthstoneButton:Hide()
     end
 end, "toggle-actionbutton-combat")
 ADDON.Events:RegisterFrameEventAndCallback("PLAYER_REGEN_ENABLED", function()
     local hook = hearthstoneButton.HookedFrame
-    if hook:IsShown() and 0 < hook:GetEffectiveAlpha() then
+    if hook and (hook:IsShown() and 0 < hook:GetEffectiveAlpha()) then
         hearthstoneButton:Show()
     end
 end, "toggle-actionbutton-combat")
