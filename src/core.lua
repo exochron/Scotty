@@ -3,7 +3,11 @@ local ADDON_NAME, ADDON = ...
 ScottyAccountCache = ScottyAccountCache or {}
 ScottyPersonalCache = ScottyPersonalCache or {}
 
-ADDON.Version = C_AddOns.GetAddOnMetadata(ADDON_NAME, "Version") -- This also gets dumped on errors. It's for catching people posting bugs and using an outdated version.
+-- For debugging purpose. When users post errors, this should get included in the dump.
+ADDON.AddonVersion = C_AddOns.GetAddOnMetadata(ADDON_NAME, "Version")
+ADDON.ClientVersion = GetBuildInfo()
+ADDON.ClientLocale = GetLocale()
+ADDON.ClientRegion = GetCurrentRegionName()
 
 ADDON.Events = CreateFromMixins(EventRegistry)
 ADDON.Events:OnLoad()
