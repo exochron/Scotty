@@ -28,6 +28,8 @@ local function buildFavoriteKey(dbRow)
     if dbType and dbTypeId then
         if dbRow.isMultiDestination and dbRow.map then
             return dbType, dbTypeId.."-"..dbRow.map
+        elseif dbRow.isMultiDestination and dbRow.gossip then
+            return dbType, dbTypeId.."-"..table.concat(dbRow.gossip, "-")
         elseif dbRow.isMultiDestination then
             return dbType, dbTypeId.."-"..dbRow.continent
         end
