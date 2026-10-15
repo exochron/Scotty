@@ -122,6 +122,7 @@ function ADDON:InitDatabase()
         {toy = (playerRace == "Worgen" and 211788), map = 179, continent = EASTERN_KINGDOMS}, -- Tess's Peacebloom
         {toy = 230850, name = L.BOUNTIFUL_DELVE, isMultiDestination = true, gossip={140193}, continent = KHAZ_ALGAR, }, -- Delve-O-Bot 7001 - Khaz Algar
         {toy = 230850, name = L.BOUNTIFUL_DELVE, isMultiDestination = true, gossip={140192}, quest=96961, continent = EASTERN_KINGDOMS, }, -- Delve-O-Bot 7001 - Midnight
+        {toy = 230850, name = C_Map.GetAreaInfo(16913), isMultiDestination = true, gossip={142847}, quest=99231, continent = EASTERN_KINGDOMS, }, -- Delve-O-Bot 7001 - Labyrinth of Kindo'jan
         {toy = 243056, map = 2339, continent = KHAZ_ALGAR, }, -- Delver's Mana-Bound Ethergate
         {toy = 253629, map = 2393, continent = EASTERN_KINGDOMS, nameSuffix="("..GetMapName(2541)..")"}, -- Personal Key to the Arcantina
         {toy = 266370, name = C_Spell.GetSpellName(1248190), continent = EASTERN_KINGDOMS, }, -- Dundun's Abundant Travel Method
