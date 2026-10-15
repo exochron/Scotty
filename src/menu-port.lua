@@ -159,7 +159,8 @@ local function buildEntry(menuRoot, dbType, typeId, icon, location, tooltipSette
             star:SetHighlightAtlas("auctionhouse-icon-favorite-off", "ADD")
             star:SetPoint("LEFT", 0, 0)
             star:SetSize(12, 12)
-            star:SetFrameStrata("TOOLTIP")
+            star:SetFrameStrata("FULLSCREEN_DIALOG")
+            star:Raise()
 
             parent.StarButton = star
             parent.Icon:SetPoint("LEFT", 17, 0)
