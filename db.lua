@@ -367,6 +367,8 @@ function ADDON:InitDatabase()
         {spell = 1254572, instance = 2811, continent = EASTERN_KINGDOMS}, -- Magisters' Terrace
 
         -- Back To Base
+        {toy = isAlliance and 95567, name=C_Map.GetAreaInfo(6583), mapIds = {504}, category = ADDON.Category.BackToBase}, -- Kirin Tor Beacon
+        {toy = isHorde and 95568, name=C_Map.GetAreaInfo(6584), mapIds = {504}, category = ADDON.Category.BackToBase}, -- Sunreaver Beacon
         {toy = 141605, name=MINIMAP_TRACKING_FLIGHTMASTER, mapIds = {619, 875, 876}, category = ADDON.Category.BackToBase}, -- Flight Master's Whistle
         {toy = 276371, name=C_Spell.GetSpellName(288238), mapIds = {2599, 2600}, category = ADDON.Category.BackToBase}, -- Lightveil Recall Beacon
         {toy = 286643, name=C_Spell.GetSpellName(1320601), mapIds = {2647, 2648}, category = ADDON.Category.BackToBase}, -- Kinduru's Spiriting Quill
