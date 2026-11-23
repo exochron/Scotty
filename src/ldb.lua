@@ -43,10 +43,8 @@ local function buildHearthstoneButton()
     end
     button.ShuffleHearthstone = function(self)
         if InCombatLockdown() then
-            self.shufflePending = true
             return
         end
-        self.shufflePending = nil
         local toy = GetRandomHearthstoneToy()
 
         if (not toy or C_Container.GetItemCooldown(toy)>0)
@@ -127,9 +125,7 @@ local function buildHearthstoneButton()
         button:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
     end)
     button:HookScript("PostClick", function(self)
-        if not InCombatLockdown() then
-            self:ShuffleHearthstone()
-        end
+        self:ShuffleHearthstone()
     end)
     button:HookScript("OnEvent", function(self, event, unitTarget, _, spellID)
         if event == "UNIT_SPELLCAST_SUCCEEDED" and unitTarget == "player" then
@@ -149,9 +145,7 @@ local function buildHearthstoneButton()
 
             if isHearthstoneSpell then
                 C_Timer.After(0.1, function()
-                    if not InCombatLockdown() then
-                        self:ShuffleHearthstone()
-                    end
+                    self:ShuffleHearthstone()
                 end)
             end
 
@@ -169,9 +163,6 @@ ADDON.Events:RegisterFrameEventAndCallback("PLAYER_REGEN_DISABLED", function()
     end
 end, "toggle-actionbutton-combat")
 ADDON.Events:RegisterFrameEventAndCallback("PLAYER_REGEN_ENABLED", function()
-    if hearthstoneButton.shufflePending then
-        hearthstoneButton:ShuffleHearthstone()
-    end
     local hook = hearthstoneButton.HookedFrame
     if hook and (hook:IsShown() and 0 < hook:GetEffectiveAlpha()) then
         hearthstoneButton:Show()
