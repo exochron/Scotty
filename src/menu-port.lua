@@ -699,6 +699,10 @@ function ADDON:OpenTeleportMenu(frame)
     return menu
 end
 function ADDON:OpenTeleportMenuAtCursor()
+    if InCombatLockdown() then
+        UIErrorsFrame:AddMessage(ERR_NOT_IN_COMBAT, 1, 0.1, 0.1)
+        return
+    end
     local uiScale, x, y = UIParent:GetEffectiveScale(), GetCursorPosition()
     x = x/uiScale
     y = y/uiScale
