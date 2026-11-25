@@ -37,6 +37,7 @@ function ADDON:InitDatabase()
     --local isTimerunner = PlayerIsTimerunning and PlayerIsTimerunning()
     local currentSeason = C_SeasonInfo and C_SeasonInfo.GetCurrentDisplaySeasonID() or 0
     local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+    local isForever = WOW_PROJECT_ID == WOW_PROJECT_CAMELOT
 
     local isAlliance = UnitFactionGroup("player") == "Alliance"
     local isHorde = UnitFactionGroup("player") == "Horde"
@@ -57,11 +58,11 @@ function ADDON:InitDatabase()
         -- isEquippableItem is actually also available via api. However it requires cached item data.
         -- https://warcraft.wiki.gg/wiki/Category:Teleportation_items
 
-        {item = 21711, map = 80, continent = KALIMDOR}, -- Lunar Festival Invitation
-        {item = 22589, map = 350, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Atiesh, Greatstaff of the Guardian
-        {item = 22630, map = 350, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Atiesh, Greatstaff of the Guardian
-        {item = 22631, map = 350, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Atiesh, Greatstaff of the Guardian
-        {item = 22632, map = 350, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Atiesh, Greatstaff of the Guardian
+        {item = 21711, map = isForever and 1450 or 80, continent = KALIMDOR}, -- Lunar Festival Invitation
+        {item = 22589, map = isForever and 1430 or 350, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Atiesh, Greatstaff of the Guardian
+        {item = 22630, map = isForever and 1430 or 350, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Atiesh, Greatstaff of the Guardian
+        {item = 22631, map = isForever and 1430 or 350, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Atiesh, Greatstaff of the Guardian
+        {item = 22632, map = isForever and 1430 or 350, continent = EASTERN_KINGDOMS, isEquippableItem = true}, -- Atiesh, Greatstaff of the Guardian
         {item = 32757, map = 339, continent = OUTLAND, isEquippableItem = true}, -- Blessed Medallion of Karabor
         {item = 37863, map = 35, continent = EASTERN_KINGDOMS}, -- Direbrew's Remote
         {item = 40585, map = 125, continent = NORTHREND, isEquippableItem = true}, -- Signet of the Kirin Tor
@@ -136,7 +137,7 @@ function ADDON:InitDatabase()
         {spell = (playerClass == "MAGE" and 193759), map = 734, continent = BROKEN_ISLES}, -- Hall of the guardian (Mage)
 
         -- Druid Dreamwalk
-        {spell = playerClass=="DRUID" and 18960, map = 80, continent = KALIMDOR},
+        {spell = playerClass=="DRUID" and 18960, map = isForever and 1450 or 80, continent = KALIMDOR},
         {spell = playerClass=="DRUID" and 193753, isMultiDestination = true, map = 26, continent = EASTERN_KINGDOMS, waypoint={715, 0.506056, 0.657546}}, -- Hinterlands
         {spell = playerClass=="DRUID" and 193753, isMultiDestination = true, map = 47, continent = EASTERN_KINGDOMS, waypoint={715, 0.398373, 0.693299}}, -- Duskwood
         {spell = playerClass=="DRUID" and 193753, isMultiDestination = true, map = 69, continent = KALIMDOR, waypoint={715, 0.232351, 0.385249}}, -- Feralas
@@ -147,12 +148,12 @@ function ADDON:InitDatabase()
 
         -- Mage Teleports with Portals
         -- https://www.wowhead.com/guide/transportation#mage-portals
-        {spell = playerClass=="MAGE" and 3561, portal = 10059, map = 84, continent = EASTERN_KINGDOMS}, -- Stormwind
-        {spell = playerClass=="MAGE" and 3562, portal = 11416, map = 87, continent = EASTERN_KINGDOMS}, -- Ironforge
-        {spell = playerClass=="MAGE" and 3563, portal = 11418, map = 998, continent = EASTERN_KINGDOMS}, -- Undercity
-        {spell = playerClass=="MAGE" and 3565, portal = 11419, map = 89, continent = KALIMDOR}, -- Darnassus
-        {spell = playerClass=="MAGE" and 3566, portal = 11420, map = 88, continent = KALIMDOR}, -- Thunder Bluff
-        {spell = playerClass=="MAGE" and 3567, portal = 11417, map = 85, continent = KALIMDOR}, -- Orgrimmar
+        {spell = playerClass=="MAGE" and 3561, portal = 10059, map = isForever and 1453 or 84, continent = EASTERN_KINGDOMS}, -- Stormwind
+        {spell = playerClass=="MAGE" and 3562, portal = 11416, map = isForever and 1455 or 87, continent = EASTERN_KINGDOMS}, -- Ironforge
+        {spell = playerClass=="MAGE" and 3563, portal = 11418, map = isForever and 1458 or 998, continent = EASTERN_KINGDOMS}, -- Undercity
+        {spell = playerClass=="MAGE" and 3565, portal = 11419, map = isForever and 1457 or 89, continent = KALIMDOR}, -- Darnassus
+        {spell = playerClass=="MAGE" and 3566, portal = 11420, map = isForever and 1456 or 88, continent = KALIMDOR}, -- Thunder Bluff
+        {spell = playerClass=="MAGE" and 3567, portal = 11417, map = isForever and 1454 or 85, continent = KALIMDOR}, -- Orgrimmar
         {spell = playerClass=="MAGE" and 32271, portal = 32266, map = 103, continent = KALIMDOR}, -- Exodar
         {spell = playerClass=="MAGE" and 32272, portal = 32267, map = 110, continent = EASTERN_KINGDOMS, nameSuffix=(isRetail and "(BC)")}, -- Silvermoon
         {spell = playerClass=="MAGE" and 35715, portal = 35717, map = 111, continent = OUTLAND}, -- Shattrath
@@ -174,6 +175,7 @@ function ADDON:InitDatabase()
         {spell = playerClass=="MAGE" and 395277, portal = 395289, map = 2134, continent = DRAGON_ISLES}, -- Valdraken
         {spell = playerClass=="MAGE" and 446540, portal = 446534, map = 2339, continent = KHAZ_ALGAR}, -- Dornogal
         {spell = playerClass=="MAGE" and 1259190, portal = 1259194, map = 2393, continent = EASTERN_KINGDOMS}, -- Silvermoon City
+        {spell = isForever and playerClass=="MAGE" and 1297659, name = C_Map.GetAreaInfo(16544), map = 2393, continent = EASTERN_KINGDOMS}, -- Dalaran in Forever
 
         -- Haranir Rootwalking
         {spell = playerRace=="Harronir" and 1238686, isMultiDestination = true, map = 2413, continent = EASTERN_KINGDOMS}, -- Harandar
@@ -219,8 +221,8 @@ function ADDON:InitDatabase()
 
         -- Engineering Items
         -- /dump C_GossipInfo.GetOptions()
-        {toy = isEngineer and 18984, map = 83, continent = KALIMDOR}, -- Dimensional Ripper - Everlook
-        {toy = isEngineer and 18986, map = 71, continent = KALIMDOR}, -- Ultrasafe Transporter: Gadgetzan
+        {[isForever and "item" or "toy"] = isEngineer and 18984, map = isForever and 1447 or 83, continent = KALIMDOR}, -- Dimensional Ripper - Everlook
+        {[isForever and "item" or "toy"] = isEngineer and 18986, map = isForever and 1446 or 71, continent = KALIMDOR}, -- Ultrasafe Transporter: Gadgetzan
         {toy = isEngineer and 30542, map = 109, continent = OUTLAND}, -- Dimensional Ripper - Area 52
         {toy = isEngineer and 30544, map = 105, continent = OUTLAND}, -- Ultrasafe Transporter: Toshley's Station
         {toy = isEngineer and 48933, isMultiDestination = true, map = 114, continent = NORTHREND, gossip={38054}}, -- Wormhole Generator: Northrend - Borean Tundra
@@ -275,6 +277,10 @@ function ADDON:InitDatabase()
         {toy = isEngineer and 248485, isMultiDestination = true, map = 2437, continent = EASTERN_KINGDOMS, gossip={134980}}, -- Wormhole Generator: Quel'Thalas - Zul'Aman
         {toy = isEngineer and 248485, isMultiDestination = true, map = 2413, continent = EASTERN_KINGDOMS, gossip={134979}}, -- Wormhole Generator: Quel'Thalas - Harandar
         {toy = isEngineer and 248485, isMultiDestination = true, map = 2405, continent = EASTERN_KINGDOMS, gossip={134978}}, -- Wormhole Generator: Quel'Thalas - Voidstorm
+        {item = isForever and isEngineer and 260823, map = 2482, continent = KALIMDOR}, -- Dimensional Transporter - Mt. Hyjal (Forever)
+        {item = isForever and isEngineer and 260821, isEquippableItem = true, map = 2482, continent = KALIMDOR}, -- EZ and SAF Field Transporter: Mt. Hyjal (Forever)
+        {item = isForever and isEngineer and 260820, isEquippableItem = true, map = 1447, continent = KALIMDOR}, -- SAF-T Emergency Ripper: Everlook (Forever)
+        {item = isForever and isEngineer and 260819, isEquippableItem = true, map = 1446, continent = KALIMDOR}, -- EZ-Thro Field Transporter: Gadgetzan (Forever)
 
         -- Seasonal Dungeon Port
         {spell = 1286801, instance = 2859, continent = EASTERN_KINGDOMS, category = (currentSeason == MN_S2 and ADDON.Category.SeasonInstance)}, -- Blinding Vale
@@ -367,20 +373,20 @@ function ADDON:InitDatabase()
         {spell = 1254572, instance = 2811, continent = EASTERN_KINGDOMS}, -- Magisters' Terrace
 
         -- Back To Base
-        {item = isAlliance and 17691, name=C_Map.GetAreaInfo(2959), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Stormpike Insignia Rank 1
-        {item = isAlliance and 17900, name=C_Map.GetAreaInfo(2959), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Stormpike Insignia Rank 2
-        {item = isAlliance and 17901, name=C_Map.GetAreaInfo(2959), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Stormpike Insignia Rank 3
-        {item = isAlliance and 17902, name=C_Map.GetAreaInfo(2959), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Stormpike Insignia Rank 4
-        {item = isAlliance and 17903, name=C_Map.GetAreaInfo(2959), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Stormpike Insignia Rank 5
-        {item = isAlliance and 17904, name=C_Map.GetAreaInfo(2959), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Stormpike Insignia Rank 6
-        {toy = isAlliance and 169297, name=C_Map.GetAreaInfo(2959), mapIds = {91}, category = ADDON.Category.BackToBase}, -- Stormpike Insignia (toy)
-        {item = isHorde and 17690, name=C_Map.GetAreaInfo(2978), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Frostwolf Insignia Rank 1
-        {item = isHorde and 17905, name=C_Map.GetAreaInfo(2978), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Frostwolf Insignia Rank 2
-        {item = isHorde and 17906, name=C_Map.GetAreaInfo(2978), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Frostwolf Insignia Rank 3
-        {item = isHorde and 17907, name=C_Map.GetAreaInfo(2978), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Frostwolf Insignia Rank 4
-        {item = isHorde and 17908, name=C_Map.GetAreaInfo(2978), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Frostwolf Insignia Rank 5
-        {item = isHorde and 17909, name=C_Map.GetAreaInfo(2978), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Frostwolf Insignia Rank 6
-        {toy = isHorde and 169298, name=C_Map.GetAreaInfo(2978), mapIds = {91}, category = ADDON.Category.BackToBase}, -- Frostwolf Insignia (toy)
+        {item = isAlliance and 17691, name=C_Map.GetAreaInfo(2959), mapIds = {isForever and 1459 or 91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Stormpike Insignia Rank 1
+        {item = isAlliance and 17900, name=C_Map.GetAreaInfo(2959), mapIds = {isForever and 1459 or 91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Stormpike Insignia Rank 2
+        {item = isAlliance and 17901, name=C_Map.GetAreaInfo(2959), mapIds = {isForever and 1459 or 91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Stormpike Insignia Rank 3
+        {item = isAlliance and 17902, name=C_Map.GetAreaInfo(2959), mapIds = {isForever and 1459 or 91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Stormpike Insignia Rank 4
+        {item = isAlliance and 17903, name=C_Map.GetAreaInfo(2959), mapIds = {isForever and 1459 or 91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Stormpike Insignia Rank 5
+        {item = isAlliance and 17904, name=C_Map.GetAreaInfo(2959), mapIds = {isForever and 1459 or 91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Stormpike Insignia Rank 6
+        {toy = isAlliance and 169297, name=C_Map.GetAreaInfo(2959), mapIds = {isForever and 1459 or 91}, category = ADDON.Category.BackToBase}, -- Stormpike Insignia (toy)
+        {item = isHorde and 17690, name=C_Map.GetAreaInfo(2978), mapIds = {isForever and 1459 or 91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Frostwolf Insignia Rank 1
+        {item = isHorde and 17905, name=C_Map.GetAreaInfo(2978), mapIds = {isForever and 1459 or 91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Frostwolf Insignia Rank 2
+        {item = isHorde and 17906, name=C_Map.GetAreaInfo(2978), mapIds = {isForever and 1459 or 91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Frostwolf Insignia Rank 3
+        {item = isHorde and 17907, name=C_Map.GetAreaInfo(2978), mapIds = {isForever and 1459 or 91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Frostwolf Insignia Rank 4
+        {item = isHorde and 17908, name=C_Map.GetAreaInfo(2978), mapIds = {isForever and 1459 or 91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Frostwolf Insignia Rank 5
+        {item = isHorde and 17909, name=C_Map.GetAreaInfo(2978), mapIds = {isForever and 1459 or 91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Frostwolf Insignia Rank 6
+        {toy = isHorde and 169298, name=C_Map.GetAreaInfo(2978), mapIds = {isForever and 1459 or 91}, category = ADDON.Category.BackToBase}, -- Frostwolf Insignia (toy)
         {toy = isAlliance and 95567, name=C_Map.GetAreaInfo(6583), mapIds = {504}, category = ADDON.Category.BackToBase}, -- Kirin Tor Beacon
         {toy = isHorde and 95568, name=C_Map.GetAreaInfo(6584), mapIds = {504}, category = ADDON.Category.BackToBase}, -- Sunreaver Beacon
         {toy = 141605, name=MINIMAP_TRACKING_FLIGHTMASTER, mapIds = {619, 875, 876}, category = ADDON.Category.BackToBase}, -- Flight Master's Whistle

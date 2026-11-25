@@ -3,7 +3,6 @@
  - Druid: resummon flight form on menu close; CastShapeshiftForm() is protected :(
  - Hearthstone preview in Transmog UI
  - Classic Support? (Season of Discovery might have added new Port Items/Spells)
- - Forever Support? (still need beta key :( )
 
 ## Adventure Journal
  - add dungeon ports on overview
@@ -11,3 +10,9 @@
 
 ## World Map
  - add teleport next to destinations
+
+## Road to Forever
+- mage spells & portals (7x)
+    - Reagents
+- engineering (6x)
+    - charges
