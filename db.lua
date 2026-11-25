@@ -367,6 +367,20 @@ function ADDON:InitDatabase()
         {spell = 1254572, instance = 2811, continent = EASTERN_KINGDOMS}, -- Magisters' Terrace
 
         -- Back To Base
+        {item = isAlliance and 17691, name=C_Map.GetAreaInfo(2959), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Stormpike Insignia Rank 1
+        {item = isAlliance and 17900, name=C_Map.GetAreaInfo(2959), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Stormpike Insignia Rank 2
+        {item = isAlliance and 17901, name=C_Map.GetAreaInfo(2959), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Stormpike Insignia Rank 3
+        {item = isAlliance and 17902, name=C_Map.GetAreaInfo(2959), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Stormpike Insignia Rank 4
+        {item = isAlliance and 17903, name=C_Map.GetAreaInfo(2959), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Stormpike Insignia Rank 5
+        {item = isAlliance and 17904, name=C_Map.GetAreaInfo(2959), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Stormpike Insignia Rank 6
+        {toy = isAlliance and 169297, name=C_Map.GetAreaInfo(2959), mapIds = {91}, category = ADDON.Category.BackToBase}, -- Stormpike Insignia (toy)
+        {item = isHorde and 17690, name=C_Map.GetAreaInfo(2978), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Frostwolf Insignia Rank 1
+        {item = isHorde and 17905, name=C_Map.GetAreaInfo(2978), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Frostwolf Insignia Rank 2
+        {item = isHorde and 17906, name=C_Map.GetAreaInfo(2978), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Frostwolf Insignia Rank 3
+        {item = isHorde and 17907, name=C_Map.GetAreaInfo(2978), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Frostwolf Insignia Rank 4
+        {item = isHorde and 17908, name=C_Map.GetAreaInfo(2978), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Frostwolf Insignia Rank 5
+        {item = isHorde and 17909, name=C_Map.GetAreaInfo(2978), mapIds = {91}, category = ADDON.Category.BackToBase, isEquippableItem = true}, -- Frostwolf Insignia Rank 6
+        {toy = isHorde and 169298, name=C_Map.GetAreaInfo(2978), mapIds = {91}, category = ADDON.Category.BackToBase}, -- Frostwolf Insignia (toy)
         {toy = isAlliance and 95567, name=C_Map.GetAreaInfo(6583), mapIds = {504}, category = ADDON.Category.BackToBase}, -- Kirin Tor Beacon
         {toy = isHorde and 95568, name=C_Map.GetAreaInfo(6584), mapIds = {504}, category = ADDON.Category.BackToBase}, -- Sunreaver Beacon
         {toy = 141605, name=MINIMAP_TRACKING_FLIGHTMASTER, mapIds = {619, 875, 876}, category = ADDON.Category.BackToBase}, -- Flight Master's Whistle
