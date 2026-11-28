@@ -436,6 +436,7 @@ function ADDON:InitDatabase()
         {toy = 264367, category = ADDON.Category.Hearthstone}, -- Mycomancer's Hearthspore
         {toy = 281136, category = ADDON.Category.Hearthstone}, -- Hiveborne Hearthstone
         {toy = 281615, category = ADDON.Category.Hearthstone}, -- Shadeweaver's Hearthstone
+        {toy = 288912, category = ADDON.Category.Hearthstone}, -- Wood-Cursed Hearthstone
     }
 
     -- the actual function C_Item.DoesItemExistByID() is misleading and only checks for non empty parameter.
